@@ -15,6 +15,5 @@ class MyApplication : Application() {
 
         // Kakao SDK 초기화
         KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_APP_KEY)
-
     }
 }

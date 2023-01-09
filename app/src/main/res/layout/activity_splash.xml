@@ -6,7 +6,6 @@
     android:layout_height="852dp"
     tools:context=".SplashActivity">
 
-
     <ImageView
         android:id="@+id/iv_buildup"
         android:layout_width="251dp"

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">BuildUpFrontEnd</string>
+
+    <string name="naver_client_id">bfjjS56ykRJulSOGxfXP</string>
+    <string name="naver_client_secret">RD8A5WaNEd</string>
+    <string name="naver_client_name">네이버아이디 로그인</string>
 </resources>

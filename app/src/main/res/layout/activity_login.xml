@@ -23,7 +23,6 @@
         app:srcCompat="@drawable/logo" />
 
 
-
     <ImageButton
         android:id="@+id/btn_login_kakao"
         android:layout_width="80dp"
@@ -31,28 +30,25 @@
         android:layout_marginStart="60dp"
         android:layout_marginTop="522dp"
         android:layout_marginEnd="253dp"
-        android:layout_marginBottom="250dp"
         android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/kakaotalk" />
 
 
-    <ImageButton
-        android:id="@+id/btn_login_google"
+    <Button
+        android:id="@+id/btn_login_naver"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginStart="156dp"
         android:layout_marginTop="522dp"
-        android:layout_marginEnd="157dp"
-        android:layout_marginBottom="250dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/kakao_login_circle" />
+        app:layout_constraintTop_toTopOf="parent" />
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"/>-->
 
     <ImageButton
         android:id="@+id/btn_login_facebook"
@@ -61,12 +57,10 @@
         android:layout_marginStart="252dp"
         android:layout_marginTop="522dp"
         android:layout_marginEnd="61dp"
-        android:layout_marginBottom="250dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/kakaotalk_icon"/>
+        app:srcCompat="@drawable/kakaotalk_icon" />
 
     <ImageView
         android:id="@+id/iv_songdbox"
@@ -123,6 +117,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/accountq" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
