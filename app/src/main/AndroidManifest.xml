@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BuildUpFrontEnd">
-        <activity android:name=".SignupActivity"></activity>
+        <activity
+            android:name=".SignupActivity"
+            android:theme="@style/NoActionBar" />
         <activity android:name=".SplashActivity"
             android:theme="@style/SplashTheme"
             android:exported="true">
@@ -22,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity"
-            android:theme="@style/FullScreenTheme"/>
+            android:theme="@style/NoActionBar"/>
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
