@@ -74,5 +74,13 @@ class LoginActivity : AppCompatActivity() {
                 NaverIdLoginSDK.authenticate(this@LoginActivity, oAuthLoginCallback)
             }
         }
+
+        binding.btnSignup.setOnClickListener {
+            val intent = Intent(this, SignupActivity::class.java)
+            startActivity(intent)
+        }
+
+
+
     }
 }
