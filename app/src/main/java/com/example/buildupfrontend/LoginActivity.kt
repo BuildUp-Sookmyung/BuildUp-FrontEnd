@@ -19,6 +19,11 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.common.model.ClientError
+import com.kakao.sdk.common.model.ClientErrorCause
+import com.kakao.sdk.user.UserApiClient
+import com.kakao.sdk.user.model.AccessTokenInfo
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
@@ -28,7 +33,7 @@ import com.navercorp.nid.profile.data.NidProfileResponse
 
 class LoginActivity : AppCompatActivity() {
 
-    private var mBinding: ActivityLoginBinding?=null
+    private var mBinding: ActivityLoginBinding? = null
     private val binding get() = mBinding!!
     private var email: String = ""
     private var name: String = ""
@@ -37,8 +42,10 @@ class LoginActivity : AppCompatActivity() {
 
     //firebase Auth
     private lateinit var firebaseAuth: FirebaseAuth
+
     //google client
     private lateinit var googleSignInClient: GoogleSignInClient
+
     //private const val TAG = "GoogleActivity"
     private val RC_SIGN_IN = 99
     private lateinit var GoogleSignResultLauncher: ActivityResultLauncher<Intent>
@@ -49,7 +56,54 @@ class LoginActivity : AppCompatActivity() {
         mBinding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 1. 카카오 로그인
+        val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+            if (error != null) {
+                Log.e(TAG, "카카오계정으로 로그인 실패", error)
+            } else if (token != null) {
+                Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
+            }
+        }
+        binding.btnLoginKakao.setOnClickListener() {
+            // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
+            if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
+                UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
+                    if (error != null) {
+                        Log.e(TAG, "카카오톡으로 로그인 실패", error)
 
+                        // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
+                        // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
+                        if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
+                            return@loginWithKakaoTalk
+                        }
+                        // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
+                        UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
+                    } else if (token != null) {
+                        Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
+
+                        // 사용자 정보 요청 (추가 동의)
+                        UserApiClient.instance.me { user, error ->
+                            if (error != null) {
+                                Log.e(TAG, "사용자 정보 요청 실패", error)
+                            }
+                            else if (user != null) {
+                                name = user.kakaoAccount?.name.toString()
+                                email = user.kakaoAccount?.email.toString()
+                                birthYear = user.kakaoAccount?.birthyear.toString()
+                                mobile = user.kakaoAccount?.phoneNumber.toString()
+                                Log.e(TAG, "네이버 로그인한 유저 정보 - 이름 : $name") // 남기쁨
+                                Log.e(TAG, "네이버 로그인한 유저 정보 - 이메일 : $email") // marynam99@naver.com
+                                Log.e(TAG, "네이버 로그인한 유저 정보 - 출생년도 : $birthYear") // 1999
+                                Log.e(TAG, "네이버 로그인한 유저 정보 - 전화번호 : $mobile") // 010-8322-7154
+                            }
+                        }
+                        toMainActivity()
+                    }
+                }
+            } else {
+                UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
+            }
+        }
 
         // 2. 네이버 로그인
         binding.run {
@@ -57,7 +111,8 @@ class LoginActivity : AppCompatActivity() {
                 val oAuthLoginCallback = object : OAuthLoginCallback {
                     override fun onSuccess() {
                         // 네이버 로그인 API 호출 성공 시 유저 정보를 가져온다
-                        NidOAuthLogin().callProfileApi(object : NidProfileCallback<NidProfileResponse> {
+                        NidOAuthLogin().callProfileApi(object :
+                            NidProfileCallback<NidProfileResponse> {
                             override fun onSuccess(result: NidProfileResponse) {
                                 name = result.profile?.name.toString()
                                 email = result.profile?.email.toString()
@@ -67,6 +122,8 @@ class LoginActivity : AppCompatActivity() {
                                 Log.e(TAG, "네이버 로그인한 유저 정보 - 이메일 : $email") // marynam99@naver.com
                                 Log.e(TAG, "네이버 로그인한 유저 정보 - 출생년도 : $birthYear") // 1999
                                 Log.e(TAG, "네이버 로그인한 유저 정보 - 전화번호 : $mobile") // 010-8322-7154
+
+                                toMainActivity()
                             }
 
                             override fun onError(errorCode: Int, message: String) {
@@ -78,7 +135,6 @@ class LoginActivity : AppCompatActivity() {
                             }
                         })
                     }
-
                     override fun onError(errorCode: Int, message: String) {
                         val naverAccessToken = NaverIdLoginSDK.getAccessToken()
                         Log.e(TAG, "naverAccessToken : $naverAccessToken")
@@ -89,7 +145,12 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
 
-                NaverIdLoginSDK.initialize(this@LoginActivity, getString(R.string.naver_client_id), getString(R.string.naver_client_secret), "앱 이름")
+                NaverIdLoginSDK.initialize(
+                    this@LoginActivity,
+                    getString(R.string.naver_client_id),
+                    getString(R.string.naver_client_secret),
+                    "앱 이름"
+                )
                 NaverIdLoginSDK.authenticate(this@LoginActivity, oAuthLoginCallback)
             }
         }
@@ -106,9 +167,12 @@ class LoginActivity : AppCompatActivity() {
         //firebase auth 객체
         firebaseAuth = FirebaseAuth.getInstance()
         GoogleSignResultLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()){ result ->
-            val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            val task: Task<GoogleSignInAccount> =
+                GoogleSignIn.getSignedInAccountFromIntent(result.data)
             handleSignInResult(task)
+            toMainActivity()
         }
 
         binding.btnSignup.setOnClickListener {
@@ -122,6 +186,7 @@ class LoginActivity : AppCompatActivity() {
         val signInIntent = googleSignInClient.signInIntent
         GoogleSignResultLauncher.launch(signInIntent)
     }
+
     fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
@@ -136,14 +201,16 @@ class LoginActivity : AppCompatActivity() {
             Log.e("Google account", "signInResult:failed Code = " + e.statusCode)
         }
     }
+
     // onStart. 유저가 앱에 이미 구글 로그인을 했는지 확인
     public override fun onStart() {
         super.onStart()
         val account = GoogleSignIn.getLastSignedInAccount(this)
-        if(account!==null){ // 이미 로그인 되어있을시 바로 메인 액티비티로 이동
+        if (account !== null) { // 이미 로그인 되어있을시 바로 메인 액티비티로 이동
             toMainActivity(firebaseAuth.currentUser)
         }
     } //onStart End
+
     // onActivityResult
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -162,6 +229,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     } // onActivityResult End
+
     // firebaseAuthWithGoogle
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
         Log.d("LoginActivity", "firebaseAuthWithGoogle:" + acct.id!!)
@@ -178,13 +246,20 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
     }// firebaseAuthWithGoogle END
+
     // toMainActivity
-    fun toMainActivity(user: FirebaseUser?) {
-        if(user !=null) { // MainActivity 로 이동
-            startActivity(Intent(this, SignupActivity::class.java))
+    private fun toMainActivity(user: FirebaseUser?) {
+        if (user != null) { // MainActivity 로 이동
+            startActivity(Intent(this, SecondActivity::class.java))
             finish()
         }
     } // toMainActivity End
+
+    private fun toMainActivity() {
+        startActivity(Intent(this, SecondActivity::class.java))
+        finish()
+    } // toMainActivity End
+
     // signIn End
     private fun signOut() { // 로그아웃
         // Firebase sign out
@@ -195,6 +270,7 @@ class LoginActivity : AppCompatActivity() {
             //updateUI(null)
         }
     }
+
     private fun revokeAccess() { //회원탈퇴
         // Firebase sign out
         firebaseAuth.signOut()

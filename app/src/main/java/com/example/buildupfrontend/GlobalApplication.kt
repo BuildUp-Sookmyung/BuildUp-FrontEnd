@@ -9,7 +9,7 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 
-class MyApplication : Application() {
+class GlobalApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 

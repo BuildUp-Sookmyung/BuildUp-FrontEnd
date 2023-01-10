@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="393dp"
     android:layout_height="852dp"
+    android:background="@android:color/white"
     tools:context=".SignupActivity">
 
     <TextView
@@ -52,7 +53,6 @@
         </ListView>
 
     </RelativeLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
