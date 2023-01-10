@@ -83,7 +83,7 @@
 <!--        app:layout_constraintTop_toTopOf="parent"/>-->
 
     <ImageButton
-        android:id="@+id/btn_login_facebook"
+        android:id="@+id/btn_login_google"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginStart="252dp"
