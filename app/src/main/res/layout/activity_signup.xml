@@ -6,53 +6,404 @@
     android:layout_height="852dp"
     android:background="@android:color/white"
     tools:context=".SignupActivity">
-
-    <TextView
-        android:id="@+id/tv_dangshin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="42dp"
-        android:layout_marginTop="50dp"
-        android:fontFamily="@font/aksharbold"
-        android:text="당신을 알려주세요!"
-        android:textSize="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_mininfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="42dp"
-        android:layout_marginTop="6dp"
-        android:fontFamily="@font/applesdgothicneor"
-        android:text="기록에 필요한 최소한의 정보를 입력해주세요."
-        android:textColor="@android:color/black"
-        android:textSize="14dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_dangshin" />
-
-    <RelativeLayout
+    <ScrollView
         android:id="@+id/frame_18"
-        android:layout_width="390dp"
-        android:layout_height="705dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_mininfo">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <ListView
-            android:id="@+id/li_signup"
-            android:layout_width="376dp"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@null">
+            >
+
+            <TextView
+                android:id="@+id/tv_dangshin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="39dp"
+                android:layout_marginTop="50dp"
+                android:fontFamily="@font/aksharbold"
+                android:text="당신을 알려주세요!"
+                android:textColor="@android:color/black"
+                android:textSize="24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_mininfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="39dp"
+                android:layout_marginTop="6dp"
+                android:layout_below="@+id/tv_dangshin"
+                android:fontFamily="@font/applesdgothicneor"
+                android:text="기록에 필요한 최소한의 정보를 입력해주세요."
+                android:textColor="@android:color/black"
+                android:textSize="14dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_dangshin" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/li_id"
+                android:layout_width="376dp"
+                android:layout_height="67dp"
+                android:layout_below="@+id/tv_mininfo"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/tv_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:fontFamily="@font/b612regular"
+                    android:text="아이디 *"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/et_id"
+                    android:layout_width="316dp"
+                    android:layout_height="37dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="17dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginBottom="3dp"
+
+                    android:paddingVertical="11dp"
+                    android:paddingHorizontal="16dp"
+                    android:textSize="12dp"
+                    android:fontFamily="@font/applesdgothicneor"
+                    android:hint="아이디"
+                    android:textColorHint="#90D5B4"
+
+                    android:background="@drawable/input_basic"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/li_pw"
+                android:layout_width="376dp"
+                android:layout_height="67dp"
+                android:layout_below="@+id/li_id"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/tv_pw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:fontFamily="@font/b612regular"
+                    android:text="비밀번호 *"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/et_pw"
+                    android:layout_width="316dp"
+                    android:layout_height="37dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="17dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginBottom="3dp"
+
+                    android:paddingVertical="11dp"
+                    android:paddingHorizontal="16dp"
+                    android:textSize="12dp"
+                    android:fontFamily="@font/applesdgothicneor"
+                    android:hint="비밀번호"
+                    android:textColorHint="#90D5B4"
+
+                    android:background="@drawable/input_basic"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/li_pw2"
+                android:layout_width="376dp"
+                android:layout_height="67dp"
+                android:layout_below="@+id/li_pw"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/tv_pw2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:fontFamily="@font/b612regular"
+                    android:text="비밀번호 확인 *"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/et_pw2"
+                    android:layout_width="316dp"
+                    android:layout_height="37dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="17dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginBottom="3dp"
+                    android:paddingVertical="11dp"
+                    android:paddingHorizontal="16dp"
+                    android:textSize="12dp"
+                    android:fontFamily="@font/applesdgothicneor"
+                    android:hint="비밀번호 확인"
+                    android:textColorHint="#90D5B4"
+                    android:background="@drawable/input_basic"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/li_name"
+                android:layout_width="376dp"
+                android:layout_height="67dp"
+                android:layout_below="@+id/li_pw2"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:fontFamily="@font/b612regular"
+                    android:text="이름/닉네임 *"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/et_name"
+                    android:layout_width="316dp"
+                    android:layout_height="37dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="17dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginBottom="3dp"
+                    android:paddingVertical="11dp"
+                    android:paddingHorizontal="16dp"
+                    android:textSize="12dp"
+                    android:fontFamily="@font/applesdgothicneor"
+                    android:hint="이름/닉네임"
+                    android:textColorHint="#90D5B4"
+                    android:background="@drawable/input_basic"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/li_email"
+                android:layout_width="376dp"
+                android:layout_height="67dp"
+                android:layout_below="@+id/li_name"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/tv_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:fontFamily="@font/b612regular"
+                    android:text="이메일 *"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/et_email"
+                    android:layout_width="316dp"
+                    android:layout_height="37dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="17dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginBottom="3dp"
+                    android:paddingVertical="11dp"
+                    android:paddingHorizontal="16dp"
+                    android:textSize="12dp"
+                    android:fontFamily="@font/applesdgothicneor"
+                    android:hint="이메일"
+                    android:textColorHint="#90D5B4"
+                    android:background="@drawable/input_basic"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/li_age"
+                android:layout_width="376dp"
+                android:layout_height="67dp"
+                android:layout_below="@+id/li_email"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/tv_age"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:fontFamily="@font/b612regular"
+                    android:text="나이 *"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/et_age"
+                    android:layout_width="316dp"
+                    android:layout_height="37dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="17dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginBottom="3dp"
+                    android:paddingVertical="11dp"
+                    android:paddingHorizontal="16dp"
+                    android:textSize="12dp"
+                    android:fontFamily="@font/applesdgothicneor"
+                    android:hint="나이"
+                    android:textColorHint="#90D5B4"
+                    android:background="@drawable/input_basic"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/li_gender"
+                android:layout_width="376dp"
+                android:layout_height="67dp"
+                android:layout_below="@+id/li_age"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/tv_gender"
+                    android:layout_width="73dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:fontFamily="@font/b612regular"
+                    android:text="성별 *"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/et_gender"
+                    android:layout_width="316dp"
+                    android:layout_height="37dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="17dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginBottom="3dp"
+                    android:paddingVertical="11dp"
+                    android:paddingHorizontal="16dp"
+                    android:textSize="12dp"
+                    android:fontFamily="@font/applesdgothicneor"
+                    android:hint="성별"
+                    android:textColorHint="#90D5B4"
+                    android:background="@drawable/input_basic"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/li_mobile"
+                android:layout_width="376dp"
+                android:layout_height="67dp"
+                android:layout_below="@+id/li_gender"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
 
 
-        </ListView>
+                <TextView
+                    android:id="@+id/tv_mobile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:fontFamily="@font/b612regular"
+                    android:text="전화번호 *"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    </RelativeLayout>
+                <EditText
+                    android:id="@+id/et_mobile"
+                    android:layout_width="316dp"
+                    android:layout_height="37dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="17dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginBottom="3dp"
+                    android:paddingVertical="11dp"
+                    android:paddingHorizontal="16dp"
+                    android:textSize="12dp"
+                    android:fontFamily="@font/applesdgothicneor"
+                    android:hint="전화번호"
+                    android:textColorHint="#90D5B4"
+                    android:background="@drawable/input_basic"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <Button
+                android:id="@+id/btn_signup"
+                android:layout_width="217.41dp"
+                android:layout_height="53dp"
+                android:layout_centerVertical="true"
+                android:layout_below="@+id/li_mobile"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/btn_signup"
+                android:fontFamily="@font/applesdgothicneor"
+                android:text="회원가입 완료"
+                android:textAlignment="center"
+                android:textColor="@color/black"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

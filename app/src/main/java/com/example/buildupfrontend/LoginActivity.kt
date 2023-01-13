@@ -175,6 +175,10 @@ class LoginActivity : AppCompatActivity() {
             toMainActivity()
         }
 
+        binding.btnFindaccount.setOnClickListener {
+            val intent = Intent(this, FindaccountActivity::class.java)
+            startActivity(intent)
+        }
         binding.btnSignup.setOnClickListener {
             val intent = Intent(this, SignupActivity::class.java)
             startActivity(intent)

@@ -55,6 +55,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
+    implementation 'androidx.core:core-splashscreen:1.0.0-rc01'
+
     implementation 'com.kakao.sdk:usermgmt:1.27.0' // 로그인 버튼 생성
     implementation "com.kakao.sdk:v2-all:2.12.0" // 전체 모듈 설치, 2.11.0 버전부터 지원
     implementation "com.kakao.sdk:v2-user:2.12.0" // 카카오 로그인

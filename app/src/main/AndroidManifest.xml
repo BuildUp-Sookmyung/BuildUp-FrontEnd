@@ -7,12 +7,13 @@
     <application
         android:name=".GlobalApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BuildUpFrontEnd">
-        <activity android:name=".SecondActivity"></activity>
+        <activity android:name=".FindaccountActivity"
+            android:theme="@style/NoActionBar" />
+        <activity android:name=".SecondActivity" />
         <activity
             android:name=".SignupActivity"
             android:theme="@style/NoActionBar" />
