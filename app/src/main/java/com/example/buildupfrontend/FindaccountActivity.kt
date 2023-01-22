@@ -2,10 +2,14 @@ package com.example.buildupfrontend
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.example.buildupfrontend.databinding.ActivityFindaccountBinding
 import com.example.buildupfrontend.databinding.ActivitySignupBinding
-
+import com.example.buildupfrontend.retrofit.FAAdapter
+import com.google.android.material.tabs.TabLayout
+//https://www.youtube.com/watch?v=ziJ6-AT3ymg
+//https://snowdeer.github.io/android/2019/04/14/kotlin-viewpager-example/
 class FindaccountActivity : AppCompatActivity() {
     private var mBinding: ActivityFindaccountBinding?=null
     private val binding get() = mBinding!!
@@ -15,27 +19,18 @@ class FindaccountActivity : AppCompatActivity() {
         mBinding = ActivityFindaccountBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setFrag(0)
+        val adapter = FAAdapter(supportFragmentManager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT)
 
-        binding.btnId.setOnClickListener{
-            setFrag(0)
-        }
+        binding.tlFindacc.setupWithViewPager(binding.vpFindacc)
 
-        binding.btnPw.setOnClickListener{
-            setFrag(1)
-        }
-    }
+        val fragmentId = FragmentId()
+        val fragmentPw = FragmentPw()
+        val title1 = "아이디"
+        val title2 = "비밀번호"
 
-    private fun setFrag(fragNum: Int) {
-        val ft = supportFragmentManager.beginTransaction()
-        when(fragNum) {
-            0 -> {
-                ft.replace(R.id.main_frame, FragmentID()).commit()
-            }
-            1 -> {
-                ft.replace(R.id.main_frame, FragmentPW()).commit()
-            }
-        }
+        adapter.addFragment(fragmentId, title1)
+        adapter.addFragment(fragmentPw, title2)
 
+        binding.vpFindacc.adapter=adapter
     }
 }

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".FragmentId">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="47dp"
+
+            android:paddingVertical="11dp"
+            android:paddingHorizontal="16dp"
+            android:textSize="12dp"
+            android:fontFamily="@font/applesdgothicneor"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginHorizontal="29dp"
+            android:hint="이름을 알려주세요"
+            android:textColorHint="@color/theme"
+            android:letterSpacing="-0.02"/>
+
+
+        <EditText
+            android:id="@+id/et_bday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="29dp"
+
+            android:fontFamily="@font/applesdgothicneor"
+
+            android:hint="생년월일 6자리"
+            android:letterSpacing="-0.02"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="11dp"
+            android:textColorHint="@color/theme"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toTopOf="@+id/et_mobile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_name" />
+
+        <EditText
+            android:id="@+id/et_gender"
+            android:layout_width="60dp"
+            android:layout_height="37dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="24dp"
+            android:hint="성별"
+            android:fontFamily="@font/applesdgothicneor"
+            android:textAlignment="center"
+            android:letterSpacing="-0.02"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="11dp"
+            android:textColorHint="@color/theme"
+            android:textSize="12dp"
+            app:layout_constraintStart_toEndOf="@+id/et_bday"
+            app:layout_constraintTop_toBottomOf="@+id/et_name" />
+
+        <EditText
+            android:id="@+id/et_mobile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="170dp"
+
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="20dp"
+            android:textSize="12dp"
+            android:fontFamily="@font/applesdgothicneor"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginHorizontal="29dp"
+            android:hint="핸드폰 번호를 입력해주세요."
+            android:textColorHint="@color/theme"
+            android:letterSpacing="-0.02"/>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_verify"
+            android:layout_width="80dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="7dp"
+
+            android:text="인증요청"
+            android:textColor="@color/white"
+            android:fontFamily="@font/abel"
+            android:textSize="13dp"
+            android:textAlignment="center"
+            android:lineSpacingExtra="-4dp"
+            android:letterSpacing="-0.02"
+
+            app:layout_constraintBottom_toBottomOf="@id/et_mobile"
+            app:layout_constraintEnd_toEndOf="@id/et_mobile"
+            app:layout_constraintTop_toTopOf="@id/et_mobile" >
+
+        </androidx.appcompat.widget.AppCompatButton>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="확인"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</FrameLayout>

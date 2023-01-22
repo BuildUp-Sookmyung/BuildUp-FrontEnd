@@ -254,13 +254,25 @@ class LoginActivity : AppCompatActivity() {
     // toMainActivity
     private fun toMainActivity(user: FirebaseUser?) {
         if (user != null) { // MainActivity 로 이동
-            startActivity(Intent(this, SecondActivity::class.java))
+            val intent = Intent(this, LoginSuccessActivity::class.java)
+            intent.putExtra("email", email)
+            intent.putExtra("name", name)
+            intent.putExtra("birthYear", birthYear)
+            intent.putExtra("mobile", mobile)
+            intent.putExtra("email", email)
+            startActivity(intent)
             finish()
         }
     } // toMainActivity End
 
     private fun toMainActivity() {
-        startActivity(Intent(this, SecondActivity::class.java))
+        val intent = Intent(this, LoginSuccessActivity::class.java)
+        intent.putExtra("email", email)
+        intent.putExtra("name", name)
+        intent.putExtra("birthYear", birthYear)
+        intent.putExtra("mobile", mobile)
+        intent.putExtra("email", email)
+        startActivity(intent)
         finish()
     } // toMainActivity End
 

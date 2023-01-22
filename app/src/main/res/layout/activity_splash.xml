@@ -2,19 +2,50 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="393dp"
-    android:layout_height="852dp"
-    tools:context=".SplashActivity">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SplashActivity"
+    android:background="@color/background">
 
-    <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="123dp"
-        android:layout_height="13dp"
-        android:layout_marginStart="135dp"
-        android:layout_marginTop="784dp"
+    <TextView
+        android:id="@+id/build"
+        android:layout_width="99.21dp"
+        android:layout_height="32.14dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="108.57dp"
+        android:layout_marginTop="277dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/songdbox" />
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/up"
+        android:layout_width="50.37dp"
+        android:layout_height="33.05dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="277dp"
+        app:layout_constraintStart_toEndOf="@+id/build"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/songdbox_"
+        android:layout_width="match_parent"
+        android:layout_height="19dp"
+
+        android:layout_marginTop="320dp"
+        android:fontFamily="@font/pretendard"
+        android:gravity="center_horizontal|top"
+
+        android:lineSpacingExtra="3sp"
+        android:text="@string/songdbox_"
+        android:textColor="@color/text_secondary"
+        android:textFontWeight="400"
+        android:textSize="13dp"
+        android:translationY="-1.7sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/build" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
