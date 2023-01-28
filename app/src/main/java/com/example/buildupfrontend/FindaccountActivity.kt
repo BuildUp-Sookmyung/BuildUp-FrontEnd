@@ -3,11 +3,8 @@ package com.example.buildupfrontend
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.viewpager.widget.ViewPager
 import com.example.buildupfrontend.databinding.ActivityFindaccountBinding
-import com.example.buildupfrontend.databinding.ActivitySignupBinding
-import com.example.buildupfrontend.retrofit.FAAdapter
-import com.google.android.material.tabs.TabLayout
+
 //https://www.youtube.com/watch?v=ziJ6-AT3ymg
 //https://snowdeer.github.io/android/2019/04/14/kotlin-viewpager-example/
 class FindaccountActivity : AppCompatActivity() {

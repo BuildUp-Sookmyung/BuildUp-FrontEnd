@@ -7,25 +7,14 @@
     tools:context=".SplashActivity"
     android:background="@color/background">
 
-    <TextView
+    <ImageView
         android:id="@+id/build"
-        android:layout_width="99.21dp"
-        android:layout_height="32.14dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="108.57dp"
-        android:layout_marginTop="277dp"
+        android:layout_width="164dp"
+        android:layout_height="142dp"
+        android:layout_marginTop="186dp"
+        android:src="@drawable/img_logo_splash"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/up"
-        android:layout_width="50.37dp"
-        android:layout_height="33.05dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="277dp"
-        app:layout_constraintStart_toEndOf="@+id/build"
         app:layout_constraintTop_toTopOf="parent" />
 
 

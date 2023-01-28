@@ -1,4 +1,4 @@
-package com.example.buildupfrontend.retrofit
+package com.example.buildupfrontend
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

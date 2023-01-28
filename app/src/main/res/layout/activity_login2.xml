@@ -62,6 +62,7 @@
                 android:layout_marginTop="14dp"
 
                 style="@style/MyIDInputLayout"
+                android:inputType="textPassword"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_startbu">
@@ -360,7 +361,6 @@
                 android:fontFamily="@font/pretendard_bold"
 
                 android:text="회원가입"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cl_signup" />

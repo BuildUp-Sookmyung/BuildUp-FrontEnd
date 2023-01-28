@@ -3,8 +3,10 @@ package com.example.buildupfrontend
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
-import android.view.View
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +17,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
@@ -23,7 +24,6 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
-import com.kakao.sdk.user.model.AccessTokenInfo
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
@@ -32,6 +32,8 @@ import com.navercorp.nid.profile.data.NidProfileResponse
 
 
 class LoginActivity : AppCompatActivity() {
+    private var userID:String = "myid"
+    private var userPW:String = "mypw"
 
     private var mBinding: ActivityLoginBinding? = null
     private val binding get() = mBinding!!
@@ -55,6 +57,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.btnLogin.isEnabled=false // 액티비티 시작 시 로그인 버튼 흐리게
+        binding.cbAutologin.isChecked=true // 액티비티 시작 시 자동 로그인 디폴트 체크
 
         // 1. 카카오 로그인
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
@@ -175,15 +179,80 @@ class LoginActivity : AppCompatActivity() {
             toMainActivity()
         }
 
+
+        // 아이디 입력칸 체크
+        binding.etId.addTextChangedListener(object:TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                binding.btnLogin.isEnabled = binding.etId.text.toString().isNotEmpty() and binding.etPw.text.toString().isNotEmpty()
+            }
+        })
+
+        // 비밀번호 입력칸 체크
+        binding.etPw.addTextChangedListener(object:TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                binding.btnLogin.isEnabled = binding.etId.text.toString().isNotEmpty() and binding.etPw.text.toString().isNotEmpty()
+            }
+        })
+
+        binding.btnLogin.setOnClickListener {
+            if (!validateIDPW(binding.etId.text.toString(), binding.etPw.text.toString())) {
+                return@setOnClickListener
+            }
+        }
+
         binding.btnFindaccount.setOnClickListener {
             val intent = Intent(this, FindaccountActivity::class.java)
             startActivity(intent)
         }
+
         binding.btnSignup.setOnClickListener {
             val intent = Intent(this, SignupActivity::class.java)
             startActivity(intent)
         }
     }
+
+    // 아이디 유효 검사
+    private fun validateIDPW(userID:String, userPW:String): Boolean {
+        val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+        return if (!checkid(userID)) {
+            binding.tlId.error = "* 아이디를 확인해주세요."
+            binding.tlPw.error = null
+            false
+        } else if (checkid(userID) and !checkpw(userPW)) {
+            binding.tlId.error = null
+            binding.tlPw.error = "* 비밀번호를 확인해주세요."
+            false
+        } else if (checkid(userID) and checkpw(userPW)) {
+            binding.tlId.error = null
+            binding.tlPw.error = null
+            Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show()
+            true
+        }
+        else {
+            true
+        }
+    }
+
+    private fun checkid(id: String): Boolean {
+        return id==userID
+    }
+
+    private fun checkpw(pw: String): Boolean {
+        return pw==userPW
+    }
+
 
     // signIn
     private fun signIn() {
