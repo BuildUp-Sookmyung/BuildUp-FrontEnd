@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -109,7 +110,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tl_bday"
                 style="@style/MyIDInputLayout"
-                android:layout_width="152dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
                 android:layout_marginTop="12dp"
@@ -119,10 +120,10 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_bday"
                     style="@style/MyTextInputEditText"
-                    android:layout_width="match_parent"
+                    android:layout_width="152dp"
                     android:layout_height="wrap_content"
                     android:hint="생년월일 6자리"
-                    android:maxLines="1"
+                    android:maxLength="6"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="12dp"
 
@@ -135,20 +136,20 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tl_number"
                 style="@style/MyIDInputLayout"
-                android:layout_width="152dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                android:gravity="end"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_number"
-                app:prefixText="/">
+                app:layout_constraintTop_toBottomOf="@+id/tv_number" >
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_number"
                     style="@style/MyTextInputEditText"
-                    android:layout_width="match_parent"
+                    android:layout_width="152dp"
                     android:layout_height="wrap_content"
                     android:hint="•"
-                    android:maxLines="1"
+                    android:maxLength="1"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="12dp"
 
@@ -167,24 +168,10 @@
                 android:lineSpacingMultiplier="40"
                 android:scaleType="fitCenter"
                 android:src="@drawable/dots"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="@id/tl_number"
                 app:layout_constraintBottom_toBottomOf="@+id/tl_number"
-                app:layout_constraintStart_toStartOf="@+id/tl_number"
                 app:layout_constraintTop_toTopOf="@+id/tl_number" />
-
-            <!--        <TextView-->
-            <!--            android:layout_width="98dp"-->
-            <!--            android:layout_height="wrap_content"-->
-            <!--            android:layout_marginStart="38dp"-->
-
-            <!--            android:text="••••••"-->
-            <!--            android:letterSpacing="4px"-->
-            <!--            android:gravity="center_vertical"-->
-
-            <!--            android:layout_marginTop="12dp"-->
-            <!--            android:layout_marginEnd="16dp"-->
-            <!--            app:layout_constraintEnd_toEndOf="parent"-->
-            <!--            app:layout_constraintStart_toStartOf="@+id/tl_number"-->
-            <!--            app:layout_constraintTop_toTopOf="@+id/tl_number" />-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -212,7 +199,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tl_mobile"
                 style="@style/MyIDInputLayout"
-                android:layout_width="227dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
                 android:layout_marginTop="12dp"
@@ -222,10 +209,10 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_mobile"
                     style="@style/MyTextInputEditText"
-                    android:layout_width="match_parent"
+                    android:layout_width="227dp"
                     android:layout_height="wrap_content"
                     android:hint="핸드폰번호를 입력해주세요."
-                    android:maxLines="1"
+                    android:maxLength="11"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="12dp"
 
@@ -240,7 +227,7 @@
                 android:layout_width="88dp"
                 android:layout_height="46dp"
                 android:layout_marginTop="12dp"
-                android:background="@drawable/selector_btnver"
+                android:background="@drawable/selector_btn_ver"
                 android:clipToOutline="true"
                 android:fontFamily="@font/pretendard_bold"
                 android:text="인증 요청"
@@ -265,7 +252,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="인증번호를 입력해주세요."
-                    android:maxLines="1"
+                    android:maxLength="6"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="12dp"
 
@@ -300,13 +287,13 @@
         android:layout_width="327dp"
         android:layout_height="46dp"
 
-        android:layout_marginTop="68dp"
-        android:background="@drawable/selector_btn_cmd"
-        android:fontFamily="@font/pretendard_bold"
-
         android:text="확인"
         android:textColor="@color/background"
         android:textSize="15dp"
+        android:background="@drawable/selector_btn_cmd"
+        android:fontFamily="@font/pretendard_bold"
+
+        android:layout_marginTop="68dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/content" />

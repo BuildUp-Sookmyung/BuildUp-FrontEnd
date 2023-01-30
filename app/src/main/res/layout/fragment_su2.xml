@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <TextView
+        android:id="@+id/tv_top"
+        android:layout_width="327dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="사용자님,\n사용하실 계정 정보를 입력해주세요."
+        android:textColor="@color/text_primary"
+        android:textSize="22dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_id"
+            android:layout_width="327dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_top">
+
+            <TextView
+                android:id="@+id/tv_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_m"
+                android:text="아이디"
+                android:textColor="@color/text_primary"
+                android:textSize="15dp"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tl_id"
+                style="@style/MyIDInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:helperText="* 5~20자의 영문, 소문자, 숫자만 사용해주세요."
+
+                android:layout_marginTop="12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_id">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_id"
+                    style="@style/MyTextInputEditText"
+                    android:layout_width="227dp"
+                    android:layout_height="wrap_content"
+                    android:hint="아이디를 입력해주세요."
+                    android:maxLength="20"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="12dp"
+
+                    android:selectAllOnFocus="true"
+                    android:textCursorDrawable="@drawable/input_cursor"
+                    android:textSize="15sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_verify"
+                android:layout_width="88dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/selector_btn_ver"
+                android:clipToOutline="true"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="중복 확인"
+                android:textColor="@color/background"
+                android:textSize="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_id" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_pw"
+        android:layout_width="327dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_id">
+
+        <TextView
+            android:id="@+id/tv_pw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_m"
+            android:text="비밀번호"
+            android:textColor="@color/text_primary"
+            android:textSize="15dp"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tl_pw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:helperText="* 6~16자의 영문 대소문자, 숫자, 특수문자 중 2개 이상 사용해주세요."
+
+            style="@style/MyPWInputLayout"
+            android:inputType="textPassword"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_pw">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_pw"
+                style="@style/MyTextInputEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="비밀번호를 입력해주세요."
+                android:maxLength="16"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+
+                android:inputType="textPassword"
+                android:selectAllOnFocus="true"
+                android:textCursorDrawable="@drawable/input_cursor"
+                android:textSize="15sp"
+                app:passwordToggleEnabled="true"  />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_pw2"
+        android:layout_width="327dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_pw">
+
+        <TextView
+            android:id="@+id/tv_pw2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_m"
+            android:text="비밀번호 확인"
+            android:textColor="@color/text_primary"
+            android:textSize="15dp"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tl_pw2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            style="@style/MyPWInputLayout"
+            android:inputType="textPassword"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_pw2">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_pw2"
+                style="@style/MyTextInputEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="비밀번호를 다시 입력해주세요."
+                android:maxLength="16"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+
+                android:inputType="textPassword"
+                android:selectAllOnFocus="true"
+                android:textCursorDrawable="@drawable/input_cursor"
+                android:textSize="15sp"
+                app:passwordToggleEnabled="true" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_ok"
+        android:layout_width="327dp"
+        android:layout_height="46dp"
+
+        android:text="가입 완료"
+        android:textColor="@color/background"
+        android:textSize="15dp"
+        android:background="@drawable/selector_btn_cmd"
+        android:fontFamily="@font/pretendard_bold"
+
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_pw2"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

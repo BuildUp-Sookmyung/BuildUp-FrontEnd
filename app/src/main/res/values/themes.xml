@@ -49,8 +49,8 @@
         <item name="helperTextTextAppearance">@style/HelperTextAppearance</item>
     </style>
 
-    <style name="HelperTextAppearance">
-        <item name="fontFamily">@font/pretendard_m</item>
+    <style name="HelperTextAppearance" >
+        <item name="fontFamily">@font/pretendard</item>
         <item name="android:textColor">@color/text_secondary</item>
         <item name="android:textStyle">normal</item>
         <item name="android:includeFontPadding">false</item>
@@ -70,6 +70,7 @@
         <item name="boxStrokeWidthFocused">1dp</item>
         <!--상단에 있을때의 Hint-->
         <item name="hintEnabled">false</item>
+        <item name="helperTextTextAppearance">@style/HelperTextAppearance</item>
         <!--Error-->
         <item name="errorEnabled">true</item>
         <item name="colorError">@color/border_error</item>
@@ -99,5 +100,13 @@
         <item name="boxStrokeWidth">1dp</item>
         <item name="hintEnabled">true</item>
         <item name="android:textColorHint">@color/text_unavailable</item>
+    </style>
+
+    <style name="DetailDialog" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!--        <item name="android:windowFullscreen">true</item>-->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/background</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:dialogCornerRadius" tools:targetApi="p">8dp</item>
+
     </style>
 </resources>
