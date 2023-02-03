@@ -1,7 +1,9 @@
 package com.example.buildupfrontend
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +11,14 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 
-class FragmentSU1: Fragment() {
+class FragmentSU1: Fragment(), onBackPressedListener {
+
     lateinit var clAll: ConstraintLayout
     lateinit var clService: ConstraintLayout
     lateinit var clPersInfo: ConstraintLayout
@@ -34,15 +39,14 @@ class FragmentSU1: Fragment() {
     lateinit var btnOpenImg: ImageView
     lateinit var btnOk: AppCompatButton
     var btnOpened = true
-    lateinit var userInfo: ArrayList<String>
+    private lateinit var callback: OnBackPressedCallback
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
         val view:View = inflater!!.inflate(R.layout.fragment_su1, container, false)
-        userInfo = arguments?.getStringArrayList("userInfo") as ArrayList<String>
         clAll = view.findViewById<ConstraintLayout>(R.id.cl_all)
         clService = view.findViewById<ConstraintLayout>(R.id.cl_service)
         clPersInfo = view.findViewById<ConstraintLayout>(R.id.cl_persInfo)
@@ -129,7 +133,6 @@ class FragmentSU1: Fragment() {
     }
     private fun controlAllCb() {
         cbAll.setOnClickListener { // 모든 약관 사항
-            controlOkBtn()
             if (!cbAll.isChecked) {
                 cbService.isChecked = false
                 cbPersInfo.isChecked = false
@@ -143,6 +146,7 @@ class FragmentSU1: Fragment() {
                 cbSms.isChecked = true
                 cbEmail.isChecked = true
             }
+            controlOkBtn()
         }
 
         cbService.setOnClickListener { controlOkBtn() }
@@ -196,12 +200,21 @@ class FragmentSU1: Fragment() {
         }
     }
 
-    private fun signup2() {
-        var fragmentSU2 = FragmentSU2()
-        var bundle = Bundle()
-        bundle.putStringArrayList("userInfo", userInfo)
-        fragmentSU2.arguments = bundle //fragment의 arguments에 데이터를 담은 bundle을 넘겨줌
+    //override 해서 사용해주면 된다!
+    override fun onBackPressed() {
+        val fm: FragmentManager? = fragmentManager
+        if (fm != null) {
+            if (fm.backStackEntryCount > 0) {
+                Log.i("MainActivity", "popping backstack")
+                fm.popBackStack()
+            } else {
+                Log.i("MainActivity", "nothing on backstack, calling super")
+                requireActivity().supportFragmentManager.popBackStack()
+            }
+        }
+    }
 
-        (activity as SignupActivity?)!!.setFragment(1, fragmentSU2)
+    private fun signup2() {
+        (activity as SignupActivity?)!!.nextFragment(2, FragmentSU2())
     }
 }

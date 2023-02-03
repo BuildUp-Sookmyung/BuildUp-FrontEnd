@@ -35,12 +35,15 @@ class LoginActivity : AppCompatActivity() {
     private var userID:String = "myid"
     private var userPW:String = "mypw"
 
+    private var inputID: String = ""
+    private var inputPW: String = ""
+
     private var mBinding: ActivityLoginBinding? = null
     private val binding get() = mBinding!!
-    private var email: String = ""
-    private var name: String = ""
+    private var userEmail: String = ""
+    private var userName: String = ""
     private var birthYear: String = ""
-    private var mobile: String = ""
+    private var userMobile: String = ""
 
     //firebase Auth
     private lateinit var firebaseAuth: FirebaseAuth
@@ -91,14 +94,14 @@ class LoginActivity : AppCompatActivity() {
                                 Log.e(TAG, "사용자 정보 요청 실패", error)
                             }
                             else if (user != null) {
-                                name = user.kakaoAccount?.name.toString()
-                                email = user.kakaoAccount?.email.toString()
+                                userName = user.kakaoAccount?.name.toString()
+                                userEmail = user.kakaoAccount?.email.toString()
                                 birthYear = user.kakaoAccount?.birthyear.toString()
-                                mobile = user.kakaoAccount?.phoneNumber.toString()
-                                Log.e(TAG, "네이버 로그인한 유저 정보 - 이름 : $name") // 남기쁨
-                                Log.e(TAG, "네이버 로그인한 유저 정보 - 이메일 : $email") // marynam99@naver.com
+                                userMobile = user.kakaoAccount?.phoneNumber.toString()
+                                Log.e(TAG, "네이버 로그인한 유저 정보 - 이름 : $userName") // 남기쁨
+                                Log.e(TAG, "네이버 로그인한 유저 정보 - 이메일 : $userEmail") // marynam99@naver.com
                                 Log.e(TAG, "네이버 로그인한 유저 정보 - 출생년도 : $birthYear") // 1999
-                                Log.e(TAG, "네이버 로그인한 유저 정보 - 전화번호 : $mobile") // 010-8322-7154
+                                Log.e(TAG, "네이버 로그인한 유저 정보 - 전화번호 : $userMobile") // 010-8322-7154
                             }
                         }
                         toMainActivity()
@@ -106,6 +109,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             } else {
                 UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
+                toMainActivity()
             }
         }
 
@@ -118,14 +122,14 @@ class LoginActivity : AppCompatActivity() {
                         NidOAuthLogin().callProfileApi(object :
                             NidProfileCallback<NidProfileResponse> {
                             override fun onSuccess(result: NidProfileResponse) {
-                                name = result.profile?.name.toString()
-                                email = result.profile?.email.toString()
+                                userName = result.profile?.name.toString()
+                                userEmail = result.profile?.email.toString()
                                 birthYear = result.profile?.birthYear.toString()
-                                mobile = result.profile?.mobile.toString()
-                                Log.e(TAG, "네이버 로그인한 유저 정보 - 이름 : $name") // 남기쁨
-                                Log.e(TAG, "네이버 로그인한 유저 정보 - 이메일 : $email") // marynam99@naver.com
+                                userMobile = result.profile?.mobile.toString()
+                                Log.e(TAG, "네이버 로그인한 유저 정보 - 이름 : $userName") // 남기쁨
+                                Log.e(TAG, "네이버 로그인한 유저 정보 - 이메일 : $userEmail") // marynam99@naver.com
                                 Log.e(TAG, "네이버 로그인한 유저 정보 - 출생년도 : $birthYear") // 1999
-                                Log.e(TAG, "네이버 로그인한 유저 정보 - 전화번호 : $mobile") // 010-8322-7154
+                                Log.e(TAG, "네이버 로그인한 유저 정보 - 전화번호 : $userMobile") // 010-8322-7154
 
                                 toMainActivity()
                             }
@@ -207,8 +211,8 @@ class LoginActivity : AppCompatActivity() {
         })
 
         binding.btnLogin.setOnClickListener {
-            if (!validateIDPW(binding.etId.text.toString(), binding.etPw.text.toString())) {
-                return@setOnClickListener
+            if (validateIDPW(binding.etId.text.toString(), binding.etPw.text.toString())) {
+                toMainActivity()
             }
         }
 
@@ -224,24 +228,26 @@ class LoginActivity : AppCompatActivity() {
     }
 
     // 아이디 유효 검사
-    private fun validateIDPW(userID:String, userPW:String): Boolean {
+    private fun validateIDPW(_inputID:String, _inputPW:String): Boolean {
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
-        return if (!checkid(userID)) {
+        return if (!checkid(_inputID)) {
             binding.tlId.error = "* 아이디를 확인해주세요."
             binding.tlPw.error = null
-            false
-        } else if (checkid(userID) and !checkpw(userPW)) {
+            return false
+        } else if (checkid(_inputID) and !checkpw(_inputPW)) {
             binding.tlId.error = null
             binding.tlPw.error = "* 비밀번호를 확인해주세요."
-            false
-        } else if (checkid(userID) and checkpw(userPW)) {
+            return false
+        } else if (checkid(_inputID) and checkpw(_inputPW)) {
             binding.tlId.error = null
             binding.tlPw.error = null
+            inputID = _inputID
+            inputPW = _inputPW
             Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show()
-            true
+            return true
         }
         else {
-            true
+            return false
         }
     }
 
@@ -263,13 +269,13 @@ class LoginActivity : AppCompatActivity() {
     fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-            email = account?.email.toString()
-            name = account?.givenName.toString().plus(account?.familyName.toString())
+            userEmail = account?.email.toString()
+            userName = account?.givenName.toString().plus(account?.familyName.toString())
 //            var googletoken = account?.idToken.toString()
 //            var googletokenAuth = account?.serverAuthCode.toString()
 
-            Log.e("Google account", email) // marynam9912@gmail.com
-            Log.e("Google name", name) // maryn
+            Log.e("Google account", userEmail) // marynam9912@gmail.com
+            Log.e("Google name", userName) // maryn
         } catch (e: ApiException) {
             Log.e("Google account", "signInResult:failed Code = " + e.statusCode)
         }
@@ -323,24 +329,22 @@ class LoginActivity : AppCompatActivity() {
     // toMainActivity
     private fun toMainActivity(user: FirebaseUser?) {
         if (user != null) { // MainActivity 로 이동
-            val intent = Intent(this, LoginSuccessActivity::class.java)
-            intent.putExtra("email", email)
-            intent.putExtra("name", name)
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("email", userEmail)
+            intent.putExtra("name", userName)
             intent.putExtra("birthYear", birthYear)
-            intent.putExtra("mobile", mobile)
-            intent.putExtra("email", email)
+            intent.putExtra("mobile", userMobile)
+            intent.putExtra("email", userEmail)
             startActivity(intent)
             finish()
         }
     } // toMainActivity End
 
     private fun toMainActivity() {
-        val intent = Intent(this, LoginSuccessActivity::class.java)
-        intent.putExtra("email", email)
-        intent.putExtra("name", name)
-        intent.putExtra("birthYear", birthYear)
-        intent.putExtra("mobile", mobile)
-        intent.putExtra("email", email)
+        val intent = Intent(this, MainActivity::class.java)
+        val userInfo = UserInfoData(userName, "", "", userMobile, inputID, inputPW, userEmail)
+        Log.e(TAG, "Login userInfo: $userInfo")
+        intent.putExtra("userInfo", userInfo)
         startActivity(intent)
         finish()
     } // toMainActivity End

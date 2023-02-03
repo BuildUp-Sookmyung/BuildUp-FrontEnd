@@ -11,12 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BuildUpFrontEnd">
-        <activity android:name=".WelcomeActivity"></activity>
-        <activity android:name=".LoginSuccessActivity" />
+        <activity android:name=".WelcomeActivity"
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".FindaccountActivity"
-            android:theme="@style/NoActionBar" />
-        <activity android:name=".SecondActivity" />
+            android:theme="@style/LoginTheme" />
+        <activity android:name=".MainActivity" />
         <activity
             android:name=".SignupActivity"
             android:theme="@style/LoginTheme" />
@@ -26,7 +26,6 @@
             android:theme="@style/FullScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
