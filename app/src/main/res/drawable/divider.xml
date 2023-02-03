@@ -19,7 +19,7 @@
     <path
         android:pathData="M0.5 0.5H74.5H0.5Z"
         android:strokeWidth="1"
-        android:strokeColor="#C4C4C4"
+        android:strokeColor="@color/divider"
         />
 
 </vector>

@@ -128,8 +128,6 @@
                     android:layout_height="wrap_content"
                     android:hint="•"
                     android:maxLength="1"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="12dp"
 
                     android:selectAllOnFocus="true"
                     android:textCursorDrawable="@drawable/input_cursor"
@@ -256,20 +254,21 @@
                 app:layout_constraintTop_toTopOf="@+id/tl_verify" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_ok"
         android:layout_width="327dp"
         android:layout_height="46dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/selector_btn_cmd"
         android:fontFamily="@font/pretendard_bold"
         android:text="확인"
-        android:textSize="15dp"
         android:textColor="@color/background"
 
-        android:layout_marginTop="68dp"
+        android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/content" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

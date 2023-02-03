@@ -200,7 +200,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_sociallogin"
                 android:layout_width="327dp"
-                android:layout_height="match_parent"
+                android:layout_height="109dp"
                 android:layout_marginTop="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -272,37 +272,19 @@
 
                 <RelativeLayout
                     android:id="@+id/rl_login_google"
-                    android:layout_width="206dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_width="214dp"
+                    android:layout_height="48dp"
                     android:background="@drawable/shadow_bottom"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rl_login_kakao">
+                    app:layout_constraintStart_toStartOf="parent">
 
-                    <Button
+                    <ImageButton
                         android:id="@+id/btn_login_google"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@android:color/transparent" />
+                        android:background="@drawable/google_login" />
 
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="16.89dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="12dp"
-                        android:background="@drawable/img_logo_google" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="12dp"
-                        android:alpha="0.54"
-                        android:fontFamily="@font/roboto_m"
-                        android:text="Google 계정으로 로그인"
-                        android:textColor="@color/solid_black" />
                 </RelativeLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -320,7 +302,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:fontFamily="@font/pretendard_m"
+                    android:fontFamily="@font/pretendard"
                     android:text="Buildup이 처음이세요?"
                     android:textColor="@color/text_primary"
                     android:textSize="15dp"

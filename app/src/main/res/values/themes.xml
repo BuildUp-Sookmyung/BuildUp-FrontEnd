@@ -55,6 +55,7 @@
         <item name="android:textStyle">normal</item>
         <item name="android:includeFontPadding">false</item>
         <item name="textStartPadding">0dp</item>
+        <item name="android:layout_margin">0dp</item>
         <item name="android:lineSpacingExtra">4sp</item>
         <item name="android:textSize">15sp</item>
     </style>
@@ -96,6 +97,7 @@
     <style name="MyTextInputEditText" parent="ThemeOverlay.MaterialComponents.TextInputEditText">
         <item name="colorAccent">@color/solid_accent_normal</item>
         <item name="colorControlHighlight">@color/solid_accent_normal</item>
+        <item name="android:textColorHighlight">@color/accent30</item>
         <item name="android:textColor">@color/text_primary</item>
         <item name="boxStrokeColor">@color/selector_textinput_box_stroke</item>
         <item name="boxStrokeWidth">1dp</item>
@@ -106,9 +108,8 @@
 
     <style name="DetailDialog" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!--        <item name="android:windowFullscreen">true</item>-->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/background</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-        <item name="android:dialogCornerRadius" tools:targetApi="p">8dp</item>
-
+        <item name="android:windowBackground">@drawable/dialog_detail</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
     </style>
 </resources>

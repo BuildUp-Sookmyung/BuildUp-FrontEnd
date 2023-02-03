@@ -27,11 +27,11 @@
     <color name="border_normal">#C4C4C4</color>
     <color name="border_unavailable">#4E4E4E</color>
     <color name="border_accent">#845EF1</color>
-    <color name="accent30">#AFE3E3</color>
+    <color name="accent30">#DACFFB</color>
     <color name="border_error">#F44336</color>
     <color name="border_black">#262626</color>
 
-    <color name="divider">#C4C4C4</color>
+    <color name="divider">#E0E0E0</color>
     <color name="border">#E0E0E0</color>
     <color name="dim">#99000000</color> <!-- 60% -->
     <color name="hover">#33000000</color>

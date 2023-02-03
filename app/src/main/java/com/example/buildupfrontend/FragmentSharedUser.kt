@@ -108,8 +108,8 @@ open class FragmentSharedUser(): Fragment(), onBackPressedListener {
 
     private fun checkTypes() {
         tlName.editText?.onFocusChangeListener = validInput(etName, tlName, KorEng, "* 한글, 영어만 입력해주세요.")
-        tlBday.editText?.onFocusChangeListener = validInput(etBday, tlBday, Num, "* 숫자만 입력해주세요.")
-        tlNumber.editText?.onFocusChangeListener = validInput(etNumber, tlNumber, Num, "* 숫자만 입력해주세요.")
+        tlBday.editText?.onFocusChangeListener = validNumberInput(etBday, tlBday, tlNumber, Num, "* 숫자만 입력해주세요.")
+        tlNumber.editText?.onFocusChangeListener = validNumberInput(etNumber, tlNumber, tlBday, Num, "* 숫자만 입력해주세요.")
         tlMobile.editText?.onFocusChangeListener = validInput(etMobile, tlMobile, Num, "* 올바른 핸드폰번호를 입력해주세요.")
     }
 
@@ -167,8 +167,8 @@ open class FragmentSharedUser(): Fragment(), onBackPressedListener {
     // 아이디까지 체크: 비밀번호 찾기의 tlId
     open fun checkTypes(tl: TextInputLayout) {
         tlName.editText?.onFocusChangeListener = validInput(etName, tlName, KorEng, "* 한글, 영어만 입력해주세요.")
-        tlBday.editText?.onFocusChangeListener = validInput(etBday, tlBday, Num, "* 숫자만 입력해주세요.")
-        tlNumber.editText?.onFocusChangeListener = validInput(etNumber, tlNumber, Num, "* 숫자만 입력해주세요.")
+        tlBday.editText?.onFocusChangeListener = validNumberInput(etBday, tlBday, tlNumber, Num, "* 숫자만 입력해주세요.")
+        tlNumber.editText?.onFocusChangeListener = validNumberInput(etNumber, tlNumber, tlBday, Num, "* 숫자만 입력해주세요.")
         tlMobile.editText?.onFocusChangeListener = validInput(etMobile, tlMobile, Num, "* 올바른 핸드폰번호를 입력해주세요.")
         tl.editText?.onFocusChangeListener = validInput(etId, tlId, typeID, "* 5~20자의 영문, 소문자, 숫자만 입력해주세요.")
     }
@@ -289,11 +289,35 @@ open class FragmentSharedUser(): Fragment(), onBackPressedListener {
         }
     }
 
+    /*
+    * 주민번호 확인할 때: 생년월일이나 뒷자리 중 하나만 틀려도 양쪽 다 빨간색 표시
+     */
+    open fun validNumberInput(et:TextInputEditText, tl:TextInputLayout, tl2:TextInputLayout, matcher: Pattern, error:String): View.OnFocusChangeListener {
+        return View.OnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus && et.text.toString() // 값이 있고 무효할 때
+                    .isNotEmpty() && !matcher.matcher(et.text.toString()).find()
+            ) {
+                tl.error = error
+                tl2.error = " "
+            } else if (!hasFocus && et.text.toString() // 값이 있고 유효할 때
+                    .isNotEmpty() && matcher.matcher(et.text.toString()).find()
+            ) {
+                tl.error = null
+                tl2.error = null
+            } else if (!hasFocus && et.text.toString().isEmpty() // 값이 없을 때
+            ) {
+                tl.error = null
+                tl2.error = null
+            }
+        }
+    }
+
+
     override fun onBackPressed() {
         val fm: FragmentManager? = fragmentManager
         if (fm != null) {
             if (fm.backStackEntryCount > 0) {
-                Log.i("MainActivity", "popping backstack")
+                Log.i("Fragment", "popping backstack")
                 fm.popBackStack()
             } else {
                 Log.i("MainActivity", "nothing on backstack, calling super")
