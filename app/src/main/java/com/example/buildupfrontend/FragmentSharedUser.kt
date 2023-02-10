@@ -11,14 +11,17 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import org.w3c.dom.Text
 import java.util.regex.Pattern
 
-open class FragmentSharedUser(): Fragment(), onBackPressedListener {
+open class FragmentSharedUser(): Fragment(), onBackPressedListener, Patterns {
     var mView: View? = null
 
+    open lateinit var tvTop: TextView
     open lateinit var tlName: TextInputLayout
     open lateinit var tlBday: TextInputLayout
     open lateinit var tlNumber: TextInputLayout
@@ -47,12 +50,6 @@ open class FragmentSharedUser(): Fragment(), onBackPressedListener {
     open var validPw = false
 
     open var verNumber = "000000"
-    open val KorEng = Pattern.compile("^[a-zA-Zㄱ-ㅎ가-힣]+$")
-    open val Num = Pattern.compile("^[0-9]+$")
-    open val Num1 = Pattern.compile("^[1-4]{1}$")
-    open val Num6 = Pattern.compile("^[0-9]{6}$")
-    open val Num11 = Pattern.compile("^[0-9]{11}$")
-    open val typeID = Pattern.compile("^[a-z0-9]{5,20}+$")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -240,6 +237,7 @@ open class FragmentSharedUser(): Fragment(), onBackPressedListener {
     }
 
     open fun initView(view:View) {
+        tvTop = view.findViewById<TextView>(R.id.tv_top)
         tlName = view.findViewById<TextInputLayout>(R.id.tl_name)
         tlBday = view.findViewById<TextInputLayout>(R.id.tl_bday)
         tlNumber = view.findViewById<TextInputLayout>(R.id.tl_number)
@@ -259,7 +257,7 @@ open class FragmentSharedUser(): Fragment(), onBackPressedListener {
         btnVerify.isEnabled = false // 처음에는 '인증 요청' 버튼 활성화 x
         btnOk.isEnabled = false
         tlVerify.visibility = View.GONE // 처음에는 '인증번호를 입력하세요'란 안 보임
-
+        tvTop.visibility = View.GONE
     }
 
     open fun verifyInput(input:String, answer:String) {
@@ -312,18 +310,8 @@ open class FragmentSharedUser(): Fragment(), onBackPressedListener {
         }
     }
 
-
     override fun onBackPressed() {
-        val fm: FragmentManager? = fragmentManager
-        if (fm != null) {
-            if (fm.backStackEntryCount > 0) {
-                Log.i("Fragment", "popping backstack")
-                fm.popBackStack()
-            } else {
-                Log.i("MainActivity", "nothing on backstack, calling super")
-                requireActivity().supportFragmentManager.popBackStack()
-            }
-        }
+        this.activity?.finish()
     }
 
     open fun startVerify() {

@@ -1,11 +1,8 @@
 package com.example.buildupfrontend
 
-import android.content.ContentValues
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +11,6 @@ import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.navercorp.nid.oauth.view.NidOAuthLoginButton.Companion.TAG
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.regex.Pattern
 
@@ -23,7 +19,6 @@ open class FragmentSU2: FragmentSharedUser() {
 
     private val viewModel : SignupViewModel by activityViewModels()
 
-    lateinit var tvTop: TextView
     lateinit var tlPw: TextInputLayout
     lateinit var tlPw2: TextInputLayout
 
@@ -36,6 +31,7 @@ open class FragmentSU2: FragmentSharedUser() {
     ): View? {
         // Inflate the layout for this fragment
         mView = inflater!!.inflate(R.layout.fragment_su2, container, false)
+        (activity as SignupActivity?)!!.setProgressBar(2)
         val userName = viewModel.userName
         initView(mView!!)
         tvTop.text = userName + "님,\n사용하실 계정 정보를 입력해주세요."
@@ -95,7 +91,14 @@ open class FragmentSU2: FragmentSharedUser() {
         btnVerify = view.findViewById<Button>(R.id.btn_verify)
         btnOk = view.findViewById<Button>(R.id.btn_ok)
         btnVerify.isEnabled = false // 처음에는 '인증 요청' 버튼 활성화 x
-        btnOk.isEnabled = false
+        tvTop.visibility = View.VISIBLE
+
+        // onBackPressed()
+        etId.setText(viewModel.userID)
+        etPw.setText(viewModel.userPW)
+        etPw2.setText(viewModel.userPW)
+        btnOk.isEnabled = etPw.text == etPw2.text // 처음 온 거면 disabled, 프로필 설정하다가 뒤로 가기 한 거면 enabled
+        TODO("SU3에서 backPressed 했을 때 disabled. but text로 보이면 enabled 됨")
     }
 
     protected fun TextInputLayout.checkType() {
@@ -149,12 +152,14 @@ open class FragmentSU2: FragmentSharedUser() {
         TODO("비밀번호 확인 전에 비밀번호 누를 때부터 타입 검사해야 하는데 그럼 addtextlistener...? 정했는데 기억 못하는 건가")
     }
 
+    override fun onBackPressed() {
+        (activity as SignupActivity?)!!.nextFragment(1, FragmentSU1())
+    }
+
     override fun nextStep() {
         viewModel.userID = etId.text.toString()
         viewModel.userPW = etPw.text.toString()
-
-        (activity as SignupActivity)!!.welcomeActivity()
-
+        (activity as SignupActivity?)!!.nextFragment(3, FragmentSU3())
         return
     }
 

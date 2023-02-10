@@ -7,43 +7,43 @@
         android:background="@color/background"
         tools:context=".FindaccountActivity">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_title"
-            android:layout_width="match_parent"
-            android:layout_height="57dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_title"
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/selector_ic_back"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" >
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_back"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/selector_ic_back"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="251dp"
+            android:layout_height="25dp"
+            android:fontFamily="@font/pretendard_bold"
+            android:gravity="center_horizontal|center_vertical"
+            android:lineSpacingExtra="5sp"
+            android:text="아이디/비밀번호 찾기"
+            android:textAlignment="center"
+            android:textColor="@color/text_primary"
+            android:textSize="17dp"
+            android:layout_marginTop="15.5dp"
+            android:layout_marginBottom="16.5dp"
+            android:layout_marginLeft="10dp"
+            app:layout_constraintStart_toEndOf="@+id/btn_back"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="251dp"
-                android:layout_height="25dp"
-                android:fontFamily="@font/pretendard_bold"
-                android:gravity="center_horizontal|center_vertical"
-                android:lineSpacingExtra="5sp"
-                android:text="아이디/비밀번호 찾기"
-                android:textAlignment="center"
-                android:textColor="@color/text_primary"
-                android:textSize="17dp"
-                android:layout_marginTop="15.5dp"
-                android:layout_marginBottom="16.5dp"
-                android:layout_marginLeft="10dp"
-                app:layout_constraintStart_toEndOf="@+id/btn_back"
-                app:layout_constraintTop_toTopOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
                     android:layout_width="187.5dp"
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"
-                    android:fontFamily="@font/pretendard_m"
+                    android:fontFamily="@font/pretendard_bold"
                     android:text="아이디"
                     android:textColor="@color/selector_toggle_btn"
                     android:textSize="15dp"
@@ -91,21 +91,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cl_select">
 
-                <View
+                <ImageView
                     android:id="@+id/bar_id"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="2dp"
                     android:layout_gravity="bottom"
                     android:layout_weight="1"
-                    android:background="@drawable/fill" />
+                    android:src="@drawable/fill" />
 
-                <View
+                <ImageView
                     android:id="@+id/bar_pw"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="1dp"
                     android:layout_gravity="bottom"
                     android:layout_weight="1"
-                    android:background="@drawable/divider" />
+                    android:src="@drawable/divider" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -40,7 +40,7 @@ class LoginActivity : AppCompatActivity() {
 
     private var mBinding: ActivityLoginBinding? = null
     private val binding get() = mBinding!!
-    private var userEmail: String = ""
+    private lateinit var userEmail: String
     private var userName: String = ""
     private var birthYear: String = ""
     private var userMobile: String = ""
@@ -95,21 +95,18 @@ class LoginActivity : AppCompatActivity() {
                             }
                             else if (user != null) {
                                 userName = user.kakaoAccount?.name.toString()
-                                userEmail = user.kakaoAccount?.email.toString()
+                                val email = user.kakaoAccount?.email.toString()
                                 birthYear = user.kakaoAccount?.birthyear.toString()
                                 userMobile = user.kakaoAccount?.phoneNumber.toString()
-                                Log.e(TAG, "네이버 로그인한 유저 정보 - 이름 : $userName") // 남기쁨
-                                Log.e(TAG, "네이버 로그인한 유저 정보 - 이메일 : $userEmail") // marynam99@naver.com
-                                Log.e(TAG, "네이버 로그인한 유저 정보 - 출생년도 : $birthYear") // 1999
-                                Log.e(TAG, "네이버 로그인한 유저 정보 - 전화번호 : $userMobile") // 010-8322-7154
+                                userEmail = email
+                                nextStep()
                             }
                         }
-                        toMainActivity()
                     }
                 }
             } else {
                 UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
-                toMainActivity()
+                nextStep()
             }
         }
 
@@ -126,12 +123,8 @@ class LoginActivity : AppCompatActivity() {
                                 userEmail = result.profile?.email.toString()
                                 birthYear = result.profile?.birthYear.toString()
                                 userMobile = result.profile?.mobile.toString()
-                                Log.e(TAG, "네이버 로그인한 유저 정보 - 이름 : $userName") // 남기쁨
-                                Log.e(TAG, "네이버 로그인한 유저 정보 - 이메일 : $userEmail") // marynam99@naver.com
-                                Log.e(TAG, "네이버 로그인한 유저 정보 - 출생년도 : $birthYear") // 1999
-                                Log.e(TAG, "네이버 로그인한 유저 정보 - 전화번호 : $userMobile") // 010-8322-7154
 
-                                toMainActivity()
+                                nextStep()
                             }
 
                             override fun onError(errorCode: Int, message: String) {
@@ -180,9 +173,8 @@ class LoginActivity : AppCompatActivity() {
             val task: Task<GoogleSignInAccount> =
                 GoogleSignIn.getSignedInAccountFromIntent(result.data)
             handleSignInResult(task)
-            toMainActivity()
+            nextStep()
         }
-
 
         // 아이디 입력칸 체크
         binding.etId.addTextChangedListener(object:TextWatcher {
@@ -196,7 +188,6 @@ class LoginActivity : AppCompatActivity() {
                 binding.btnLogin.isEnabled = binding.etId.text.toString().isNotEmpty() and binding.etPw.text.toString().isNotEmpty()
             }
         })
-
         // 비밀번호 입력칸 체크
         binding.etPw.addTextChangedListener(object:TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -209,18 +200,15 @@ class LoginActivity : AppCompatActivity() {
                 binding.btnLogin.isEnabled = binding.etId.text.toString().isNotEmpty() and binding.etPw.text.toString().isNotEmpty()
             }
         })
-
         binding.btnLogin.setOnClickListener {
             if (validateIDPW(binding.etId.text.toString(), binding.etPw.text.toString())) {
-                toMainActivity()
+                nextStep()
             }
         }
-
         binding.btnFindaccount.setOnClickListener {
             val intent = Intent(this, FindaccountActivity::class.java)
             startActivity(intent)
         }
-
         binding.btnSignup.setOnClickListener {
             val intent = Intent(this, SignupActivity::class.java)
             startActivity(intent)
@@ -259,7 +247,6 @@ class LoginActivity : AppCompatActivity() {
         return pw==userPW
     }
 
-
     // signIn
     private fun signIn() {
         val signInIntent = googleSignInClient.signInIntent
@@ -271,11 +258,7 @@ class LoginActivity : AppCompatActivity() {
             val account = completedTask.getResult(ApiException::class.java)
             userEmail = account?.email.toString()
             userName = account?.givenName.toString().plus(account?.familyName.toString())
-//            var googletoken = account?.idToken.toString()
-//            var googletokenAuth = account?.serverAuthCode.toString()
 
-            Log.e("Google account", userEmail) // marynam9912@gmail.com
-            Log.e("Google name", userName) // maryn
         } catch (e: ApiException) {
             Log.e("Google account", "signInResult:failed Code = " + e.statusCode)
         }
@@ -334,20 +317,22 @@ class LoginActivity : AppCompatActivity() {
             intent.putExtra("name", userName)
             intent.putExtra("birthYear", birthYear)
             intent.putExtra("mobile", userMobile)
-            intent.putExtra("email", userEmail)
             startActivity(intent)
             finish()
         }
-    } // toMainActivity End
+    }
 
-    private fun toMainActivity() {
+    private fun nextStep() {
         val intent = Intent(this, MainActivity::class.java)
-        val userInfo = UserInfoData(userName, "", "", userMobile, inputID, inputPW, userEmail)
-        Log.e(TAG, "Login userInfo: $userInfo")
+        val userInfo = UserInfoData(userName, "", "", userMobile,
+            null, null, null,null,null,null,
+            inputID, inputPW,
+            userEmail, "", "", "", arrayListOf())
+        Log.i("userInfo",userInfo.toString())
         intent.putExtra("userInfo", userInfo)
         startActivity(intent)
         finish()
-    } // toMainActivity End
+    }
 
     // signIn End
     private fun signOut() { // 로그아웃

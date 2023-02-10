@@ -20,7 +20,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val userInfo:UserInfoData = intent.getSerializableExtra("userInfo") as UserInfoData
-        val (userName, userBday, userNumber, userMobile, userID, userPW, userEmail) = userInfo
+        val (userName, userBday, userNumber, userMobile,
+            checkAll, checkService, checkPersInfo, checkMarketing, checkSms, checkEmail,
+            userID, userPW,
+            userEmail, userSchool, userMajor, userGrade, userArea) = userInfo
 
         binding.tvId.text = "ID: $userID"
         binding.tvPw.text = "PW: $userPW"

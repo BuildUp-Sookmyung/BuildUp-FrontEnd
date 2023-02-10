@@ -1,11 +1,7 @@
 package com.example.buildupfrontend
 
 import android.app.AlertDialog
-import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +9,14 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.activityViewModels
 
 class FragmentSU1: Fragment(), onBackPressedListener {
+
+    private val viewModel : SignupViewModel by activityViewModels()
 
     lateinit var clAll: ConstraintLayout
     lateinit var clService: ConstraintLayout
@@ -41,7 +38,6 @@ class FragmentSU1: Fragment(), onBackPressedListener {
     lateinit var btnOpenImg: ImageView
     lateinit var btnOk: AppCompatButton
     var btnOpened = true
-    private lateinit var callback: OnBackPressedCallback
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,36 +45,16 @@ class FragmentSU1: Fragment(), onBackPressedListener {
     ): View? {
         // Inflate the layout for this fragment
         val view:View = inflater!!.inflate(R.layout.fragment_su1, container, false)
-        clAll = view.findViewById<ConstraintLayout>(R.id.cl_all)
-        clService = view.findViewById<ConstraintLayout>(R.id.cl_service)
-        clPersInfo = view.findViewById<ConstraintLayout>(R.id.cl_persInfo)
-        clMarketing = view.findViewById<ConstraintLayout>(R.id.cl_marketing)
-        clSms = view.findViewById<ConstraintLayout>(R.id.cl_sms)
-        clEmail = view.findViewById<ConstraintLayout>(R.id.cl_email)
-        cbAll = view.findViewById<CheckBox>(R.id.cb_all)
-        cbService = view.findViewById<CheckBox>(R.id.cb_service)
-        cbPersInfo = view.findViewById<CheckBox>(R.id.cb_persInfo)
-        cbMarketing = view.findViewById<CheckBox>(R.id.cb_marketing)
-        cbSms = view.findViewById<CheckBox>(R.id.cb_sms)
-        cbEmail = view.findViewById<CheckBox>(R.id.cb_email)
-        btnDetail1 = view.findViewById<Button>(R.id.btn_detail1)
-        btnDetail2 = view.findViewById<Button>(R.id.btn_detail2)
-        btnOpen = view.findViewById<Button>(R.id.btn_open)
-        btnOpenImg = view.findViewById<ImageView>(R.id.btn_open_img)
-        btnOk = view.findViewById<AppCompatButton>(R.id.btn_ok)
+        initView(view)
 
-        // 초기 설정
-        clSms.visibility = View.GONE
-        clEmail.visibility = View.GONE
-        btnOk.isEnabled = false
-
+        (activity as SignupActivity?)!!.setProgressBar(1)
         controlAllCb() // 전체동의 버튼 관리
         controlMarketingCb() // 마케팅 버튼 관리
 
         // 이용약관 자세히 보기: Dialog
         btnDetail1.setOnClickListener {
             val mDialogView = LayoutInflater.from(this.context).inflate(R.layout.dialog_detail1, null)
-            val mBuilder = AlertDialog.Builder(this.context).setView(mDialogView)
+            val mBuilder = AlertDialog.Builder(this.context, R.style.DetailDialog).setView(mDialogView)
             val mAlertDialog = mBuilder.show()
             val tvContent = mDialogView.findViewById<TextView>(R.id.tv_content)
             val btnClose = mDialogView.findViewById<AppCompatButton>(R.id.btn_close)
@@ -103,7 +79,7 @@ class FragmentSU1: Fragment(), onBackPressedListener {
         }
         btnDetail2.setOnClickListener {
             val mDialogView = LayoutInflater.from(this.context).inflate(R.layout.dialog_detail2, null)
-            val mBuilder = AlertDialog.Builder(this.context).setView(mDialogView)
+            val mBuilder = AlertDialog.Builder(this.context, R.style.DetailDialog).setView(mDialogView)
             val mAlertDialog = mBuilder.show()
             val tvContent1 = mDialogView.findViewById<TextView>(R.id.tv_content1)
             val tvContent2 = mDialogView.findViewById<TextView>(R.id.tv_content2)
@@ -129,10 +105,43 @@ class FragmentSU1: Fragment(), onBackPressedListener {
         }
 
         // 다음 단계로 이동
-        btnOk.setOnClickListener { signup2() }
+        btnOk.setOnClickListener { nextStep() }
 
         return view
     }
+
+    private fun initView(view: View) {
+        clAll = view.findViewById<ConstraintLayout>(R.id.cl_all)
+        clService = view.findViewById<ConstraintLayout>(R.id.cl_service)
+        clPersInfo = view.findViewById<ConstraintLayout>(R.id.cl_persInfo)
+        clMarketing = view.findViewById<ConstraintLayout>(R.id.cl_marketing)
+        clSms = view.findViewById<ConstraintLayout>(R.id.cl_sms)
+        clEmail = view.findViewById<ConstraintLayout>(R.id.cl_email)
+        cbAll = view.findViewById<CheckBox>(R.id.cb_all)
+        cbService = view.findViewById<CheckBox>(R.id.cb_service)
+        cbPersInfo = view.findViewById<CheckBox>(R.id.cb_persInfo)
+        cbMarketing = view.findViewById<CheckBox>(R.id.cb_marketing)
+        cbSms = view.findViewById<CheckBox>(R.id.cb_sms)
+        cbEmail = view.findViewById<CheckBox>(R.id.cb_email)
+        btnDetail1 = view.findViewById<Button>(R.id.btn_detail1)
+        btnDetail2 = view.findViewById<Button>(R.id.btn_detail2)
+        btnOpen = view.findViewById<Button>(R.id.btn_open)
+        btnOpenImg = view.findViewById<ImageView>(R.id.btn_open_img)
+        btnOk = view.findViewById<AppCompatButton>(R.id.btn_ok)
+
+        // 초기 설정
+        cbAll.isChecked = viewModel.checkAll
+        cbService.isChecked = viewModel.checkService
+        cbPersInfo.isChecked = viewModel.checkPersInfo
+        cbMarketing.isChecked = viewModel.checkMarketing
+        cbSms.isChecked = viewModel.checkSms
+        cbEmail.isChecked = viewModel.checkEmail
+
+        clSms.visibility = View.GONE
+        clEmail.visibility = View.GONE
+        controlOkBtn()
+    }
+
     private fun controlAllCb() {
         cbAll.setOnClickListener { // 모든 약관 사항
             if (!cbAll.isChecked) {
@@ -202,21 +211,17 @@ class FragmentSU1: Fragment(), onBackPressedListener {
         }
     }
 
-    //override 해서 사용해주면 된다!
     override fun onBackPressed() {
-        val fm: FragmentManager? = fragmentManager
-        if (fm != null) {
-            if (fm.backStackEntryCount > 0) {
-                Log.i("MainActivity", "popping backstack")
-                fm.popBackStack()
-            } else {
-                Log.i("MainActivity", "nothing on backstack, calling super")
-                requireActivity().supportFragmentManager.popBackStack()
-            }
-        }
+        (activity as SignupActivity?)!!.nextFragment(0, FragmentSU0())
     }
 
-    private fun signup2() {
+    private fun nextStep() {
+        viewModel.checkAll = cbAll.isChecked
+        viewModel.checkService = cbService.isChecked
+        viewModel.checkPersInfo = cbPersInfo.isChecked
+        viewModel.checkMarketing = cbMarketing.isChecked
+        viewModel.checkSms = cbSms.isChecked
+        viewModel.checkEmail = cbEmail.isChecked
         (activity as SignupActivity?)!!.nextFragment(2, FragmentSU2())
     }
 }

@@ -5,11 +5,14 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -24,8 +27,8 @@ class FindaccountActivity : AppCompatActivity() {
     private val binding get() = mBinding!!
     lateinit var btnId: Button
     lateinit var btnPw: Button
-    lateinit var barId: View
-    lateinit var barPw: View
+    lateinit var barId: ImageView
+    lateinit var barPw: ImageView
     lateinit var flFindAccount: FrameLayout
 
     @SuppressLint("ResourceAsColor")
@@ -40,7 +43,7 @@ class FindaccountActivity : AppCompatActivity() {
         flFindAccount = findViewById(R.id.fl_findAccount)
         btnId.isSelected=true
 
-        binding.barId.setBackgroundResource(R.drawable.fill)
+        binding.barId.setImageResource(R.drawable.fill)
         nextFragment(FragmentFindID())
 
         // 아이디 선택
@@ -61,25 +64,39 @@ class FindaccountActivity : AppCompatActivity() {
 
     }
 
+    override fun onBackPressed(){
+        //아래와 같은 코드를 추가하도록 한다
+        //해당 엑티비티에서 띄운 프래그먼트에서 뒤로가기를 누르게 되면 프래그먼트에서 구현한 onBackPressed 함수가 실행되게 된다.
+        val fragmentList = supportFragmentManager.fragments
+        for (fragment in fragmentList) {
+            if (fragment is onBackPressedListener) {
+                (fragment as onBackPressedListener).onBackPressed()
+                return
+            }
+        }
+        super.onBackPressed()
+    }
+
     @SuppressLint("ResourceAsColor")
     private fun fillPw() {
         btnId.isSelected=false
         btnPw.isSelected=true
-        barPw.setBackgroundResource(R.drawable.fill)
-        barId.setBackgroundResource(R.drawable.divider)
+        barPw.setImageResource(R.drawable.fill)
+        barId.setImageResource(R.drawable.divider)
     }
 
     @SuppressLint("ResourceAsColor")
     private fun fillId() {
         btnId.isSelected=true
         btnPw.isSelected=false
-        barId.setBackgroundResource(R.drawable.fill)
-        barPw.setBackgroundResource(R.drawable.divider)
+        barId.setImageResource(R.drawable.fill)
+        barPw.setImageResource(R.drawable.divider)
     }
 
     fun nextFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fl_findAccount, fragment)
+            .addToBackStack(null)
             .commit()
     }
 

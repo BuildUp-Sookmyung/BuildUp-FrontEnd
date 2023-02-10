@@ -3,10 +3,26 @@ package com.example.buildupfrontend
 import java.io.Serializable
 
 data class UserInfoData(
+    // SU0
     val userName: String?,
     val userBday:String?,
     val userNumber:String?,
     val userMobile:String?,
+    // SU1
+    val checkAll: Boolean?,
+    val checkService: Boolean?,
+    val checkPersInfo: Boolean?,
+    val checkMarketing: Boolean?,
+    val checkSms: Boolean?,
+    val checkEmail: Boolean?,
+    // SU2
     val userID:String?,
     val userPW: String?,
-    val userEmail:String?) : Serializable
+    // SU3
+    val userEmail:String?,
+    var userSchool: String?,
+    var userMajor: String?,
+    var userGrade: String?,
+    var userArea: ArrayList<String> = arrayListOf()
+
+    ) : Serializable

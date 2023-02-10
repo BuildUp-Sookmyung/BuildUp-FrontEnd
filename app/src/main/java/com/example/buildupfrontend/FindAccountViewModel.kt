@@ -1,5 +1,6 @@
 package com.example.buildupfrontend
 
+import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.material.textfield.TextInputEditText
@@ -15,6 +16,8 @@ class FindAccountViewModel @Inject constructor(
     val currentName: MutableLiveData<String> by lazy {
         MutableLiveData<String>()
     }
+
+    lateinit var tvTop: TextView
 
     lateinit var tlId: TextInputLayout
     lateinit var etId: TextInputEditText

@@ -34,12 +34,18 @@ class FragmentFindID2 : Fragment(), onBackPressedListener {
         val fm: FragmentManager? = fragmentManager
         if (fm != null) {
             if (fm.backStackEntryCount > 0) {
-                Log.i("MainActivity", "popping backstack")
+                Log.i("EntryCount", fm.backStackEntryCount.toString())
+                Log.i("ID2", "popping backstack")
                 fm.popBackStack()
+
             } else {
-                Log.i("MainActivity", "nothing on backstack, calling super")
+                Log.i("EntryCount", fm.backStackEntryCount.toString())
+                Log.i("ID2", "nothing on backstack, calling super")
                 requireActivity().supportFragmentManager.popBackStack()
             }
+        }
+        else  {
+            Log.i("Error", "empty FragmentManager")
         }
     }
 
