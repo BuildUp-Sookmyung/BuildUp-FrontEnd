@@ -1,12 +1,12 @@
-package com.example.buildupfrontend
+package com.example.buildupfrontend.FindaccountActivity
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil.setContentView
 import androidx.fragment.app.activityViewModels
-import com.example.buildupfrontend.databinding.ActivityFindaccountBinding
+import com.example.buildupfrontend.FragmentSharedUser
+import com.example.buildupfrontend.ViewModels.SignupViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -24,9 +24,7 @@ class FragmentFindID : FragmentSharedUser() {
     }
     override fun nextStep() {
         viewModel.userName = etName.text.toString()
-        viewModel.userBday = etBday.text.toString()
-        viewModel.userNumber = etNumber.text.toString()
-        viewModel.userMobile = etMobile.text.toString()
+        viewModel.userEmail = etEmail.text.toString()
 
         viewModel.userID = findID()
 

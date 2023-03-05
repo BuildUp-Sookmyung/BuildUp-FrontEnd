@@ -1,4 +1,4 @@
-package com.example.buildupfrontend
+package com.example.buildupfrontend.SignupActivity
 
 import android.os.Bundle
 import android.text.Editable
@@ -9,6 +9,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
+import com.example.buildupfrontend.FragmentSharedUser
+import com.example.buildupfrontend.R
+import com.example.buildupfrontend.ViewModels.SignupViewModel
+import com.example.buildupfrontend.onBackPressedListener
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -93,12 +97,11 @@ open class FragmentSU2: FragmentSharedUser() {
         btnVerify.isEnabled = false // 처음에는 '인증 요청' 버튼 활성화 x
         tvTop.visibility = View.VISIBLE
 
-        // onBackPressed()
         etId.setText(viewModel.userID)
         etPw.setText(viewModel.userPW)
         etPw2.setText(viewModel.userPW)
         btnOk.isEnabled = etPw.text == etPw2.text // 처음 온 거면 disabled, 프로필 설정하다가 뒤로 가기 한 거면 enabled
-        TODO("SU3에서 backPressed 했을 때 disabled. but text로 보이면 enabled 됨")
+        // TODO: 2023-02-12 SU3에서 backPressed 했을 때 disabled. but text로 보이면 enabled 됨
     }
 
     protected fun TextInputLayout.checkType() {

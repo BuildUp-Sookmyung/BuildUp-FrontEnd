@@ -1,4 +1,4 @@
-package com.example.buildupfrontend
+package com.example.buildupfrontend.SignupActivity
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -15,12 +15,17 @@ import androidx.appcompat.widget.AppCompatToggleButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.example.buildupfrontend.Patterns
+import com.example.buildupfrontend.R
+import com.example.buildupfrontend.ViewModels.SignupViewModel
+import com.example.buildupfrontend.onBackPressedListener
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import java.util.regex.Pattern
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class Area(_title: String, _checked: Boolean) {
     val title: String = _title
@@ -91,35 +96,28 @@ open class FragmentSU3: Fragment(), View.OnClickListener, onBackPressedListener,
         // 관심분야 선택: Dialog
         btnArea.setOnClickListener {
             // Dialog View 보이기
-            areaCount = 0
             mDialogView = LayoutInflater.from(this.context).inflate(R.layout.dialog_area, null)
             val mAlertDialog = showDialog(this.context)
             val btnSave = mDialogView.findViewById<AppCompatButton>(R.id.btn_ok)
             val btnClose = mDialogView.findViewById<AppCompatButton>(R.id.btn_close)
             val btnBack = mDialogView.findViewById<AppCompatButton>(R.id.btn_back)
+            // checkedList에 있는 버튼들은 다 checked(다시 열었을 때 유지되게)
+            recoverChecks(checkedList)
 
             // allButtons: button_area 내의 모든 버튼
             allButtons = mDialogView.findViewById<ConstraintLayout>(R.id.rl_button_area).touchables
             allButtons.setTitles(areaTitleList)// 분야 항목 이름, background 지정
 
+
             // 저장 버튼
             btnSave.setOnClickListener {
-                val checkedList = checkedList(areaMap.values)
-                Log.i("Result", checkedList.toString())
-
                 // dialog 종료하면서 빈 값 확인 --> '가입 완료' 버튼 활성화
                 enableOkBtn()
 
                 // dialog 종료 후 시각화
-                selectedArea1.visibility = View.VISIBLE
-                selectedArea2.visibility = View.VISIBLE
-                selectedArea3.visibility = View.VISIBLE
-                selectedArea1.text = checkedList[0]
-                selectedArea2.text = checkedList[1]
-                selectedArea3.text = checkedList[2]
+                showArea(listOf<TextView>(selectedArea1, selectedArea2, selectedArea3), checkedList)
 
                 mAlertDialog.dismiss()
-                TODO("if exceeds line -> add extra row")
             }
 
             // 닫기 버튼
@@ -139,25 +137,45 @@ open class FragmentSU3: Fragment(), View.OnClickListener, onBackPressedListener,
         return mView
     }
 
+    private fun showArea(tvList: List<TextView>, checkedArea: ArrayList<String>) {
+        val tvIterator = tvList.iterator()
+        val checkedIterator = checkedArea.iterator()
+
+        for (i in 1..areaMax) {
+            val nextArea = tvIterator.next()
+            if (checkedIterator.hasNext()) {
+                nextArea.visibility = View.VISIBLE
+                nextArea.text = checkedIterator.next()
+            } else {
+              nextArea.visibility = View.GONE
+            }
+        }
+
+    }
+
     private fun enableOkBtn() {
         btnOk.isEnabled = etName.text.toString().isNotEmpty() &&
                 etEmail.text.toString().isNotEmpty() &&
                 etSchool.text.toString().isNotEmpty() &&
                 etMajor.text.toString().isNotEmpty() &&
                 ddGrade.text.toString().isNotEmpty() &&
-                checkedList.size == areaMax
-    }
-
-    private fun checkedList(areaList: MutableCollection<Area>): ArrayList<String> {
-        for (area in areaList) {
-            if (area.checked)
-                checkedList.add(area.title)
-        }
-        return checkedList
+                checkedList.isNotEmpty()
     }
 
     /**
-     * if areaCount exceed 3: disable unchecked areas (leave alone checked ones)
+     * 선택 후 dialog 다시 켰을 때 선택된 값 유지
+     */
+    private fun recoverChecks(checkedArea: ArrayList<String>) {
+        for ((id, area) in areaMap) {
+            if (checkedArea.contains(area.title)) {
+                Log.i("recoverChecked", area.title)
+                mDialogView.findViewById<AppCompatToggleButton>(id).isChecked = true
+            }
+        }
+    }
+
+    /**
+     * if areaCount exceed 3: disable unchecked areas (leave checked ones)
      * if not: enable all areas
      */
     private fun maxAreas(i: Int) {
@@ -177,8 +195,8 @@ open class FragmentSU3: Fragment(), View.OnClickListener, onBackPressedListener,
     private fun checkTypes() {
         tlName.editText?.onFocusChangeListener = validInput(etName, tlName, KorEng, "* 한글, 영어만 입력해주세요.")
         tlEmail.editText?.onFocusChangeListener = validInput(etEmail, tlEmail, typeEmail, "* 올바른 이메일을 입력해주세요.")
-        tlSchool.editText?.onFocusChangeListener = validInput(etSchool, tlSchool, KorEng, "* 한글, 영어만 입력해주세요.")
-        tlMajor.editText?.onFocusChangeListener = validInput(etMajor, tlMajor, KorEng, "* 한글, 영어만 입력해주세요.")
+        tlSchool.editText?.onFocusChangeListener = validInput(etSchool, tlSchool, KorEngSpace, "* 한글, 영어만 입력해주세요.")
+        tlMajor.editText?.onFocusChangeListener = validInput(etMajor, tlMajor, KorEngSpace, "* 한글, 영어만 입력해주세요.")
     }
 
     /**
@@ -189,7 +207,7 @@ open class FragmentSU3: Fragment(), View.OnClickListener, onBackPressedListener,
     @SuppressLint("ResourceAsColor")
     private fun <E> ArrayList<E>.setTitles(areaTitleList: MutableList<String>) {
         for ((idx, title) in areaTitleList.withIndex()) {
-            val btnArea = (this?.get(idx) as AppCompatToggleButton)
+            val btnArea = (this[idx] as AppCompatToggleButton)
             btnArea.setTitle(title)
             btnArea.setBackgroundResource(R.drawable.selector_ui_square)
             btnArea.setOnClickListener(this@FragmentSU3)
@@ -204,25 +222,40 @@ open class FragmentSU3: Fragment(), View.OnClickListener, onBackPressedListener,
      */
     override fun onClick(v: View?) {
         val btn: AppCompatToggleButton = v as AppCompatToggleButton
-        areaMap[btn.id]?.check(btn.isChecked)
-        areaCount += updateCount(btn)
-        Log.i("Btn id", String.format("%s-%s", areaMap[btn.id]?.title, areaMap[btn.id]?.checked))
-        Log.i("Count", areaCount.toString())
+        val isChecked = btn.isChecked
+        areaMap[btn.id]?.check(isChecked)
+        areaCount += updateCount(isChecked)
+        updateCheckedList(isChecked, btn.id)
 
         // 최대 3개 선택 가능-관리
         maxAreas(areaMax)
     }
 
     /**
+     * update checkedList everytime area is clicked
+     */
+    private fun updateCheckedList(isChecked: Boolean, btnId: Int) {
+        if (isChecked) {
+            checkedList.add(areaMap[btnId]?.title.toString())
+        } else {
+            checkedList.remove(areaMap[btnId]?.title.toString())
+        }
+    }
+
+    /**
      * btn.isChecked = 0 -> -1
      * btn.isChecked = 1 -> +1
      */
-    private fun updateCount(btn: AppCompatToggleButton): Int {
-        return 2 * btn.isChecked.toInt() - 1
+    private fun updateCount(isChecked: Boolean): Int {
+        return 2 * isChecked.toInt() - 1
     }
 
     override fun onBackPressed() {
-        (activity as SignupActivity?)!!.nextFragment(2, FragmentSU2())
+        if (activity?.javaClass?.simpleName.toString() == "SignupActivity") {
+            (activity as SignupActivity?)!!.nextFragment(2, FragmentSU2())
+        } else if (activity?.javaClass?.simpleName.toString() == "LoginProfileActivity") {
+            (activity as SignupActivity?)!!.nextFragment(1, FragmentSU1())
+        }
     }
 
     private fun nextStep() {
@@ -252,6 +285,10 @@ open class FragmentSU3: Fragment(), View.OnClickListener, onBackPressedListener,
         btnArea = view.findViewById<AppCompatImageButton>(R.id.btn_area)
         btnOk = view.findViewById<AppCompatButton>(R.id.btn_ok)
 
+        etName.setText(viewModel.userName)
+        etEmail.setText(viewModel.userEmail)
+        btnOk.isEnabled = false
+
         selectedArea1 = view.findViewById<TextView>(R.id.tv_select1)
         selectedArea2 = view.findViewById<TextView>(R.id.tv_select2)
         selectedArea3 = view.findViewById<TextView>(R.id.tv_select3)
@@ -261,7 +298,8 @@ open class FragmentSU3: Fragment(), View.OnClickListener, onBackPressedListener,
     }
 
     private fun setDropdown() {
-        val gradeAdapter = ArrayAdapter(requireContext(), R.layout.grade_dropdown_item, gradeArrayList)
+        val gradeAdapter = ArrayAdapter(requireContext(),
+            R.layout.grade_dropdown_item, gradeArrayList)
         ddGrade.setDropDownBackgroundResource(R.color.background)
         ddGrade.setAdapter(gradeAdapter)
     }

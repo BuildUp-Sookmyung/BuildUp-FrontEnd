@@ -116,6 +116,9 @@
                     style="@style/MyTextInputEditText"
                     android:layout_width="327dp"
                     android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:enabled="false"
+
                     android:hint="이메일을 입력해주세요."
                     android:maxLines="1"
                     android:paddingHorizontal="16dp"

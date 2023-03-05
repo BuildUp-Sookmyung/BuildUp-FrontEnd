@@ -10,28 +10,27 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
+import com.example.buildupfrontend.retrofit.Client.EmailService
+import com.example.buildupfrontend.retrofit.Response.SimpleResponse
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import org.w3c.dom.Text
+import retrofit2.Call
+import retrofit2.Response
 import java.util.regex.Pattern
+
 
 open class FragmentSharedUser(): Fragment(), onBackPressedListener, Patterns {
     var mView: View? = null
 
     open lateinit var tvTop: TextView
     open lateinit var tlName: TextInputLayout
-    open lateinit var tlBday: TextInputLayout
-    open lateinit var tlNumber: TextInputLayout
-    open lateinit var tlMobile: TextInputLayout
+    open lateinit var tlEmail: TextInputLayout
     open lateinit var tlVerify: TextInputLayout
 
     open lateinit var etName: TextInputEditText
-    open lateinit var etBday: TextInputEditText
-    open lateinit var etNumber: TextInputEditText
-    open lateinit var etMobile: TextInputEditText
+    open lateinit var etEmail: TextInputEditText
     open lateinit var etVerify: TextInputEditText
 
     open lateinit var tlId: TextInputLayout
@@ -41,18 +40,17 @@ open class FragmentSharedUser(): Fragment(), onBackPressedListener, Patterns {
     open lateinit var btnVerify: Button
     open lateinit var btnOk: Button
     open lateinit var tvTimer: TextView
+    open lateinit var verifyCode: String
 
     open var validName = false
-    open var validBday = false
-    open var validNumber = false
-    open var validMobile = false
+    open var validEmail = false
     open var validId = false
     open var validPw = false
 
-    open var verNumber = "000000"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         var timerSec = 0
         countDownTimer = object : CountDownTimer(180000, 1000) { // 총 3분, 1초마다 UI update
             override fun onTick(millisUntilFinished: Long) {
@@ -60,7 +58,8 @@ open class FragmentSharedUser(): Fragment(), onBackPressedListener, Patterns {
                 tvTimer.text = String.format("%02d:%02d".format(timerSec/60, timerSec%60)) // 2:45
             }
             override fun onFinish() {
-                TODO("타이머 끝나면")
+                verifyCode = ""
+                TODO("when time is over")
             }
         }
     }
@@ -75,8 +74,6 @@ open class FragmentSharedUser(): Fragment(), onBackPressedListener, Patterns {
         //  '인증 요청' 누르기
         btnVerify.setOnClickListener() {
             tlName.error = null
-            tlBday.error = null
-            tlNumber.error = null
             btnVerify.text = "재요청"
             startVerify()  // 입력란 나타나기, 타이머 시작, 안내 문구
         }
@@ -93,21 +90,19 @@ open class FragmentSharedUser(): Fragment(), onBackPressedListener, Patterns {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                btnOk.isEnabled = etVerify.text.toString().isNotEmpty() && Num6.matcher(etVerify.text.toString()).find()
+                btnOk.isEnabled = etVerify.text.toString().isNotEmpty()
             }
         })
         // 확인 버튼 누르면 다음 단계로
         btnOk.setOnClickListener() {
-            verifyInput(etVerify.text.toString(), verNumber)
+            verifyInput(etVerify.text.toString(), verifyCode)
         }
         return mView
     }
 
     private fun checkTypes() {
         tlName.editText?.onFocusChangeListener = validInput(etName, tlName, KorEng, "* 한글, 영어만 입력해주세요.")
-        tlBday.editText?.onFocusChangeListener = validNumberInput(etBday, tlBday, tlNumber, Num, "* 숫자만 입력해주세요.")
-        tlNumber.editText?.onFocusChangeListener = validNumberInput(etNumber, tlNumber, tlBday, Num, "* 숫자만 입력해주세요.")
-        tlMobile.editText?.onFocusChangeListener = validInput(etMobile, tlMobile, Num, "* 올바른 핸드폰번호를 입력해주세요.")
+        tlEmail.editText?.onFocusChangeListener = validInput(etEmail, tlEmail, typeEmail, "* 올바른 이메일을 입력해주세요.")
     }
 
     private fun checkTypeLength() {
@@ -120,10 +115,10 @@ open class FragmentSharedUser(): Fragment(), onBackPressedListener, Patterns {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 validName = etName.text.toString().isNotEmpty() && KorEng.matcher(etName.text.toString()).find()
-                btnVerify.isEnabled = validMobile && validName && validBday && validNumber
+                btnVerify.isEnabled = validEmail && validName
             }
         })
-        etBday.addTextChangedListener(object: TextWatcher {
+        etEmail.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
 
@@ -131,32 +126,8 @@ open class FragmentSharedUser(): Fragment(), onBackPressedListener, Patterns {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                validBday = etBday.text.toString().isNotEmpty() && Num6.matcher(etBday.text.toString()).find()
-                btnVerify.isEnabled = validMobile && validName && validBday && validNumber
-            }
-        })
-        etNumber.addTextChangedListener(object: TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                validNumber = etNumber.text.toString().isNotEmpty() && Num1.matcher(etNumber.text.toString()).find()
-                btnVerify.isEnabled = validMobile && validName && validBday && validNumber
-            }
-        })
-        etMobile.addTextChangedListener(object: TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                validMobile = etMobile.text.toString().isNotEmpty() && Num11.matcher(etMobile.text.toString()).find()
-                btnVerify.isEnabled = validMobile && validName && validBday && validNumber
+                validEmail = etEmail.text.toString().isNotEmpty() && typeEmail.matcher(etEmail.text.toString()).find()
+                btnVerify.isEnabled = validEmail && validName
             }
         })
     }
@@ -164,9 +135,7 @@ open class FragmentSharedUser(): Fragment(), onBackPressedListener, Patterns {
     // 아이디까지 체크: 비밀번호 찾기의 tlId
     open fun checkTypes(tl: TextInputLayout) {
         tlName.editText?.onFocusChangeListener = validInput(etName, tlName, KorEng, "* 한글, 영어만 입력해주세요.")
-        tlBday.editText?.onFocusChangeListener = validNumberInput(etBday, tlBday, tlNumber, Num, "* 숫자만 입력해주세요.")
-        tlNumber.editText?.onFocusChangeListener = validNumberInput(etNumber, tlNumber, tlBday, Num, "* 숫자만 입력해주세요.")
-        tlMobile.editText?.onFocusChangeListener = validInput(etMobile, tlMobile, Num, "* 올바른 핸드폰번호를 입력해주세요.")
+        tlEmail.editText?.onFocusChangeListener = validInput(etEmail, tlEmail, typeEmail, "* 올바른 이메일을 입력해주세요.")
         tl.editText?.onFocusChangeListener = validInput(etId, tlId, typeID, "* 5~20자의 영문, 소문자, 숫자만 입력해주세요.")
     }
     open fun checkTypeLength(et: TextInputEditText) {
@@ -179,10 +148,10 @@ open class FragmentSharedUser(): Fragment(), onBackPressedListener, Patterns {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 validName = etName.text.toString().isNotEmpty() && KorEng.matcher(etName.text.toString()).find()
-                btnVerify.isEnabled = validMobile && validName && validBday && validNumber && validId
+                btnVerify.isEnabled = validEmail && validName && validId
             }
         })
-        etBday.addTextChangedListener(object: TextWatcher {
+        etEmail.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
 
@@ -190,32 +159,8 @@ open class FragmentSharedUser(): Fragment(), onBackPressedListener, Patterns {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                validBday = etBday.text.toString().isNotEmpty() && Num6.matcher(etBday.text.toString()).find()
-                btnVerify.isEnabled = validMobile && validName && validBday && validNumber && validId
-            }
-        })
-        etNumber.addTextChangedListener(object: TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                validNumber = etNumber.text.toString().isNotEmpty() && Num1.matcher(etNumber.text.toString()).find()
-                btnVerify.isEnabled = validMobile && validName && validBday && validNumber && validId
-            }
-        })
-        etMobile.addTextChangedListener(object: TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                validMobile = etMobile.text.toString().isNotEmpty() && Num11.matcher(etMobile.text.toString()).find()
-                btnVerify.isEnabled = validMobile && validName && validBday && validNumber && validId
+                validEmail = etEmail.text.toString().isNotEmpty() && typeEmail.matcher(etEmail.text.toString()).find()
+                btnVerify.isEnabled = validEmail && validName && validId
             }
         })
         et.addTextChangedListener(object: TextWatcher {
@@ -227,7 +172,7 @@ open class FragmentSharedUser(): Fragment(), onBackPressedListener, Patterns {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 validId = etId.text.toString().isNotEmpty() && typeID.matcher(etId.text.toString()).find()
-                btnVerify.isEnabled = validMobile && validName && validBday && validNumber && validId
+                btnVerify.isEnabled = validEmail && validName && validId
             }
         })
     }
@@ -239,15 +184,11 @@ open class FragmentSharedUser(): Fragment(), onBackPressedListener, Patterns {
     open fun initView(view:View) {
         tvTop = view.findViewById<TextView>(R.id.tv_top)
         tlName = view.findViewById<TextInputLayout>(R.id.tl_name)
-        tlBday = view.findViewById<TextInputLayout>(R.id.tl_bday)
-        tlNumber = view.findViewById<TextInputLayout>(R.id.tl_number)
-        tlMobile = view.findViewById<TextInputLayout>(R.id.tl_mobile)
+        tlEmail = view.findViewById<TextInputLayout>(R.id.tl_email)
         tlVerify = view.findViewById<TextInputLayout>(R.id.tl_verify)
 
         etName = view.findViewById<TextInputEditText>(R.id.et_name)
-        etBday = view.findViewById<TextInputEditText>(R.id.et_bday)
-        etNumber = view.findViewById<TextInputEditText>(R.id.et_number)
-        etMobile = view.findViewById<TextInputEditText>(R.id.et_mobile)
+        etEmail = view.findViewById<TextInputEditText>(R.id.et_email)
         etVerify = view.findViewById<TextInputEditText>(R.id.et_verify)
 
         btnVerify = view.findViewById<Button>(R.id.btn_verify)
@@ -317,7 +258,35 @@ open class FragmentSharedUser(): Fragment(), onBackPressedListener, Patterns {
     open fun startVerify() {
         tlVerify.visibility = View.VISIBLE
         countDownTimer.start()
-        tlMobile.helperText = "* 인증번호가 발송되었습니다."
+        tlEmail.helperText = "* 인증번호가 발송되었습니다."
+        getRetrofitData()
+    }
+
+    private fun getRetrofitData() {
+        val api = EmailService.create()
+        val body = EmailService.body(etName.text.toString(), etEmail.text.toString())
+
+        api.post(body)
+            .enqueue(object : retrofit2.Callback<SimpleResponse?> {
+                override fun onResponse(call: Call<SimpleResponse?>, response: Response<SimpleResponse?>,
+                ) {
+                    if (response.code() != 200) {
+                        Log.i("error", response.errorBody().toString())
+                    }
+                    val responseBody = response.body()!!
+                    Log.i("Response", responseBody.response.toString())
+                    setVerifyCode(responseBody.response.message)
+                }
+
+                override fun onFailure(p0: Call<SimpleResponse?>, error: Throwable) {
+                    Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
+    @JvmName("setVerifyCode1")
+    private fun setVerifyCode(message: String) {
+        verifyCode = message.split(':').last().trim()
     }
 
     open fun nextStep() {

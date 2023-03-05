@@ -274,7 +274,6 @@
                     android:id="@+id/rl_login_google"
                     android:layout_width="214dp"
                     android:layout_height="48dp"
-                    android:background="@drawable/shadow_bottom"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent">

@@ -9,10 +9,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="theme">#90D4B4</color>
 
-
     <color name="background">#FAFAFA</color>
     <color name="text_primary">#262626</color>
-    <color name="text_secondary">#565656</color>
+    <color name="text_secondary">#707070</color>
     <color name="text_unavailable">#AAAAAA</color>
     <color name="text_white">#FAFAFA</color>
     <color name="text_accent">#845EF1</color>
@@ -28,6 +27,7 @@
     <color name="border_unavailable">#4E4E4E</color>
     <color name="border_accent">#845EF1</color>
     <color name="accent30">#DACFFB</color>
+    <color name="accent_5">#F4F2FA</color>
     <color name="border_error">#F44336</color>
     <color name="border_black">#262626</color>
 

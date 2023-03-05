@@ -1,16 +1,17 @@
-package com.example.buildupfrontend
+package com.example.buildupfrontend.FindaccountActivity
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
+import com.example.buildupfrontend.R
+import com.example.buildupfrontend.SignupActivity.FragmentSU1
+import com.example.buildupfrontend.SignupActivity.FragmentSU2
+import com.example.buildupfrontend.SignupActivity.SignupActivity
+import com.example.buildupfrontend.ViewModels.SignupViewModel
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -55,6 +56,10 @@ class FragmentFindPW2 : FragmentSU2() {
 
         btnOk = view.findViewById<Button>(R.id.btn_ok)
         btnOk.isEnabled = false
+    }
+
+    override fun onBackPressed() {
+        (activity as FindaccountActivity?)!!.nextFragment(FragmentFindPW())
     }
 
     override fun nextStep() {

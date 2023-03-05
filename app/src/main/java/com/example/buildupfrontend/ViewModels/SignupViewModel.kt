@@ -1,4 +1,4 @@
-package com.example.buildupfrontend
+package com.example.buildupfrontend.ViewModels
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,11 +11,14 @@ class SignupViewModel @Inject constructor(
 
 ) : ViewModel() {
 
+    var validName = false
+    var validEmail = false
+    var validId = false
+    var validPw = false
+
     // SU0
     var userName: String = ""
-    var userBday: String = ""
-    var userNumber: String = ""
-    var userMobile: String = ""
+    var userEmail: String = ""
     // SU1
     var checkAll: Boolean = false
     var checkService: Boolean = false
@@ -27,7 +30,6 @@ class SignupViewModel @Inject constructor(
     var userID: String = ""
     var userPW: String = ""
     // SU3
-    var userEmail: String = ""
     var userSchool: String = ""
     var userMajor: String = ""
     var userGrade: String = ""

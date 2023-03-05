@@ -10,7 +10,12 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.example.buildupfrontend.FindaccountActivity.FindaccountActivity
+import com.example.buildupfrontend.SignupActivity.SignupActivity
 import com.example.buildupfrontend.databinding.ActivityLoginBinding
+import com.example.buildupfrontend.retrofit.Client.EmailService
+import com.example.buildupfrontend.retrofit.Client.SocialAccessService
+import com.example.buildupfrontend.retrofit.Response.SimpleResponse
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -29,6 +34,8 @@ import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
+import retrofit2.Call
+import retrofit2.Response
 
 
 class LoginActivity : AppCompatActivity() {
@@ -40,7 +47,7 @@ class LoginActivity : AppCompatActivity() {
 
     private var mBinding: ActivityLoginBinding? = null
     private val binding get() = mBinding!!
-    private lateinit var userEmail: String
+    private var userEmail: String = ""
     private var userName: String = ""
     private var birthYear: String = ""
     private var userMobile: String = ""
@@ -99,14 +106,14 @@ class LoginActivity : AppCompatActivity() {
                                 birthYear = user.kakaoAccount?.birthyear.toString()
                                 userMobile = user.kakaoAccount?.phoneNumber.toString()
                                 userEmail = email
-                                nextStep()
+                                socialLogin("KAKAO", userEmail)
                             }
                         }
                     }
                 }
             } else {
                 UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
-                nextStep()
+                socialLogin("KAKAO", userEmail)
             }
         }
 
@@ -124,7 +131,7 @@ class LoginActivity : AppCompatActivity() {
                                 birthYear = result.profile?.birthYear.toString()
                                 userMobile = result.profile?.mobile.toString()
 
-                                nextStep()
+                                socialLogin("NAVER", userEmail)
                             }
 
                             override fun onError(errorCode: Int, message: String) {
@@ -173,7 +180,7 @@ class LoginActivity : AppCompatActivity() {
             val task: Task<GoogleSignInAccount> =
                 GoogleSignIn.getSignedInAccountFromIntent(result.data)
             handleSignInResult(task)
-            nextStep()
+            socialLogin("GOOGLE", userEmail)
         }
 
         // 아이디 입력칸 체크
@@ -202,7 +209,7 @@ class LoginActivity : AppCompatActivity() {
         })
         binding.btnLogin.setOnClickListener {
             if (validateIDPW(binding.etId.text.toString(), binding.etPw.text.toString())) {
-                nextStep()
+                nextStep(Intent(this, MainActivity::class.java))
             }
         }
         binding.btnFindaccount.setOnClickListener {
@@ -213,6 +220,63 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, SignupActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    /**
+     * @apiType: String - either Kakao, Naver, Google
+     * @email: userEmail
+     * 간편 로그인 ->
+     * 1. 가입한 사용자의 경우: MainActivity 이동
+     * 2. 가입 안 한 사용자의 경우: 프로필 설정(FragmentSU3 이동)
+     */
+    private fun socialLogin(apiType: String, email: String) {
+         if (isUserSigned(apiType, email)) {
+             nextStep(Intent(this, MainActivity::class.java))
+         } else {
+             setProfile()
+         }
+    }
+
+    private fun setProfile() {
+        val intent = Intent(this, LoginProfileActivity::class.java)
+        nextStep(intent)
+    }
+
+    private fun isUserSigned(apiType: String, email: String): Boolean {
+        val api = SocialAccessService.create()
+        val body = SocialAccessService.body(apiType, email)
+        var message = ""
+
+        api.post(body)
+            .enqueue(object : retrofit2.Callback<SimpleResponse?> {
+                override fun onResponse(call: Call<SimpleResponse?>, response: Response<SimpleResponse?>,
+                ) {
+                    message = if (response.code() != 200) {
+                        Log.i("error", response.errorBody().toString())
+                        response.errorBody().toString()
+                    } else {
+                        val responseBody = response.body()!!
+                        if (!responseBody.success) {
+                            Log.i("response error", responseBody.error.toString())
+                        }
+                        Log.i("response", responseBody.response.message)
+                        responseBody.response.message
+                    }
+                }
+
+                override fun onFailure(p0: Call<SimpleResponse?>, error: Throwable) {
+                    Log.i("error", error.message.toString())
+                    message = error.message.toString()
+                }
+            })
+        Log.i("message", message)
+
+//        if ("신규" in message) {
+//            return false
+//        } else if ("이미 가입" in message) {
+//            return true
+//        }
+        return false
     }
 
     // 아이디 유효 검사
@@ -268,9 +332,12 @@ class LoginActivity : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
         val account = GoogleSignIn.getLastSignedInAccount(this)
-        if (account !== null) { // 이미 로그인 되어있을시 바로 메인 액티비티로 이동
-            toMainActivity(firebaseAuth.currentUser)
-        }
+        // TODO: 2023-02-12 이미 로그인 되어있을시 바로 메인 액티비티로 이동
+//        if (account !== null) {
+//            userEmail = account?.email.toString()
+//            userName = account?.givenName.toString().plus(account?.familyName.toString())
+//            nextStep(firebaseAuth.currentUser)
+//        }
     } //onStart End
 
     // onActivityResult
@@ -302,7 +369,7 @@ class LoginActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     Log.w("LoginActivity", "firebaseAuthWithGoogle 성공", task.exception)
-                    toMainActivity(firebaseAuth?.currentUser)
+                    nextStep(firebaseAuth?.currentUser)
                 } else {
                     Log.w("LoginActivity", "firebaseAuthWithGoogle 실패", task.exception)
                 }
@@ -310,46 +377,63 @@ class LoginActivity : AppCompatActivity() {
     }// firebaseAuthWithGoogle END
 
     // toMainActivity
-    private fun toMainActivity(user: FirebaseUser?) {
-        if (user != null) { // MainActivity 로 이동
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("email", userEmail)
-            intent.putExtra("name", userName)
-            intent.putExtra("birthYear", birthYear)
-            intent.putExtra("mobile", userMobile)
-            startActivity(intent)
-            finish()
-        }
-    }
-
-    private fun nextStep() {
+    private fun nextStep(user: FirebaseUser?) {
         val intent = Intent(this, MainActivity::class.java)
-        val userInfo = UserInfoData(userName, "", "", userMobile,
+        val userInfo = UserInfoData(userName, "",
             null, null, null,null,null,null,
             inputID, inputPW,
-            userEmail, "", "", "", arrayListOf())
+            "", "", "", arrayListOf())
         Log.i("userInfo",userInfo.toString())
         intent.putExtra("userInfo", userInfo)
         startActivity(intent)
         finish()
     }
 
+    private fun nextStep(intent: Intent) {
+        val userInfo = UserInfoData(userName.value(), userEmail.value(),
+            null, null, null,null,null,null,
+            inputID.value(), inputPW.value(),
+            "", "", "", arrayListOf())
+        intent.putExtra("userInfo", userInfo)
+        startActivity(intent)
+        finish()
+        }
+    }
+
+    /**
+     * change any "null"s to ""
+     */
+    private fun String.value(): String {
+        Log.i("userdata", this)
+        return when {
+            this.isEmpty() -> {
+                ""
+            }
+            this=="null" -> {
+                ""
+            }
+            else -> {
+                this
+            }
+        }
+    }
+
     // signIn End
-    private fun signOut() { // 로그아웃
-        // Firebase sign out
-        firebaseAuth.signOut()
+//    private fun signOut() { // 로그아웃
+//        // Firebase sign out
+//        firebaseAuth.signOut()
+//
+//        // Google sign out
+//        googleSignInClient.signOut().addOnCompleteListener(this) {
+//            //updateUI(null)
+//        }
+//    }
+//
+//    private fun revokeAccess() { //회원탈퇴
+//        // Firebase sign out
+//        firebaseAuth.signOut()
+//        googleSignInClient.revokeAccess().addOnCompleteListener(this) {
+//
+//        }
+//    }
 
-        // Google sign out
-        googleSignInClient.signOut().addOnCompleteListener(this) {
-            //updateUI(null)
-        }
-    }
-
-    private fun revokeAccess() { //회원탈퇴
-        // Firebase sign out
-        firebaseAuth.signOut()
-        googleSignInClient.revokeAccess().addOnCompleteListener(this) {
-
-        }
-    }
-}

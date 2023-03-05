@@ -1,4 +1,4 @@
-package com.example.buildupfrontend
+package com.example.buildupfrontend.SignupActivity
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -13,6 +13,9 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.example.buildupfrontend.R
+import com.example.buildupfrontend.ViewModels.SignupViewModel
+import com.example.buildupfrontend.onBackPressedListener
 
 class FragmentSU1: Fragment(), onBackPressedListener {
 
@@ -212,7 +215,11 @@ class FragmentSU1: Fragment(), onBackPressedListener {
     }
 
     override fun onBackPressed() {
-        (activity as SignupActivity?)!!.nextFragment(0, FragmentSU0())
+        if (activity?.javaClass?.simpleName.toString() == "SignupActivity") {
+            (activity as SignupActivity?)!!.nextFragment(0, FragmentSU0())
+        } else if (activity?.javaClass?.simpleName.toString() == "LoginProfileActivity") {
+            this.activity?.finish()
+        }
     }
 
     private fun nextStep() {
@@ -222,6 +229,10 @@ class FragmentSU1: Fragment(), onBackPressedListener {
         viewModel.checkMarketing = cbMarketing.isChecked
         viewModel.checkSms = cbSms.isChecked
         viewModel.checkEmail = cbEmail.isChecked
-        (activity as SignupActivity?)!!.nextFragment(2, FragmentSU2())
+        if (activity?.javaClass?.simpleName.toString() == "SignupActivity") {
+            (activity as SignupActivity?)!!.nextFragment(2, FragmentSU2())
+        } else if (activity?.javaClass?.simpleName.toString() == "LoginProfileActivity") {
+            (activity as SignupActivity?)!!.nextFragment(3, FragmentSU3())
+        }
     }
 }

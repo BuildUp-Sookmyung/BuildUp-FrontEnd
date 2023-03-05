@@ -1,4 +1,4 @@
-package com.example.buildupfrontend
+package com.example.buildupfrontend.SignupActivity
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
+import com.example.buildupfrontend.FragmentSharedUser
+import com.example.buildupfrontend.R
+import com.example.buildupfrontend.ViewModels.SignupViewModel
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,36 +33,34 @@ class FragmentSU0: FragmentSharedUser() {
     override fun initView(view:View) {
         tvTop = view.findViewById<TextView>(R.id.tv_top)
         tlName = view.findViewById<TextInputLayout>(R.id.tl_name)
-        tlBday = view.findViewById<TextInputLayout>(R.id.tl_bday)
-        tlNumber = view.findViewById<TextInputLayout>(R.id.tl_number)
-        tlMobile = view.findViewById<TextInputLayout>(R.id.tl_mobile)
+        tlEmail = view.findViewById<TextInputLayout>(R.id.tl_email)
         tlVerify = view.findViewById<TextInputLayout>(R.id.tl_verify)
 
         etName = view.findViewById<TextInputEditText>(R.id.et_name)
-        etBday = view.findViewById<TextInputEditText>(R.id.et_bday)
-        etNumber = view.findViewById<TextInputEditText>(R.id.et_number)
-        etMobile = view.findViewById<TextInputEditText>(R.id.et_mobile)
+        etEmail = view.findViewById<TextInputEditText>(R.id.et_email)
         etVerify = view.findViewById<TextInputEditText>(R.id.et_verify)
 
         etName.setText(viewModel.userName)
-        etBday.setText(viewModel.userBday)
-        etNumber.setText(viewModel.userNumber)
+        etEmail.setText(viewModel.userEmail)
 
         btnVerify = view.findViewById<Button>(R.id.btn_verify)
         btnOk = view.findViewById<Button>(R.id.btn_ok)
         tvTimer = view.findViewById<TextView>(R.id.tv_timer)
 
-        btnVerify.isEnabled = false // 처음에는 '인증 요청' 버튼 활성화 x
+        validName = viewModel.validName
+        validEmail = viewModel.validEmail
+
+        btnVerify.isEnabled = validName && validEmail // 처음에는 '인증 요청' 버튼 활성화 x
         btnOk.isEnabled = false
         tlVerify.visibility = View.GONE // 처음에는 '인증번호를 입력하세요'란 안 보임
         tvTop.visibility = View.VISIBLE
     }
 
     override fun nextStep() {
+        viewModel.validName = true
+        viewModel.validEmail = true
         viewModel.userName = etName.text.toString()
-        viewModel.userBday = etBday.text.toString()
-        viewModel.userNumber = etNumber.text.toString()
-        viewModel.userMobile = etMobile.text.toString()
+        viewModel.userEmail = etEmail.text.toString()
 
         (activity as SignupActivity?)!!.nextFragment(1, FragmentSU1())
     }

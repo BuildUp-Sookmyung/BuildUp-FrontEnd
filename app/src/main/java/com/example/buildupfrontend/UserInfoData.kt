@@ -5,9 +5,7 @@ import java.io.Serializable
 data class UserInfoData(
     // SU0
     val userName: String?,
-    val userBday:String?,
-    val userNumber:String?,
-    val userMobile:String?,
+    val userEmail:String?,
     // SU1
     val checkAll: Boolean?,
     val checkService: Boolean?,
@@ -19,7 +17,6 @@ data class UserInfoData(
     val userID:String?,
     val userPW: String?,
     // SU3
-    val userEmail:String?,
     var userSchool: String?,
     var userMajor: String?,
     var userGrade: String?,

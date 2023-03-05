@@ -5,6 +5,8 @@ import java.util.regex.Pattern
 interface Patterns {
     val KorEng: Pattern
         get() = Pattern.compile("^[a-zA-Zㄱ-ㅎ가-힣]+$")
+    val KorEngSpace: Pattern
+        get() = Pattern.compile("^[a-zA-Zㄱ-ㅎ가-힣\\s]+$")
     val Num: Pattern
         get() = Pattern.compile("^[0-9]+$")
     val Num1: Pattern

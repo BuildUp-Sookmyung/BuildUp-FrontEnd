@@ -5,7 +5,7 @@
         android:layout_width="375dp"
         android:layout_height="match_parent"
         android:background="@color/background"
-        tools:context=".FindaccountActivity">
+        tools:context=".FindaccountActivity.FindaccountActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_title"

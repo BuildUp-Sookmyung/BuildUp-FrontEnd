@@ -1,21 +1,21 @@
-package com.example.buildupfrontend
+package com.example.buildupfrontend.FindaccountActivity
 
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
-import com.example.buildupfrontend.databinding.ActivityFindaccountBinding
+import com.example.buildupfrontend.FragmentSharedUser
+import com.example.buildupfrontend.R
+import com.example.buildupfrontend.ViewModels.SignupViewModel
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.regex.Pattern
 
 @AndroidEntryPoint
 class FragmentFindPW : FragmentSharedUser() {
@@ -43,15 +43,11 @@ class FragmentFindPW : FragmentSharedUser() {
         mView = inflater.inflate(R.layout.fragment_find_pw, container, false)!!
         initView(mView!!)
         // Shared Fragment에 포함 안 됨 tlId, etID 초기화
-        tlId = mView!!.findViewById<TextInputLayout>(R.id.tl_id)
-        etId = mView!!.findViewById<TextInputEditText>(R.id.et_id)
 
         //  '인증 요청' 누르기
         btnVerify.setOnClickListener() {
             tlId.error = null
             tlName.error = null
-            tlBday.error = null
-            tlNumber.error = null
             btnVerify.text = "재요청"
             startVerify()  // 입력란 나타나기, 타이머 시작, 안내 문구
         }
@@ -73,17 +69,44 @@ class FragmentFindPW : FragmentSharedUser() {
         })
         // 확인 버튼 누르면 다음 단계로
         btnOk.setOnClickListener() {
-            verifyInput(etVerify.text.toString(), verNumber)
+            verifyInput(etVerify.text.toString(), verifyCode)
         }
         return mView
     }
 
+    override fun initView(view: View) {
+        tlId = view.findViewById<TextInputLayout>(R.id.tl_id)
+        tlName = view.findViewById<TextInputLayout>(R.id.tl_name)
+        tlEmail = view.findViewById<TextInputLayout>(R.id.tl_email)
+        tlVerify = view.findViewById<TextInputLayout>(R.id.tl_verify)
+
+        etId = view.findViewById<TextInputEditText>(R.id.et_id)
+        etName = view.findViewById<TextInputEditText>(R.id.et_name)
+        etEmail = view.findViewById<TextInputEditText>(R.id.et_email)
+        etVerify = view.findViewById<TextInputEditText>(R.id.et_verify)
+
+        etId.setText(viewModel.userID)
+        etName.setText(viewModel.userName)
+        etEmail.setText(viewModel.userEmail)
+
+        validName = viewModel.validName
+        validEmail = viewModel.validEmail
+
+        btnVerify = view.findViewById<Button>(R.id.btn_verify)
+        btnOk = view.findViewById<Button>(R.id.btn_ok)
+        tvTimer = view.findViewById<TextView>(R.id.tv_timer)
+
+        btnVerify.isEnabled = validName && validEmail // 처음에는 '인증 요청' 버튼 활성화 x
+        btnOk.isEnabled = false
+        tlVerify.visibility = View.GONE // 처음에는 '인증번호를 입력하세요'란 안 보임
+    }
+
     override fun nextStep() {
+        viewModel.validName = true
+        viewModel.validEmail = true
         viewModel.userID = etId.text.toString()
         viewModel.userName = etName.text.toString()
-        viewModel.userBday = etBday.text.toString()
-        viewModel.userNumber = etNumber.text.toString()
-        viewModel.userMobile = etMobile.text.toString()
+        viewModel.userEmail = etEmail.text.toString()
 
         (activity as FindaccountActivity?)!!.nextFragment(FragmentFindPW2())
     }

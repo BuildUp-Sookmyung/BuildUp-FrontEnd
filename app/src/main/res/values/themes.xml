@@ -120,6 +120,20 @@
         <item name="android:windowIsFloating">true</item>
     </style>
 
+    <style name="DeleteDialog" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!--        <item name="android:windowFullscreen">true</item>-->
+        <item name="android:windowBackground">@drawable/dialog_detail</item>
+        <item name="windowFixedWidthMajor">327dp</item>
+        <item name="windowFixedHeightMajor">196dp</item>
+        <!-- Dim 처리 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:colorBackground">?attr/colorBackgroundFloating</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+
+        <!-- Dialog 가 센터에 나오도록 하자. -->
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
     <style name="MyDropDownItem" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
         <item name="colorControlNormal"> @color/border_normal </item>
         <item name="colorControlActivated"> @color/border_accent </item>

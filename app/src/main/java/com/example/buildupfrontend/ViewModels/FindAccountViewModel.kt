@@ -1,5 +1,6 @@
-package com.example.buildupfrontend
+package com.example.buildupfrontend.ViewModels
 
+import android.annotation.SuppressLint
 import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,15 +18,16 @@ class FindAccountViewModel @Inject constructor(
         MutableLiveData<String>()
     }
 
+    @SuppressLint("StaticFieldLeak")
     lateinit var tvTop: TextView
 
+    @SuppressLint("StaticFieldLeak")
     lateinit var tlId: TextInputLayout
+    @SuppressLint("StaticFieldLeak")
     lateinit var etId: TextInputEditText
     // SU0
     lateinit var userName: String
-    lateinit var userBday: String
-    lateinit var userNumber: String
-    lateinit var userMobile: String
+    lateinit var userEmail: String
     // SU2
     lateinit var userID: String
     lateinit var userPW: String
