@@ -42,8 +42,8 @@ open class SignupActivity : AppCompatActivity() {
 
     open fun firstView() {
         viewModel = ViewModelProvider(this)[SignupViewModel::class.java]
-        nextFragment(0, FragmentSU0())
-//        nextFragment(3, FragmentSU3())
+//        nextFragment(0, FragmentSU0())
+        nextFragment(3, FragmentSU3())
     }
 
     /**
@@ -105,19 +105,19 @@ open class SignupActivity : AppCompatActivity() {
         profile.put("major", "수학과")
         profile.put("grade", "4")
         profile.put("schoolPublicYn", "N")
-        profile.put("interests", "IT개발/데이터")
+        profile.put("interests", listOf("IT개발/데이터"))
         val suProfile = SignUpProfile("nickname", "email", "school",
         "major", "grade", "schoolPublicYn", listOf("엔지니어링/설계", "IT개발/데이터"))
         val _profile = JsonParser.parseString(profile.toString()) as JsonObject
 
-        val map: HashMap<String, Any> = HashMap()
+        val map: HashMap<String, String> = HashMap()
         map["nickname"] = "nickname"
         map["email"] = "marynam9912@gmail.com"
         map["school"] = "숙명여자대학교"
         map["major"] = "수학과"
         map["grade"] = "4"
         map["schoolPublicYn"] = "N"
-        map["interests"] = listOf("엔지니어링/설계", "IT개발/데이터")
+        map["interests"] = listOf("엔지니어링/설계", "IT개발/데이터").toString()
         val request = SignUpLocalService.body( "user ID", "user PW", _profile, "N")
         Log.i("request", request.toString())
         getRetrofitData(api, request)

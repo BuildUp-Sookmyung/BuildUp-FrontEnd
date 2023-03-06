@@ -13,8 +13,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.buildupfrontend.FindaccountActivity.FindaccountActivity
 import com.example.buildupfrontend.SignupActivity.SignupActivity
 import com.example.buildupfrontend.databinding.ActivityLoginBinding
-import com.example.buildupfrontend.retrofit.Client.EmailService
+import com.example.buildupfrontend.retrofit.Client.LoginTokenService
 import com.example.buildupfrontend.retrofit.Client.SocialAccessService
+import com.example.buildupfrontend.retrofit.Client.SocialTokenService
+import com.example.buildupfrontend.retrofit.Response.SignUpResponse
 import com.example.buildupfrontend.retrofit.Response.SimpleResponse
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -34,6 +36,7 @@ import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
+import okhttp3.*
 import retrofit2.Call
 import retrofit2.Response
 
@@ -209,6 +212,9 @@ class LoginActivity : AppCompatActivity() {
         })
         binding.btnLogin.setOnClickListener {
             if (validateIDPW(binding.etId.text.toString(), binding.etPw.text.toString())) {
+                Thread {
+                    loginToken(inputID, inputPW)
+                }.start()
                 nextStep(Intent(this, MainActivity::class.java))
             }
         }
@@ -222,6 +228,67 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+
+
+    private fun loginToken(userID: String, userPW: String): Boolean {
+//        val client = OkHttpClient().newBuilder()
+//            .build()
+//        val mediaType: MediaType? = "application/json".toMediaTypeOrNull()
+//        val body: RequestBody = "{\n    \"username\": \"kellbinnam\",\n    \"password\": \"pw1234\"\n}".toRequestBody(mediaType)
+//        val request: Request = Request.Builder()
+//            .url("http://3.39.183.184/member/login")
+//            .addHeader("Content-Type", "application/json")
+//            .method("POST", body)
+//            .build()
+        // 요청 전송
+//        val response: Response<*> = client.newCall(request).execute()
+//        //비동기 처리 (enqueue 사용)
+//        client.newCall(request).enqueue(object : Callback {
+//            //비동기 처리를 위해 Callback 구현
+//            override fun onFailure(call: okhttp3.Call, e: IOException) {
+//                TODO("Not yet implemented")
+//            }
+//
+//            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+//
+//                Log.i("token response", response.toString())
+//            }
+//        })
+
+        val api = LoginTokenService.create()
+        val body = LoginTokenService.body(userID, userPW)
+        Log.i("token body", body.toString())
+        var accessToken = ""
+        var refreshToken = ""
+
+        api.post(body)
+            .enqueue(object : retrofit2.Callback<SignUpResponse?> {
+                override fun onResponse(
+                    call: Call<SignUpResponse?>, response: Response<SignUpResponse?>,
+                ) {
+                    Log.i("token response", response.toString())
+
+                    if (response.code() != 200) {
+                        Log.i("token error", response.errorBody().toString())
+                    } else {
+                        val responseBody = response.body()!!
+                        if (!responseBody.success) {
+                            Log.i("response error", responseBody.error.toString())
+                        } else {
+                            Log.i("token", responseBody.toString())
+                            accessToken = responseBody.response.accessToken
+                            refreshToken = responseBody.response.refreshToken
+                        }
+                    }
+                }
+
+                override fun onFailure(p0: Call<SignUpResponse?>, p1: Throwable) {
+                    TODO()
+                }
+            })
+        return false
+    }
+
     /**
      * @apiType: String - either Kakao, Naver, Google
      * @email: userEmail
@@ -231,14 +298,51 @@ class LoginActivity : AppCompatActivity() {
      */
     private fun socialLogin(apiType: String, email: String) {
          if (isUserSigned(apiType, email)) {
+             socialToken(apiType, email)
              nextStep(Intent(this, MainActivity::class.java))
          } else {
-             setProfile()
+             socialToken(apiType, email)
+             setProfile(apiType)
          }
     }
 
-    private fun setProfile() {
+    private fun socialToken(apiType: String, email: String) {
+        val api = SocialTokenService.create()
+        val body = SocialTokenService.body(apiType, email)
+        Log.i("body", body.toString())
+        var accessToken = ""
+        var refreshToken = ""
+
+        api.post(body)
+            .enqueue(object : retrofit2.Callback<SignUpResponse?> {
+                override fun onResponse(
+                    call: Call<SignUpResponse?>, response: Response<SignUpResponse?>,
+                ) {
+                    Log.i("error", response.toString())
+
+                    if (response.code() != 200) {
+                        Log.i("error", response.errorBody().toString())
+                    } else {
+                        val responseBody = response.body()!!
+                        if (!responseBody.success) {
+                            Log.i("response error", responseBody.error.toString())
+                        } else {
+                            Log.i("token", responseBody.toString())
+                            accessToken = responseBody.response.accessToken
+                            refreshToken = responseBody.response.refreshToken
+                        }
+                    }
+                }
+
+                override fun onFailure(p0: Call<SignUpResponse?>, p1: Throwable) {
+                    TODO()
+                }
+            })
+    }
+
+    private fun setProfile(provider: String) {
         val intent = Intent(this, LoginProfileActivity::class.java)
+        intent.putExtra("provider", provider)
         nextStep(intent)
     }
 
@@ -249,33 +353,31 @@ class LoginActivity : AppCompatActivity() {
 
         api.post(body)
             .enqueue(object : retrofit2.Callback<SimpleResponse?> {
-                override fun onResponse(call: Call<SimpleResponse?>, response: Response<SimpleResponse?>,
+                override fun onResponse(
+                    call: Call<SimpleResponse?>, response: Response<SimpleResponse?>,
                 ) {
                     message = if (response.code() != 200) {
-                        Log.i("error", response.errorBody().toString())
                         response.errorBody().toString()
                     } else {
                         val responseBody = response.body()!!
                         if (!responseBody.success) {
-                            Log.i("response error", responseBody.error.toString())
+                            responseBody.error.toString()
                         }
-                        Log.i("response", responseBody.response.message)
                         responseBody.response.message
                     }
                 }
 
                 override fun onFailure(p0: Call<SimpleResponse?>, error: Throwable) {
-                    Log.i("error", error.message.toString())
                     message = error.message.toString()
                 }
             })
         Log.i("message", message)
 
-//        if ("신규" in message) {
-//            return false
-//        } else if ("이미 가입" in message) {
-//            return true
-//        }
+        if ("신규" in message) {
+            return false
+        } else if ("이미 가입" in message) {
+            return true
+        }
         return false
     }
 
@@ -384,6 +486,7 @@ class LoginActivity : AppCompatActivity() {
             inputID, inputPW,
             "", "", "", arrayListOf())
         Log.i("userInfo",userInfo.toString())
+        intent.putExtra("provider", "GOOGLE")
         intent.putExtra("userInfo", userInfo)
         startActivity(intent)
         finish()
@@ -394,11 +497,12 @@ class LoginActivity : AppCompatActivity() {
             null, null, null,null,null,null,
             inputID.value(), inputPW.value(),
             "", "", "", arrayListOf())
+
         intent.putExtra("userInfo", userInfo)
         startActivity(intent)
         finish()
         }
-    }
+}
 
     /**
      * change any "null"s to ""

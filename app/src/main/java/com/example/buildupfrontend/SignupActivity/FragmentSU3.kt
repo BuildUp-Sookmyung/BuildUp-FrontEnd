@@ -287,7 +287,7 @@ open class FragmentSU3: Fragment(), View.OnClickListener, onBackPressedListener,
 
         etName.setText(viewModel.userName)
         etEmail.setText(viewModel.userEmail)
-        btnOk.isEnabled = false
+        btnOk.isEnabled = true
 
         selectedArea1 = view.findViewById<TextView>(R.id.tv_select1)
         selectedArea2 = view.findViewById<TextView>(R.id.tv_select2)

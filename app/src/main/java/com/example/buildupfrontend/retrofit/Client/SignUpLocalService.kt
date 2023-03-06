@@ -1,7 +1,6 @@
 package com.example.buildupfrontend.retrofit.Client
 
 import com.example.buildupfrontend.retrofit.Response.SignUpResponse
-import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import okhttp3.*
@@ -57,7 +56,7 @@ interface SignUpLocalService {
         fun body(
             username: String,
             password: String,
-            profile: JsonElement,
+            profile: JsonObject,
             emailAgreeYn: String
         ): JsonObject {
             val userInfo = JSONObject()
