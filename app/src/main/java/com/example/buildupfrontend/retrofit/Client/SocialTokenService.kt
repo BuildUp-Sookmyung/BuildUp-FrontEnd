@@ -1,13 +1,9 @@
 package com.example.buildupfrontend.retrofit.Client
 
-import android.util.Log
-import com.example.buildupfrontend.retrofit.Response.SignUpResponse
+import com.example.buildupfrontend.retrofit.Response.SocialTokenResponse
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.OkHttpClient
-import okhttp3.RequestBody
 import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONObject
 import retrofit2.Call
@@ -17,11 +13,13 @@ import retrofit2.http.*
 
 
 interface SocialTokenService {
-    @Headers("Content-Type:application/json")
+    @Headers(
+        "accept: application/json",
+        "Content-Type:application/json")
     @POST("member/social-token")
     fun post(
         @Body userInfo: JsonObject,
-    ): Call<SignUpResponse>
+    ): Call<SocialTokenResponse>
 
     companion object{
         private const val BASE_URL = "http://3.39.183.184"
@@ -42,11 +40,17 @@ interface SocialTokenService {
                 .create(SocialTokenService::class.java)
         }
 
+        /**
+         * @provider: "GOOGLE", "NAVER", "KAKAO"
+         * @email: 이메일 주소
+         */
         fun body(provider: String, email: String): JsonObject {
             val jsonObject = JSONObject()
             jsonObject.put("provider", provider)
             jsonObject.put("email", email)
             return JsonParser.parseString(jsonObject.toString()) as JsonObject
+
+//            return PostSocialTokenModel(provider, email)
 
 //            val requestBody = jsonObject.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
 //            Log.i("jsonObject", jsonObject.toString())

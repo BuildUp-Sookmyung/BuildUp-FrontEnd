@@ -18,6 +18,7 @@ import com.example.buildupfrontend.retrofit.Client.SocialAccessService
 import com.example.buildupfrontend.retrofit.Client.SocialTokenService
 import com.example.buildupfrontend.retrofit.Response.SignUpResponse
 import com.example.buildupfrontend.retrofit.Response.SimpleResponse
+import com.example.buildupfrontend.retrofit.Response.SocialTokenResponse
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -314,9 +315,9 @@ class LoginActivity : AppCompatActivity() {
         var refreshToken = ""
 
         api.post(body)
-            .enqueue(object : retrofit2.Callback<SignUpResponse?> {
+            .enqueue(object : retrofit2.Callback<SocialTokenResponse?> {
                 override fun onResponse(
-                    call: Call<SignUpResponse?>, response: Response<SignUpResponse?>,
+                    call: Call<SocialTokenResponse?>, response: Response<SocialTokenResponse?>,
                 ) {
                     Log.i("error", response.toString())
 
@@ -328,14 +329,15 @@ class LoginActivity : AppCompatActivity() {
                             Log.i("response error", responseBody.error.toString())
                         } else {
                             Log.i("token", responseBody.toString())
-                            accessToken = responseBody.response.accessToken
-                            refreshToken = responseBody.response.refreshToken
+//                            accessToken = responseBody.response.accessToken
+//                            refreshToken = responseBody.response.refreshToken
                         }
                     }
                 }
 
-                override fun onFailure(p0: Call<SignUpResponse?>, p1: Throwable) {
-                    TODO()
+
+                override fun onFailure(p0: Call<SocialTokenResponse?>, p1: Throwable) {
+                    TODO("Not yet implemented")
                 }
             })
     }
