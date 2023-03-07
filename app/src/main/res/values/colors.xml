@@ -7,6 +7,41 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="theme">#90D4B4</color>
+
+    <color name="background">#FAFAFA</color>
+    <color name="text_primary">#262626</color>
+    <color name="text_secondary">#707070</color>
+    <color name="text_unavailable">#AAAAAA</color>
+    <color name="text_white">#FAFAFA</color>
+    <color name="text_accent">#845EF1</color>
+    <color name="text_error">#F44336</color>
+
+    <color name="solid_black">#262626</color>
+    <color name="solid_white">#FAFAFA</color>
+    <color name="solid_unavailable">#D3D3D3</color>
+    <color name="solid_accent_normal">#845EF1</color>
+    <color name="solid_accent_pressed">#6A4BC1</color>
+
+    <color name="border_normal">#C4C4C4</color>
+    <color name="border_unavailable">#4E4E4E</color>
+    <color name="border_accent">#845EF1</color>
+    <color name="accent30">#DACFFB</color>
+    <color name="accent_5">#F4F2FA</color>
+    <color name="border_error">#F44336</color>
+    <color name="border_black">#262626</color>
+
+    <color name="divider">#E0E0E0</color>
+    <color name="border">#E0E0E0</color>
+    <color name="dim">#99000000</color> <!-- 60% -->
+    <color name="hover">#33000000</color>
+
+    <color name="black_100">#262626</color>
+    <color name="black_70">#666666</color>
+    <color name="black_50">#909090</color>
+    <color name="black_30">#BABABA</color>
+    <color name="black_10">#E5E5E5</color>
+
     <color name="main">#00ACAC</color>
     <color name="light_main">#4D00ACAC</color>
 </resources>

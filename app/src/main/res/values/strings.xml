@@ -1,5 +1,10 @@
 <resources>
-    <string name="app_name">BuildUpFrontend</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="app_name">BuildUpFrontEnd</string>
+
+    <string name="naver_client_id">bfjjS56ykRJulSOGxfXP</string>
+    <string name="naver_client_secret">RD8A5WaNEd</string>
+    <string name="naver_client_name">네이버아이디 로그인</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="songdbox_">2022 ⓒSONGDBOX❄️</string>
 </resources>

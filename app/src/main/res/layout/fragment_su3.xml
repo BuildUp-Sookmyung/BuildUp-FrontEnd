@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_top"
+        android:layout_width="327dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="사용하실 프로필을 입력해주세요."
+        android:textColor="@color/text_primary"
+        android:textSize="22dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_top">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_name"
+            android:layout_width="327dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_m"
+                android:text="이름/닉네임"
+                android:textColor="@color/text_primary"
+                android:textSize="15dp"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tl_name"
+                style="@style/MyIDInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_name"
+                    style="@style/MyTextInputEditText"
+                    android:layout_width="327dp"
+                    android:layout_height="wrap_content"
+                    android:hint="이름/닉네임을 입력해주세요."
+                    android:maxLines="1"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="12dp"
+
+                    android:selectAllOnFocus="true"
+                    android:textCursorDrawable="@drawable/input_cursor"
+                    android:textSize="15sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_email"
+            android:layout_width="327dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_name">
+
+            <TextView
+                android:id="@+id/tv_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_m"
+                android:text="이메일"
+                android:textColor="@color/text_primary"
+                android:textSize="15dp"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tl_email"
+                style="@style/MyIDInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+
+                app:helperText="* 회원가입 이후 비공개 설정 가능합니다."
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_email">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_email"
+                    style="@style/MyTextInputEditText"
+                    android:layout_width="327dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:enabled="false"
+
+                    android:hint="이메일을 입력해주세요."
+                    android:maxLines="1"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="12dp"
+
+                    android:selectAllOnFocus="true"
+                    android:textCursorDrawable="@drawable/input_cursor"
+                    android:textSize="15sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_school"
+            android:layout_width="327dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_email">
+
+            <TextView
+                android:id="@+id/tv_school"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_m"
+                android:text="학교"
+                android:textColor="@color/text_primary"
+                android:textSize="15dp"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tl_school"
+                style="@style/MyIDInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+
+                app:helperText="* 회원가입 이후 비공개 설정 가능합니다."
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_school">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_school"
+                    style="@style/MyTextInputEditText"
+                    android:layout_width="327dp"
+                    android:layout_height="wrap_content"
+                    android:hint="학교를 입력해주세요."
+                    android:maxLines="1"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="12dp"
+
+                    android:selectAllOnFocus="true"
+                    android:textCursorDrawable="@drawable/input_cursor"
+                    android:textSize="15sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_major"
+            android:layout_width="327dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_school">
+
+            <TextView
+                android:id="@+id/tv_major"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_m"
+                android:text="전공"
+                android:textColor="@color/text_primary"
+                android:textSize="15dp"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tl_major"
+                style="@style/MyIDInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_major">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_major"
+                    style="@style/MyTextInputEditText"
+                    android:layout_width="327dp"
+                    android:layout_height="wrap_content"
+                    android:hint="전공을 입력해주세요."
+                    android:maxLines="1"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="12dp"
+
+                    android:selectAllOnFocus="true"
+                    android:textCursorDrawable="@drawable/input_cursor"
+                    android:textSize="15sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_grade"
+            android:layout_width="327dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_major">
+
+            <TextView
+                android:id="@+id/tv_grade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_m"
+                android:text="학년"
+                android:textColor="@color/text_primary"
+                android:textSize="15dp"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tl_grade"
+                style="@style/MyDropDownItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_grade">
+
+                <AutoCompleteTextView
+                    android:id="@+id/dd_grade"
+                    android:layout_width="327dp"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="12dp"
+                    android:paddingHorizontal="16dp"
+                    android:inputType="none"
+                    android:hint="학년을 입력해주세요"
+                    android:textColorHint="@color/text_unavailable"
+                    android:textSize="15sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_area"
+            android:layout_width="327dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_grade">
+
+            <TextView
+                android:id="@+id/tv_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_m"
+                android:text="관심분야"
+                android:textColor="@color/text_primary"
+                android:textSize="15dp"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_area_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_area"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_select1"
+                    style="@style/AreaButtonTheme"
+                    android:background="@drawable/ui_square_b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:minWidth="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_select2"
+                    style="@style/AreaButtonTheme"
+                    android:background="@drawable/ui_square_b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:minWidth="0dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toEndOf="@id/tv_select1"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_select3"
+                    style="@style/AreaButtonTheme"
+                    android:background="@drawable/ui_square_b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:minWidth="0dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toEndOf="@id/tv_select2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/btn_area"
+                    android:layout_width="56dp"
+                    android:layout_height="30dp"
+                    android:background="@color/background"
+                    android:src="@drawable/btn_square"
+                    android:scaleType="fitCenter"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toEndOf="@id/tv_select3"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_ok"
+        android:layout_width="327dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/selector_btn_cmd"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="가입 완료"
+        android:textColor="@color/background"
+
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/content" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        app:layout_constraintTop_toBottomOf="@id/btn_ok"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

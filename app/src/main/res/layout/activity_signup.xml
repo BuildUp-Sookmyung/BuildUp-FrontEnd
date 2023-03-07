@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="393dp"
+    android:layout_height="852dp"
+    android:background="@color/background"
+    tools:context=".SignupActivity.SignupActivity">
+
+    <RelativeLayout
+        android:id="@+id/rl_bar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+
+            android:layout_centerVertical="true"
+            android:background="@drawable/selector_ic_back"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+
+            android:text="회원가입"
+            android:textSize="17dp"
+            android:lineSpacingExtra="5sp"
+            android:translationY="-2.3sp"
+            android:textColor="@color/text_primary"
+            android:fontFamily="@font/pretendard_bold"
+            />
+
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/pb_signup"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:progressTint="@color/text_accent"
+        android:backgroundTint="@color/divider"
+        android:max="100"
+
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rl_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pb_signup"
+        app:layout_constraintBottom_toBottomOf="parent" >
+
+        <FrameLayout
+            android:id="@+id/fl_signup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

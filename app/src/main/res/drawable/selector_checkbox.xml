@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="false" android:state_pressed="true"
+        android:drawable="@drawable/btn_check_off_pre" />
+
+    <item android:state_checked="true" android:state_pressed="true"
+        android:drawable="@drawable/btn_check_on_pre"/>
+
+    <!-- 체크박스 해제 상태 -->
+    <item android:state_checked="false"
+        android:drawable="@drawable/btn_check_off_nor"/>
+    <!-- 체크박스 선택 상태 -->
+    <item android:state_checked="true"
+        android:drawable="@drawable/btn_check_on_nor"/>
+</selector>

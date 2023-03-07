@@ -1,5 +1,6 @@
 package com.example.buildupfrontend
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.buildupfrontend.databinding.ActivityMainBinding
@@ -14,6 +15,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val userInfo: UserInfoData = intent.getSerializableExtra("userInfo") as UserInfoData
+        val (userName, userEmail,
+            checkAll, checkService, checkPersInfo, checkMarketing, checkSms, checkEmail,
+            userID, userPW,
+            userSchool, userMajor, userGrade, userArea) = userInfo
 
         binding.bottomnav.run {
             setOnItemSelectedListener {

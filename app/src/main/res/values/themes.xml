@@ -1,18 +1,171 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.BuildUpFrontend" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.BuildUpFrontEnd" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#999999</item>
-        <item name="colorPrimaryVariant">@color/light_main</item>
+        <item name="colorPrimary">@color/solid_accent_normal</item>
+        <item name="colorPrimaryVariant">@color/solid_accent_normal</item>
         <item name="colorOnPrimary">@color/white</item>
+        <item name="colorAccent">@color/text_accent</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorSecondary">@color/text_secondary</item>
+        <item name="colorSecondaryVariant">@color/solid_accent_normal</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="l">true</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:windowFullscreen">true</item>
         <!-- Customize your theme here. -->
-        <item name="android:colorBackground">@color/white</item>
+    </style>
+
+    <style name="FullScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+    <style name="NoActionBar" parent="Theme.AppCompat.Light.NoActionBar" />
+
+    <style name="LoginTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+<!--        <item name="android:windowFullscreen">true</item>-->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/background</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+    </style>
+
+    <style name="MyIDInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="colorControlNormal"> @color/border_normal </item>
+        <item name="colorControlActivated"> @color/border_accent </item>
+        <item name="colorControlHighlight"> @color/solid_accent_normal </item>
+        <item name="android:textCursorDrawable"> @drawable/input_cursor </item>
+
+        <item name="boxStrokeColor">@color/solid_accent_normal</item>
+        <item name="boxStrokeErrorColor">@color/border_error</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
+        <!--상단에 있을때의 Hint-->
+        <item name="hintEnabled">false</item>
+        <!--Error-->
+        <item name="errorEnabled">true</item>
+        <item name="colorError">@color/border_error</item>
+        <item name="errorTextColor">@color/text_error</item>
+        <item name="errorIconDrawable">@null</item>
+        <item name="errorTextAppearance">@style/ErrorTextAppearance</item>
+
+        <item name="helperTextTextAppearance">@style/HelperTextAppearance</item>
+    </style>
+
+    <style name="HelperTextAppearance" >
+        <item name="fontFamily">@font/pretendard</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:lineSpacingExtra">4sp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_marginLeft"> -5dp</item>
+    </style>
+
+    <style name="MyPWInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="colorControlNormal"> @color/border_normal </item>
+        <item name="colorControlActivated"> @color/border_accent </item>
+        <item name="colorControlHighlight"> @color/solid_accent_normal </item>
+        <item name="android:textCursorDrawable"> @drawable/input_cursor </item>
+
+        <item name="boxStrokeColor">@color/solid_accent_normal</item>
+        <item name="boxStrokeErrorColor">@color/border_error</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
+        <!--상단에 있을때의 Hint-->
+        <item name="hintEnabled">false</item>
+        <item name="helperTextTextAppearance">@style/HelperTextAppearance</item>
+        <!--Error-->
+        <item name="errorEnabled">true</item>
+        <item name="colorError">@color/border_error</item>
+        <item name="errorTextColor">@color/text_error</item>
+        <item name="errorIconDrawable">@null</item>
+        <item name="errorTextAppearance">@style/ErrorTextAppearance</item>
+
+        <item name="endIconMode">password_toggle</item>
+        <item name="endIconDrawable">@drawable/selector_endicon</item>
+    </style>
+
+    <style name="ErrorTextAppearance" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">@font/pretendard_m</item>
+        <item name="android:textColor">@color/border_error</item>
+        <item name="colorControlActivated" >@color/border_error</item>
+        <item name="colorControlNormal">@color/border_error</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">15sp</item>
+        <item name="boxStrokeWidth">1dp</item>
+    </style>
+
+    <style name="MyTextInputEditText" parent="ThemeOverlay.MaterialComponents.TextInputEditText">
+        <item name="colorAccent">@color/solid_accent_normal</item>
+        <item name="colorControlHighlight">@color/solid_accent_normal</item>
+        <item name="android:textColorHighlight">@color/accent30</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="boxStrokeColor">@color/selector_textinput_box_stroke</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="helperTextEnabled">false</item>
+        <item name="hintEnabled">true</item>
+        <item name="android:textColorHint">@color/text_unavailable</item>
+    </style>
+
+    <style name="DetailDialog" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!--        <item name="android:windowFullscreen">true</item>-->
+        <item name="android:windowBackground">@drawable/dialog_detail</item>
+        <item name="windowFixedWidthMajor">327dp</item>
+        <item name="windowFixedHeightMajor">600dp</item>
+        <item name="windowFixedHeightMinor">522dp</item>
+        <!-- Dim 처리 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:colorBackground">?attr/colorBackgroundFloating</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+
+        <!-- Dialog 가 센터에 나오도록 하자. -->
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
+    <style name="DeleteDialog" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!--        <item name="android:windowFullscreen">true</item>-->
+        <item name="android:windowBackground">@drawable/dialog_detail</item>
+        <item name="windowFixedWidthMajor">327dp</item>
+        <item name="windowFixedHeightMajor">196dp</item>
+        <!-- Dim 처리 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:colorBackground">?attr/colorBackgroundFloating</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+
+        <!-- Dialog 가 센터에 나오도록 하자. -->
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
+    <style name="MyDropDownItem" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="colorControlNormal"> @color/border_normal </item>
+        <item name="colorControlActivated"> @color/border_accent </item>
+        <item name="colorControlHighlight"> @color/solid_accent_normal </item>
+        <item name="background">@color/background</item>
+        <item name="endIconDrawable">@drawable/selector_ic_input_arrow</item>
+        <item name="boxStrokeColor">@color/solid_accent_normal</item>
+        <item name="boxStrokeErrorColor">@color/border_error</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
+
+        <item name="android:ellipsize">end</item>
+        <item name="maxLines">1</item>
+        <item name="singleLine">true</item>
+
+        <!--상단에 있을때의 Hint-->
+        <item name="hintEnabled">false</item>
+        <!--Error-->
+        <item name="errorEnabled">true</item>
+        <item name="colorError">@color/border_error</item>
+        <item name="errorTextColor">@color/text_error</item>
+        <item name="errorIconDrawable">@null</item>
+        <item name="errorTextAppearance">@style/ErrorTextAppearance</item>
+        <item name="helperTextTextAppearance">@style/HelperTextAppearance</item>
+    </style>
+
+    <style name="AreaButtonTheme" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">@drawable/selector_toggle_textcolor</item>
+        <item name="android:height">30dp</item>
+        <item name="fontFamily">@font/pretendard</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:paddingHorizontal" tools:targetApi="o">8dp</item>
+        <item name="android:paddingVertical" tools:targetApi="o">4dp</item>
     </style>
 </resources>
