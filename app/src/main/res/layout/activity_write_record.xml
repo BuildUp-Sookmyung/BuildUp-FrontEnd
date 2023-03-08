@@ -4,38 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".record.Step2Activity"
+    tools:context=".record.WriteRecordActivity"
     android:orientation="vertical"
     android:gravity="center_horizontal">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="활동 등록하기"
-        android:layout_marginTop="50dp"
-        android:textSize="18sp"
-        android:textColor="#000000" />
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_record"
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        android:background="@drawable/divider">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="활동 등록"
+            android:textSize="17sp"
+            android:layout_gravity="center"
+            android:textColor="#000000" />
+    </androidx.appcompat.widget.Toolbar>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Step 2."
-        android:layout_marginTop="33dp"
-        android:textSize="20sp"
-        android:textColor="#000000"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="상세 정보를 입력해주세요."
-        android:layout_marginTop="9dp"
-        android:textSize="18sp"
-        android:textColor="#000000"
-        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="60dp"
+        android:paddingHorizontal="24dp"
         android:paddingTop="21dp"
         android:orientation="vertical">
         <ScrollView
@@ -49,46 +39,53 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:gravity="center_vertical"
                     android:layout_marginBottom="20dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="선택된 카테고리"
+                        android:text="카테고리*"
                         android:layout_marginRight="15dp"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:textColor="#000000"/>
 
                     <Spinner
                         android:id="@+id/spinner_category"
                         android:layout_width="match_parent"
-                        android:layout_height="30dp"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/write_record_borderline"
                         android:spinnerMode="dropdown"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:gravity="center_vertical"
                     android:layout_marginBottom="10dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="대회 제목"
+                        android:text="활동명*"
                         android:layout_marginRight="15dp"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:textColor="#000000"/>
                     <EditText
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="46dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/write_record_borderline"
+                        android:textSize="15sp"
+                        android:paddingHorizontal="16dp"
+                        android:hint="활동명을 입력해주세요."/>
 
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:gravity="center_vertical"
                     android:layout_marginBottom="20dp">
                     <TextView
@@ -96,28 +93,38 @@
                         android:layout_height="wrap_content"
                         android:text="주최 기관"
                         android:layout_marginRight="15dp"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:textColor="#000000"/>
                     <EditText
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="46dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/write_record_borderline"
+                        android:textSize="15sp"
+                        android:paddingHorizontal="16dp"
+                        android:hint="주최기관을 입력해주세요."/>
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:gravity="center_vertical"
                     android:layout_marginBottom="20dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="대표사진 업로드"
-                        android:layout_marginRight="15dp"
-                        android:textSize="13sp"
+                        android:text="대표사진"
+                        android:textSize="15sp"
                         android:textColor="#000000"/>
-
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="활동과 관련된 대표 사진이나 모집 공고를 업로드해주세요"
+                        android:layout_marginVertical="4dp"
+                        android:textSize="13sp"
+                        android:textColor="#707070"/>
                     <LinearLayout
                         android:layout_width="70dp"
                         android:layout_height="70dp"
@@ -129,91 +136,78 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:gravity="center_vertical"
                     android:layout_marginBottom="20dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="공개 범위"
+                        android:text="맡은 역할"
                         android:layout_marginRight="15dp"
-                        android:textSize="13sp"
-                        android:textColor="#000000"/>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <Spinner
-                            android:id="@+id/spinner_show"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:spinnerMode="dropdown"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="전체공개 선택 시, 나의 성장기록이 메인에 노출될 수 있습니다."
-                            android:textSize="9sp"
-                            android:textColor="#8A8A8A"/>
-                    </LinearLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="10dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="활동 설명"
-                        android:layout_marginRight="15dp"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:textColor="#000000"/>
                     <EditText
-                        android:layout_width="180dp"
-                        android:layout_height="100dp"
-                        android:hint="200자 이내로 입력해주세요."
-                        android:textSize="10sp"
-                        android:gravity="top"
-                        android:padding="12dp"
-                        android:background="@drawable/step2_borderline"/>
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/write_record_borderline"
+                        android:textSize="15sp"
+                        android:paddingHorizontal="16dp"
+                        android:hint="맡은 역할을 입력해주세요."/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="20dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="활동 기간*"
+                        android:layout_marginRight="15dp"
+                        android:textSize="15sp"
+                        android:textColor="#000000"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/write_record_borderline"/>
 
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="40dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="준비 기간"
+                        android:text="URL"
                         android:layout_marginRight="15dp"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:textColor="#000000"/>
 
-                    <Spinner
-                        android:id="@+id/spinner_duration"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:spinnerMode="dropdown"/>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
+                        android:layout_marginTop="12dp"
+                        android:textSize="15sp"
+                        android:paddingHorizontal="16dp"
+                        android:hint="ex) https://www.buildup.kr"
+                        android:background="@drawable/write_record_borderline"/>
 
-                    <Switch
-                        android:id="@+id/switch1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="기간 없음"
-                        android:textSize="13sp"
-                        android:layout_gravity="right"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="100dp"
-                    android:layout_height="40dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center"
-                    android:layout_marginTop="25dp"
-                    android:background="@drawable/step1_round_green">
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/write_btn_purple"
+                    android:backgroundTint="@color/light_main">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

@@ -1,12 +1,10 @@
 package com.example.buildupfrontend
 
-import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.buildupfrontend.databinding.ActivityMainBinding
 import com.example.buildupfrontend.home.HomeFragment
 import com.example.buildupfrontend.mypage.MypageFragment
-import com.example.buildupfrontend.record.RecordFragment
 import com.example.buildupfrontend.search.SearchFragment
 
 class MainActivity : AppCompatActivity() {

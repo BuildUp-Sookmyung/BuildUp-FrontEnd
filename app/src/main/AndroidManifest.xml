@@ -17,7 +17,7 @@
             android:name=".record.Step3Activity"
             android:exported="false" />
         <activity
-            android:name=".record.Step2Activity"
+            android:name=".record.WriteRecordActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
