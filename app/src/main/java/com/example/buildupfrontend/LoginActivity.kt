@@ -1,5 +1,6 @@
 package com.example.buildupfrontend
 
+import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
@@ -16,9 +17,10 @@ import com.example.buildupfrontend.databinding.ActivityLoginBinding
 import com.example.buildupfrontend.retrofit.Client.LoginTokenService
 import com.example.buildupfrontend.retrofit.Client.SocialAccessService
 import com.example.buildupfrontend.retrofit.Client.SocialTokenService
-import com.example.buildupfrontend.retrofit.Response.SignUpResponse
-import com.example.buildupfrontend.retrofit.Response.SimpleResponse
-import com.example.buildupfrontend.retrofit.Response.SocialTokenResponse
+import com.example.buildupfrontend.retrofit.Request.LoginRequest
+import com.example.buildupfrontend.retrofit.Request.SocialAccessRequest
+import com.example.buildupfrontend.retrofit.Request.SocialTokenRequest
+import com.example.buildupfrontend.retrofit.Response.*
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -26,8 +28,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
+import com.google.gson.Gson
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -40,11 +41,12 @@ import com.navercorp.nid.profile.data.NidProfileResponse
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Response
+import java.io.IOException
 
 
 class LoginActivity : AppCompatActivity() {
-    private var userID:String = "myid"
-    private var userPW:String = "mypw"
+    private var userID: String = ""
+    private var userPW: String = ""
 
     private var inputID: String = ""
     private var inputPW: String = ""
@@ -71,8 +73,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.btnLogin.isEnabled=false // 액티비티 시작 시 로그인 버튼 흐리게
-        binding.cbAutologin.isChecked=true // 액티비티 시작 시 자동 로그인 디폴트 체크
+        binding.btnLogin.isEnabled = false // 액티비티 시작 시 로그인 버튼 흐리게
+        binding.cbAutologin.isChecked = true // 액티비티 시작 시 자동 로그인 디폴트 체크
 
         // 1. 카카오 로그인
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
@@ -103,8 +105,7 @@ class LoginActivity : AppCompatActivity() {
                         UserApiClient.instance.me { user, error ->
                             if (error != null) {
                                 Log.e(TAG, "사용자 정보 요청 실패", error)
-                            }
-                            else if (user != null) {
+                            } else if (user != null) {
                                 userName = user.kakaoAccount?.name.toString()
                                 val email = user.kakaoAccount?.email.toString()
                                 birthYear = user.kakaoAccount?.birthyear.toString()
@@ -147,6 +148,7 @@ class LoginActivity : AppCompatActivity() {
                             }
                         })
                     }
+
                     override fun onError(errorCode: Int, message: String) {
                         val naverAccessToken = NaverIdLoginSDK.getAccessToken()
                         Log.e(TAG, "naverAccessToken : $naverAccessToken")
@@ -176,8 +178,6 @@ class LoginActivity : AppCompatActivity() {
             .requestEmail()
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
-        //firebase auth 객체
-        firebaseAuth = FirebaseAuth.getInstance()
         GoogleSignResultLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
@@ -188,7 +188,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         // 아이디 입력칸 체크
-        binding.etId.addTextChangedListener(object:TextWatcher {
+        binding.etId.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
 
@@ -196,11 +196,14 @@ class LoginActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                binding.btnLogin.isEnabled = binding.etId.text.toString().isNotEmpty() and binding.etPw.text.toString().isNotEmpty()
+                binding.btnLogin.isEnabled =
+                    binding.etId.text.toString().isNotEmpty() and binding.etPw.text.toString()
+                        .isNotEmpty()
             }
         })
+
         // 비밀번호 입력칸 체크
-        binding.etPw.addTextChangedListener(object:TextWatcher {
+        binding.etPw.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
 
@@ -208,16 +211,13 @@ class LoginActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                binding.btnLogin.isEnabled = binding.etId.text.toString().isNotEmpty() and binding.etPw.text.toString().isNotEmpty()
+                binding.btnLogin.isEnabled =
+                    binding.etId.text.toString().isNotEmpty() and binding.etPw.text.toString()
+                        .isNotEmpty()
             }
         })
         binding.btnLogin.setOnClickListener {
-            if (validateIDPW(binding.etId.text.toString(), binding.etPw.text.toString())) {
-                Thread {
-                    loginToken(inputID, inputPW)
-                }.start()
-                nextStep(Intent(this, MainActivity::class.java))
-            }
+            loginToken(binding.etId.text.toString(), binding.etPw.text.toString())
         }
         binding.btnFindaccount.setOnClickListener {
             val intent = Intent(this, FindaccountActivity::class.java)
@@ -230,65 +230,79 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-
     private fun loginToken(userID: String, userPW: String): Boolean {
-//        val client = OkHttpClient().newBuilder()
-//            .build()
-//        val mediaType: MediaType? = "application/json".toMediaTypeOrNull()
-//        val body: RequestBody = "{\n    \"username\": \"kellbinnam\",\n    \"password\": \"pw1234\"\n}".toRequestBody(mediaType)
-//        val request: Request = Request.Builder()
-//            .url("http://3.39.183.184/member/login")
-//            .addHeader("Content-Type", "application/json")
-//            .method("POST", body)
-//            .build()
-        // 요청 전송
-//        val response: Response<*> = client.newCall(request).execute()
-//        //비동기 처리 (enqueue 사용)
-//        client.newCall(request).enqueue(object : Callback {
-//            //비동기 처리를 위해 Callback 구현
-//            override fun onFailure(call: okhttp3.Call, e: IOException) {
-//                TODO("Not yet implemented")
-//            }
-//
-//            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
-//
-//                Log.i("token response", response.toString())
-//            }
-//        })
 
-        val api = LoginTokenService.create()
-        val body = LoginTokenService.body(userID, userPW)
-        Log.i("token body", body.toString())
-        var accessToken = ""
-        var refreshToken = ""
+        LoginTokenService.getRetrofit(LoginRequest(userID, userPW)).enqueue(object: retrofit2.Callback<TokenResponse> {
+            override fun onResponse(call: Call<TokenResponse>, response: Response<TokenResponse>){
 
-        api.post(body)
-            .enqueue(object : retrofit2.Callback<SignUpResponse?> {
-                override fun onResponse(
-                    call: Call<SignUpResponse?>, response: Response<SignUpResponse?>,
-                ) {
-                    Log.i("token response", response.toString())
+                if (response.isSuccessful) {
+                    inputID = userID
+                    inputPW = userPW
+                    val accessToken = response.body()?.response?.accessToken
+                    val refreshToken = response.body()?.response?.refreshToken
 
-                    if (response.code() != 200) {
-                        Log.i("token error", response.errorBody().toString())
-                    } else {
-                        val responseBody = response.body()!!
-                        if (!responseBody.success) {
-                            Log.i("response error", responseBody.error.toString())
-                        } else {
-                            Log.i("token", responseBody.toString())
-                            accessToken = responseBody.response.accessToken
-                            refreshToken = responseBody.response.refreshToken
+                    nextStep(null, accessToken, refreshToken, Intent(this@LoginActivity, MainActivity::class.java))
+
+                } else {
+                    try {
+                        val body = Gson().fromJson(response.errorBody()!!.string(), TokenErrorResponse::class.java)
+                        // "비밀번호가 틀렸습니다." or "회원을 찾을 수 없습니다."
+                        if (body.error.errorCode == "CREDENTIAL_MISS_MATCH") {
+                            binding.tlId.error = null
+                            binding.tlPw.error = body.error.errorMessage
+                        } else if (body.error.errorCode == "MEMBER_NOT_FOUND") {
+                            binding.tlId.error = body.error.errorMessage
+                            binding.tlPw.error = null
                         }
+
+                        Log.e(ContentValues.TAG, "message : $body.error.errorMessage")
+                    } catch (e: IOException) {
+                        e.printStackTrace()
                     }
                 }
-
-                override fun onFailure(p0: Call<SignUpResponse?>, p1: Throwable) {
-                    TODO()
-                }
-            })
+            }
+            override fun onFailure(call: Call<TokenResponse>, t: Throwable) {
+                Log.i("login failure",t.message.toString())
+            }
+        })
         return false
     }
+
+
+    private fun socialToken(apiType: String, email: String) {
+        lateinit var responseBody: List<*>
+
+        SocialTokenService.getRetrofit(SocialTokenRequest(apiType, email)).enqueue(object: retrofit2.Callback<TokenResponse> {
+            override fun onResponse(call: Call<TokenResponse>, response: Response<TokenResponse>){
+                responseBody = if (response.isSuccessful) {
+                    listOf(true, response.body()!!.response)
+                } else {
+                    try {
+                        val errorMessage = response.errorBody()!!.toString()
+                        listOf(false, errorMessage)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                        listOf(false, e.message.toString())
+                    }
+                }
+                Log.e("socialToken", responseBody.toString())
+
+                val accessToken = (responseBody[1] as TokenResponseData).accessToken
+                val refreshToken = (responseBody[1] as TokenResponseData).refreshToken
+                nextStep(apiType, accessToken, refreshToken, Intent(this@LoginActivity, MainActivity::class.java))
+
+            }
+            override fun onFailure(call: Call<TokenResponse>, t: Throwable) {
+                responseBody = listOf(false, t.message.toString())
+            }
+        })
+    }
+
+    private fun setProfile(provider: String) {
+        val intent = Intent(this, LoginProfileActivity::class.java)
+        nextStep(provider, null, null, intent)
+    }
+
 
     /**
      * @apiType: String - either Kakao, Naver, Google
@@ -298,121 +312,44 @@ class LoginActivity : AppCompatActivity() {
      * 2. 가입 안 한 사용자의 경우: 프로필 설정(FragmentSU3 이동)
      */
     private fun socialLogin(apiType: String, email: String) {
-         if (isUserSigned(apiType, email)) {
-             socialToken(apiType, email)
-             nextStep(Intent(this, MainActivity::class.java))
-         } else {
-             socialToken(apiType, email)
-             setProfile(apiType)
-         }
-    }
+        lateinit var message: String
 
-    private fun socialToken(apiType: String, email: String) {
-        val api = SocialTokenService.create()
-        val body = SocialTokenService.body(apiType, email)
-        Log.i("body", body.toString())
-        var accessToken = ""
-        var refreshToken = ""
-
-        api.post(body)
-            .enqueue(object : retrofit2.Callback<SocialTokenResponse?> {
-                override fun onResponse(
-                    call: Call<SocialTokenResponse?>, response: Response<SocialTokenResponse?>,
-                ) {
-                    Log.i("error", response.toString())
-
-                    if (response.code() != 200) {
-                        Log.i("error", response.errorBody().toString())
-                    } else {
-                        val responseBody = response.body()!!
-                        if (!responseBody.success) {
-                            Log.i("response error", responseBody.error.toString())
-                        } else {
-                            Log.i("token", responseBody.toString())
-//                            accessToken = responseBody.response.accessToken
-//                            refreshToken = responseBody.response.refreshToken
-                        }
-                    }
-                }
-
-
-                override fun onFailure(p0: Call<SocialTokenResponse?>, p1: Throwable) {
-                    TODO("Not yet implemented")
-                }
-            })
-    }
-
-    private fun setProfile(provider: String) {
-        val intent = Intent(this, LoginProfileActivity::class.java)
-        intent.putExtra("provider", provider)
-        nextStep(intent)
-    }
-
-    private fun isUserSigned(apiType: String, email: String): Boolean {
-        val api = SocialAccessService.create()
-        val body = SocialAccessService.body(apiType, email)
-        var message = ""
-
-        api.post(body)
-            .enqueue(object : retrofit2.Callback<SimpleResponse?> {
+        SocialAccessService.getRetrofit(SocialAccessRequest(apiType, email)).enqueue(object: retrofit2.Callback<SimpleResponse> {
                 override fun onResponse(
                     call: Call<SimpleResponse?>, response: Response<SimpleResponse?>,
                 ) {
-                    message = if (response.code() != 200) {
-                        response.errorBody().toString()
+                    message = if (response.isSuccessful) {
+                        response.body()!!.response.message
                     } else {
-                        val responseBody = response.body()!!
-                        if (!responseBody.success) {
-                            responseBody.error.toString()
+                        try {
+                            (response.errorBody() as SimpleResponse).error?.errorMessage.toString()
+                        } catch (e: IOException) {
+                            e.printStackTrace().toString()
                         }
-                        responseBody.response.message
+                    }
+                    Log.e("socialAccess request", "$apiType $email")
+                    Log.e("socialAccess response", message)
+
+                    /**
+                     * 신규 -> setProfile()
+                     * 이미 가입 -> socialToken()
+                     * (미구현) AUTH_PROVIDER_MISS_MATCH
+                     */
+                    if ("신규" in message) {
+                        setProfile(apiType)
+
+                    } else if ("가입" in message) {
+                        socialToken(apiType, email)
+
                     }
                 }
 
                 override fun onFailure(p0: Call<SimpleResponse?>, error: Throwable) {
                     message = error.message.toString()
+                    Log.e("socialAccess failure", message)
+                    Toast.makeText(this@LoginActivity, "간편 로그인 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
                 }
             })
-        Log.i("message", message)
-
-        if ("신규" in message) {
-            return false
-        } else if ("이미 가입" in message) {
-            return true
-        }
-        return false
-    }
-
-    // 아이디 유효 검사
-    private fun validateIDPW(_inputID:String, _inputPW:String): Boolean {
-        val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
-        return if (!checkid(_inputID)) {
-            binding.tlId.error = "* 아이디를 확인해주세요."
-            binding.tlPw.error = null
-            return false
-        } else if (checkid(_inputID) and !checkpw(_inputPW)) {
-            binding.tlId.error = null
-            binding.tlPw.error = "* 비밀번호를 확인해주세요."
-            return false
-        } else if (checkid(_inputID) and checkpw(_inputPW)) {
-            binding.tlId.error = null
-            binding.tlPw.error = null
-            inputID = _inputID
-            inputPW = _inputPW
-            Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show()
-            return true
-        }
-        else {
-            return false
-        }
-    }
-
-    private fun checkid(id: String): Boolean {
-        return id==userID
-    }
-
-    private fun checkpw(pw: String): Boolean {
-        return pw==userPW
     }
 
     // signIn
@@ -432,78 +369,17 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    // onStart. 유저가 앱에 이미 구글 로그인을 했는지 확인
-    public override fun onStart() {
-        super.onStart()
-        val account = GoogleSignIn.getLastSignedInAccount(this)
-        // TODO: 2023-02-12 이미 로그인 되어있을시 바로 메인 액티비티로 이동
-//        if (account !== null) {
-//            userEmail = account?.email.toString()
-//            userName = account?.givenName.toString().plus(account?.familyName.toString())
-//            nextStep(firebaseAuth.currentUser)
-//        }
-    } //onStart End
 
-    // onActivityResult
-    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                val account = task.getResult(ApiException::class.java)
-                firebaseAuthWithGoogle(account!!)
-
-            } catch (e: ApiException) {
-                // Google Sign In failed, update UI appropriately
-                Log.w("LoginActivity", "Google sign in failed", e)
-            }
-        }
-    } // onActivityResult End
-
-    // firebaseAuthWithGoogle
-    private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        Log.d("LoginActivity", "firebaseAuthWithGoogle:" + acct.id!!)
-
-        //Google SignInAccount 객체에서 ID 토큰을 가져와서 Firebase Auth로 교환하고 Firebase에 인증
-        val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
-        firebaseAuth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    Log.w("LoginActivity", "firebaseAuthWithGoogle 성공", task.exception)
-                    nextStep(firebaseAuth?.currentUser)
-                } else {
-                    Log.w("LoginActivity", "firebaseAuthWithGoogle 실패", task.exception)
-                }
-            }
-    }// firebaseAuthWithGoogle END
-
-    // toMainActivity
-    private fun nextStep(user: FirebaseUser?) {
-        val intent = Intent(this, MainActivity::class.java)
-        val userInfo = UserInfoData(userName, "",
-            null, null, null,null,null,null,
-            inputID, inputPW,
-            "", "", "", arrayListOf())
-        Log.i("userInfo",userInfo.toString())
-        intent.putExtra("provider", "GOOGLE")
-        intent.putExtra("userInfo", userInfo)
-        startActivity(intent)
-        finish()
-    }
-
-    private fun nextStep(intent: Intent) {
-        val userInfo = UserInfoData(userName.value(), userEmail.value(),
-            null, null, null,null,null,null,
+    private fun nextStep(provider: String?, accessToken: String?, refreshToken: String?, intent: Intent) {
+        val userInfo = UserInfoData(provider, accessToken, refreshToken, userName.value(), userEmail.value(),
+            null, null, null, null, null, null,
             inputID.value(), inputPW.value(),
             "", "", "", arrayListOf())
 
         intent.putExtra("userInfo", userInfo)
         startActivity(intent)
         finish()
-        }
+    }
 }
 
     /**

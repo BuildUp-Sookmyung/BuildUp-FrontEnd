@@ -3,6 +3,9 @@ package com.example.buildupfrontend
 import java.io.Serializable
 
 data class UserInfoData(
+    val provider: String?,
+    val accessToken: String?,
+    val refreshToken: String?,
     // SU0
     val userName: String?,
     val userEmail:String?,

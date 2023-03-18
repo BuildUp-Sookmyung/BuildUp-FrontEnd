@@ -1,9 +1,18 @@
 package com.example.buildupfrontend.retrofit.Response
 
-import com.google.gson.annotations.SerializedName
-
 data class SignUpResponse(
-    @SerializedName("success") val success: Boolean,
-    @SerializedName("response") val response: ResponseToken,
-    @SerializedName("error") val error: Any
+    val success: Boolean,
+    val response: SignUpToken?,
+    val error: SignUpError?
+)
+
+data class SignUpToken(
+    val accessToken: String,
+    val refreshToken: String
+)
+
+data class SignUpError(
+    val errorCode: String,
+    val errorMessage: String,
+    val errors: Map<String, String>?
 )

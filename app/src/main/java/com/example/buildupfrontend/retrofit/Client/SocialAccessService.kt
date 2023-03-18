@@ -1,48 +1,31 @@
 package com.example.buildupfrontend.retrofit.Client
 
+import com.example.buildupfrontend.retrofit.Request.FindIDRequest
+import com.example.buildupfrontend.retrofit.Request.SocialAccessRequest
+import com.example.buildupfrontend.retrofit.Response.FindIDResponse
 import com.example.buildupfrontend.retrofit.Response.SimpleResponse
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONObject
 import retrofit2.Call
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
 interface SocialAccessService {
+
     @Headers("Content-Type:application/json")
     @POST("member/social-access")
     fun post(
-        @Body userInfo: JsonObject
+        @Body userInfo: SocialAccessRequest
     ): Call<SimpleResponse>
 
     companion object{
-        private const val BASE_URL = "http://3.39.183.184"
+        /**
+         * @provider: "GOOGLE", "NAVER", "KAKAO"
+         * @email: 이메일 주소
+         */
 
-        fun create(): SocialAccessService {
-            val okHttpClient = OkHttpClient.Builder()
-                .addInterceptor(
-                    HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC)
-                        .setLevel(HttpLoggingInterceptor.Level.BODY)
-                        .setLevel(HttpLoggingInterceptor.Level.HEADERS)
-                )
-                .build()
-            return Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(SocialAccessService::class.java)
+        fun getRetrofit(userInfo: SocialAccessRequest): Call<SimpleResponse> {
+            return ApiClient.create(SocialAccessService::class.java).post(userInfo)
         }
-
-        fun body(provider: String, email: String): JsonObject {
-            val jsonObject = JSONObject()
-            jsonObject.put("provider", provider)
-            jsonObject.put("email", email)
-            return JsonParser.parseString(jsonObject.toString()) as JsonObject
-        }
-
     }
 }

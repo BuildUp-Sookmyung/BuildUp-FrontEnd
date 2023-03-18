@@ -11,13 +11,14 @@ import com.example.buildupfrontend.*
 import com.example.buildupfrontend.ViewModels.SignupViewModel
 import com.example.buildupfrontend.databinding.ActivitySignupBinding
 import com.example.buildupfrontend.retrofit.Client.SignUpLocalService
-import com.example.buildupfrontend.retrofit.SignUpProfile
+import com.example.buildupfrontend.retrofit.Client.SignUpSocialService
+import com.example.buildupfrontend.retrofit.Request.Profile
+import com.example.buildupfrontend.retrofit.Request.SignUpLocalRequest
+import com.example.buildupfrontend.retrofit.Request.SignUpSocialRequest
 import com.example.buildupfrontend.retrofit.Response.SignUpResponse
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
+import java.io.IOException
 
 
 // Fragment: https://korean-otter.tistory.com/entry/android-kotlin-Fragment-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0
@@ -42,8 +43,8 @@ open class SignupActivity : AppCompatActivity() {
 
     open fun firstView() {
         viewModel = ViewModelProvider(this)[SignupViewModel::class.java]
-//        nextFragment(0, FragmentSU0())
-        nextFragment(3, FragmentSU3())
+        nextFragment(0, FragmentSU0())
+//        nextFragment(3, FragmentSU3())
     }
 
     /**
@@ -78,64 +79,101 @@ open class SignupActivity : AppCompatActivity() {
 
     fun welcomeActivity() {
         val intent = Intent(this, WelcomeActivity::class.java)
-        val userInfo = UserInfoData(viewModel.userName, viewModel.userEmail,
+        val userInfo = UserInfoData(viewModel.provider, viewModel.accessToken, viewModel.refreshToken,
+            viewModel.userName, viewModel.userEmail,
             viewModel.checkAll, viewModel.checkService, viewModel.checkPersInfo, viewModel.checkMarketing, viewModel.checkSms, viewModel.checkEmail,
             viewModel.userID, viewModel.userPW,
             viewModel.userSchool, viewModel.userMajor, viewModel.userGrade, viewModel.userArea)
-        signupUser(userInfo)
+
+        var signUpRequest: Any? = null
+        if (userInfo.provider.isNullOrEmpty()) {
+            signUpRequest =SignUpLocalRequest(
+                username = userInfo.userID,
+                password = userInfo.userPW,
+                profile = Profile(
+                    nickname = userInfo.userName,
+                    email = userInfo.userEmail,
+                    school = userInfo.userSchool,
+                    major = userInfo.userMajor,
+                    grade = userInfo.userGrade,
+                    schoolPublicYn = "Y",
+                    interests = userInfo.userArea
+                ),
+                emailAgreeYn = "N"
+            )
+            signupUser(signUpRequest, intent)
+        } else {
+             signUpRequest =SignUpSocialRequest(
+                 userInfo.provider,
+                 profile = Profile(
+                     nickname = userInfo.userName,
+                     email = userInfo.userEmail,
+                     school = userInfo.userSchool,
+                     major = userInfo.userMajor,
+                     grade = userInfo.userGrade,
+                     schoolPublicYn = "Y",
+                     interests = userInfo.userArea
+                 ),
+                 emailAgreeYn = "N"
+             )
+             signupUser(signUpRequest, intent)
+        }
         Log.e(ContentValues.TAG, "Signup userInfo: $userInfo")
         intent.putExtra("userInfo", userInfo)
         startActivity(intent)
         finish()
     }
 
-    private fun signupUser(userInfo: UserInfoData) {
-        val api = SignUpLocalService.create()
-        val profile = JSONObject()
-//        profile.put("nickname", userInfo.userName)
-//        profile.put("email", userInfo.userEmail)
-//        profile.put("school", userInfo.userSchool)
-//        profile.put("major", userInfo.userMajor)
-//        profile.put("grade", userInfo.userGrade)
-//        profile.put("schoolPublicYn", "N")
-//        profile.put("interests", userInfo.userArea)
-        profile.put("nickname", "nickname")
-        profile.put("email", "marynam9912@gmail.com")
-        profile.put("school", "숙명여자대학교")
-        profile.put("major", "수학과")
-        profile.put("grade", "4")
-        profile.put("schoolPublicYn", "N")
-        profile.put("interests", listOf("IT개발/데이터"))
-        val suProfile = SignUpProfile("nickname", "email", "school",
-        "major", "grade", "schoolPublicYn", listOf("엔지니어링/설계", "IT개발/데이터"))
-        val _profile = JsonParser.parseString(profile.toString()) as JsonObject
+    private fun signupUser(signUpRequest: SignUpLocalRequest, intent: Intent) {
+        SignUpLocalService.getRetrofit(signUpRequest).enqueue(object: retrofit2.Callback<SignUpResponse> {
+            override fun onResponse(call: Call<SignUpResponse>, response: Response<SignUpResponse>){
+                if (response.isSuccessful) {
+                    Log.e("local signup response", response.body()?.response.toString())
+                    val accessToken = response.body()?.response?.accessToken
+                    val refreshToken = response.body()?.response?.refreshToken
+                    intent.putExtra("accessToken", accessToken)
+                    intent.putExtra("refreshToken", refreshToken)
 
-        val map: HashMap<String, String> = HashMap()
-        map["nickname"] = "nickname"
-        map["email"] = "marynam9912@gmail.com"
-        map["school"] = "숙명여자대학교"
-        map["major"] = "수학과"
-        map["grade"] = "4"
-        map["schoolPublicYn"] = "N"
-        map["interests"] = listOf("엔지니어링/설계", "IT개발/데이터").toString()
-        val request = SignUpLocalService.body( "user ID", "user PW", _profile, "N")
-        Log.i("request", request.toString())
-        getRetrofitData(api, request)
+                }else {
+                    try {
+                        val body = response.body()?.response.toString()
+
+                        Log.e(ContentValues.TAG, "body : $body")
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<SignUpResponse>, t: Throwable) {
+                Log.i("local signup failure",t.message.toString())
+            }
+        })
     }
 
-    private fun getRetrofitData(api: SignUpLocalService, userInfo: JsonObject) {
-        api.post(userInfo)
-            .enqueue(object : retrofit2.Callback<SignUpResponse?> {
-                override fun onResponse(
-                    call: Call<SignUpResponse?>, response: Response<SignUpResponse?>,
-                ) {
-                    Log.i("Response", response.toString())
+    private fun signupUser(signUpRequest: SignUpSocialRequest, intent: Intent) {
+        SignUpSocialService.getRetrofit(signUpRequest).enqueue(object: retrofit2.Callback<SignUpResponse> {
+            override fun onResponse(call: Call<SignUpResponse>, response: Response<SignUpResponse>){
+                if (response.isSuccessful) {
+                    Log.e("social signup response", response.body()?.response.toString())
+                    val accessToken = response.body()?.response?.accessToken
+                    val refreshToken = response.body()?.response?.refreshToken
+                    intent.putExtra("accessToken", accessToken)
+                    intent.putExtra("refreshToken", refreshToken)
 
-                }
+                }else {
+                    try {
+                        val body = response.body()?.response.toString()
 
-                override fun onFailure(p0: Call<SignUpResponse?>, p1: Throwable) {
-                    TODO("Not yet implemented")
+                        Log.e(ContentValues.TAG, "body : $body")
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
                 }
-            })
+            }
+            override fun onFailure(call: Call<SignUpResponse>, t: Throwable) {
+                Log.i("social signup failure",t.message.toString())
+            }
+        })
     }
+
 }

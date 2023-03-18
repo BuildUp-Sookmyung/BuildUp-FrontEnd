@@ -3,6 +3,7 @@ package com.example.buildupfrontend
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.example.buildupfrontend.databinding.ActivityMainBinding
 import com.example.buildupfrontend.home.HomeFragment
 import com.example.buildupfrontend.mypage.MypageFragment
@@ -17,10 +18,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val userInfo: UserInfoData = intent.getSerializableExtra("userInfo") as UserInfoData
-        val (userName, userEmail,
+        val (provider, accessToken, refreshToken,
+            userName, userEmail,
             checkAll, checkService, checkPersInfo, checkMarketing, checkSms, checkEmail,
             userID, userPW,
             userSchool, userMajor, userGrade, userArea) = userInfo
+
+        Log.e("MainAct userinfo", userInfo.toString())
 
         binding.bottomnav.run {
             setOnItemSelectedListener {
