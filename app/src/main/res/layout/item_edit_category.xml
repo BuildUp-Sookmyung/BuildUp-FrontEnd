@@ -4,20 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:orientation="horizontal"
-    android:background="@drawable/divider"
-    android:paddingHorizontal="7dp"
+    android:background="@drawable/border_divider"
+    android:paddingRight="7dp"
     android:gravity="center_vertical">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginRight="22dp">
+            android:layout_marginRight="12dp">
             <ImageView
                 android:id="@+id/image_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_outside_activity" />
+                android:src="@drawable/ic_category_puzzle_nor" />
         </LinearLayout>
         <TextView
             android:id="@+id/tv_category"

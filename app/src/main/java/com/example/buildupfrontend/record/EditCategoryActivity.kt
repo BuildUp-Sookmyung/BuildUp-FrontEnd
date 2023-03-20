@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.buildupfrontend.R
 import com.example.buildupfrontend.databinding.ActivityEditCategoryBinding
 
@@ -20,20 +21,24 @@ class EditCategoryActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbarEditCategory)
         val toolbar = supportActionBar!!
         toolbar.setDisplayShowTitleEnabled(false)
-        toolbar.setDisplayHomeAsUpEnabled(true)
+
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
 
         editCategoryRecyclerViewDataList= arrayListOf()
-        editCategoryRecyclerViewDataList.add(RecordRecyclerViewData(R.drawable.ic_outside_activity, "대외활동"))
-        editCategoryRecyclerViewDataList.add(RecordRecyclerViewData(R.drawable.ic_competition, "공모전"))
-        editCategoryRecyclerViewDataList.add(RecordRecyclerViewData(R.drawable.ic_certificate, "자격증"))
-        editCategoryRecyclerViewDataList.add(RecordRecyclerViewData(R.drawable.ic_school_activity, "교내활동"))
-        editCategoryRecyclerViewDataList.add(RecordRecyclerViewData(R.drawable.ic_club, "동아리"))
-        editCategoryRecyclerViewDataList.add(RecordRecyclerViewData(R.drawable.ic_project, "프로젝트"))
+        editCategoryRecyclerViewDataList.add(RecordRecyclerViewData(R.drawable.ic_category_puzzle_nor, "대외활동"))
+        editCategoryRecyclerViewDataList.add(RecordRecyclerViewData(R.drawable.ic_category_trophy_nor, "공모전"))
+        editCategoryRecyclerViewDataList.add(RecordRecyclerViewData(R.drawable.ic_category_badge_nor, "자격증"))
+        editCategoryRecyclerViewDataList.add(RecordRecyclerViewData(R.drawable.ic_category_school_nor, "교내활동"))
+        editCategoryRecyclerViewDataList.add(RecordRecyclerViewData(R.drawable.ic_category_group_nor, "동아리"))
+        editCategoryRecyclerViewDataList.add(RecordRecyclerViewData(R.drawable.ic_category_bulb_nor, "프로젝트"))
 
         binding.recyclerviewEditCategory.apply{
             layoutManager= GridLayoutManager(context, editCategoryRecyclerViewDataList.size,GridLayoutManager.HORIZONTAL, false)
             adapter=EditCategoryRecyclerViewAdapter(context,editCategoryRecyclerViewDataList)
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -46,9 +51,14 @@ class EditCategoryActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> finish()
             R.id.add_category -> {
+                val dialog=CategoryDialog(this)
+                dialog.show()
+                dialog.setOnClickListener(object: CategoryDialog.OnDialogClickListener{
+                    override fun onClicked(name: String, id: Int) {
 
+                    }
+                })
             }
         }
         return super.onOptionsItemSelected(item)

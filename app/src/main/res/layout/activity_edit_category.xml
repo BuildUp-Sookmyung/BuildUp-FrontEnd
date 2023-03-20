@@ -5,13 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".record.EditCategoryActivity">
+    tools:context=".record.EditCategoryActivity"
+    android:background="@color/background">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_edit_category"
         android:layout_width="match_parent"
         android:layout_height="57dp"
-        android:background="@drawable/divider">
+        android:background="@drawable/border_divider"
+        app:theme="@style/ToolbarTitleColor">
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back_nor"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

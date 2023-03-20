@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linear_activity"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingVertical="12dp"
+    android:paddingHorizontal="12dp"
+    android:layout_marginVertical="8dp"
+    android:gravity="center_vertical"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="@drawable/box_cardview">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ProgressBar
+                android:id="@+id/pb_activity"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_gravity="center"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="75"
+                android:progressDrawable="@drawable/circle_progressbar"
+                />
+
+            <TextView
+                android:id="@+id/tv_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/pb_activity"
+                android:layout_alignTop="@id/pb_activity"
+                android:layout_alignRight="@id/pb_activity"
+                android:layout_alignBottom="@id/pb_activity"
+                android:fontFamily="@font/pretendard_bold"
+                android:gravity="center"
+                android:text="75%"
+                android:textColor="@color/text_primary"
+                android:textSize="15dp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/cl_brief"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_m"
+                android:text="KB 라스쿨"
+                android:textFontWeight="500"
+                android:textColor="@color/text_primary"
+                android:textSize="15dp"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/pretendard"
+                android:textFontWeight="400"
+                android:text="2022-01-24 ~ 2023-02-14"
+                android:textColor="@color/text_secondary"
+                android:textSize="13dp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_list_arrow"
+            android:layout_marginStart="16dp" />
+
+</LinearLayout>

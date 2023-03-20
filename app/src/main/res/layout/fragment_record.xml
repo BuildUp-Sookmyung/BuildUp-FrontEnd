@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".record.RecordFragment">
+    tools:context=".record.RecordFragment"
+    android:background="@color/background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +15,7 @@
             android:id="@+id/toolbar_record"
             android:layout_width="match_parent"
             android:layout_height="57dp"
-            android:background="@drawable/divider">
+            android:background="@drawable/border_divider">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -59,8 +60,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="20dp"
-            android:layout_marginHorizontal="8dp"
-            android:background="@drawable/divider">
+            android:paddingHorizontal="8dp"
+            android:background="@drawable/border_divider">
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,53 +73,92 @@
                 android:layout_height="wrap_content"/>
         </HorizontalScrollView>
         </LinearLayout>
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="24dp">
+
+        <LinearLayout
+            android:id="@+id/linear_activity_none"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="30dp"
-                    android:src="@drawable/ic_empty" />
+                    android:src="@drawable/image_empty" />
 
                 <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="활동 기록이 없어요!"
-                android:textSize="20sp"
-                android:textColor="#262626"
-                android:layout_marginBottom="8dp"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="활동 기록이 없어요!"
+                    android:textSize="20sp"
+                    android:textFontWeight="700"
+                    android:lineHeight="30dp"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginBottom="8dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="아래 버튼을 눌러 새로운 활동을 등록해보세요."
                 android:textSize="15sp"
-                android:textColor="#262626"
+                android:textFontWeight="400"
+                android:lineHeight="22dp"
+                android:textColor="@color/text_primary"
                 android:layout_marginBottom="30dp"/>
             <LinearLayout
                 android:id="@+id/linear_write_activity"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
-                android:layout_marginHorizontal="24dp"
                 android:gravity="center"
                 android:background="@drawable/write_btn_purple"
-                android:backgroundTint="@color/main">
+                android:backgroundTint="@color/solid_accent_normal">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="활동 등록하기"
                     android:textSize="15sp"
-                    android:textColor="#FAFAFA" />
+                    android:textFontWeight="700"
+                    android:lineHeight="22dp"
+                    android:textColor="@color/text_white" />
 
             </LinearLayout>
         </LinearLayout>
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+
+                <ImageView
+                    android:id="@+id/btn_add_activity"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/btn_add_list"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="12dp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview_read_activity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
         </ScrollView>
+        </LinearLayout>
 
     </LinearLayout>
 

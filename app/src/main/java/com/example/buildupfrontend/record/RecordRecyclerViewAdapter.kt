@@ -13,7 +13,7 @@ import com.example.buildupfrontend.R
 
 class RecordRecyclerViewAdapter(
     private val context: Context,
-    private var dataList: ArrayList<RecordRecyclerViewData>
+    private var dataList: ArrayList<RecordRecyclerViewData>,
     ): RecyclerView.Adapter<RecordRecyclerViewAdapter.ViewHolder>() {
     private var selectPos=0
 

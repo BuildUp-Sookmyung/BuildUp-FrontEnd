@@ -15,6 +15,7 @@ import com.example.buildupfrontend.retrofit.Response.SimpleResponse
 import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Response
+import kotlin.text.Typography.dagger
 
 
 @AndroidEntryPoint

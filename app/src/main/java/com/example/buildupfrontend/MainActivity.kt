@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.example.buildupfrontend.databinding.ActivityMainBinding
 import com.example.buildupfrontend.home.HomeFragment
 import com.example.buildupfrontend.mypage.MypageFragment
+import com.example.buildupfrontend.record.RecordFragment
 import com.example.buildupfrontend.search.SearchFragment
 
 class MainActivity : AppCompatActivity() {
@@ -14,11 +15,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val userInfo: UserInfoData = intent.getSerializableExtra("userInfo") as UserInfoData
-        val (userName, userEmail,
-            checkAll, checkService, checkPersInfo, checkMarketing, checkSms, checkEmail,
-            userID, userPW,
-            userSchool, userMajor, userGrade, userArea) = userInfo
+//        val userInfo: UserInfoData = intent.getSerializableExtra("userInfo") as UserInfoData
+//        val (userName, userEmail,
+//            checkAll, checkService, checkPersInfo, checkMarketing, checkSms, checkEmail,
+//            userID, userPW,
+//            userSchool, userMajor, userGrade, userArea) = userInfo
 
         binding.bottomnav.run {
             setOnItemSelectedListener {
