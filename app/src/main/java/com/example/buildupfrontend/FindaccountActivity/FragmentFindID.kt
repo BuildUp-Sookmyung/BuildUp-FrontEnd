@@ -1,22 +1,25 @@
 package com.example.buildupfrontend.FindaccountActivity
 
+import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.example.buildupfrontend.FragmentSharedUser
 import com.example.buildupfrontend.ViewModels.SignupViewModel
 import com.example.buildupfrontend.retrofit.Client.FindIDService
-import com.example.buildupfrontend.retrofit.Client.SocialAccessService
+import com.example.buildupfrontend.retrofit.Request.FindIDRequest
+import com.example.buildupfrontend.retrofit.Response.FindIDError
+import com.example.buildupfrontend.retrofit.Response.FindIDErrorResponse
 import com.example.buildupfrontend.retrofit.Response.FindIDResponse
-import com.example.buildupfrontend.retrofit.Response.SimpleResponse
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Response
-import kotlin.text.Typography.dagger
-
+import java.io.IOException
 
 @AndroidEntryPoint
 class FragmentFindID : FragmentSharedUser() {
@@ -30,44 +33,36 @@ class FragmentFindID : FragmentSharedUser() {
 
         return super.getView()
     }
+
     override fun nextStep() {
         viewModel.userName = etName.text.toString()
         viewModel.userEmail = etEmail.text.toString()
 
-        viewModel.userID = findID(viewModel.userName, viewModel.userEmail)
-
-        (activity as FindaccountActivity?)!!.nextFragment(FragmentFindID2())
+        findID(viewModel.userName, viewModel.userEmail)
     }
 
-    private fun findID(name: String, mail: String): String {
-        val api = FindIDService.create()
-        val body = FindIDService.body(name, mail)
-        var message = ""
+    private fun findID(name: String, mail: String) {
 
-        api.post(body)
-            .enqueue(object : retrofit2.Callback<FindIDResponse?> {
-                override fun onResponse(call: Call<FindIDResponse?>, response: Response<FindIDResponse?>,
-                ) {
-                    message = if (response.code() != 200) {
-                        Log.i("error", response.errorBody().toString())
-                        response.errorBody().toString()
-                    } else {
-                        val responseBody = response.body()!!
-                        if (!responseBody.success) {
-                            Log.i("response error", responseBody.error.toString())
-                        }
-                        Log.i("response", responseBody.response.toString())
-                        responseBody.response.username
+        FindIDService.getRetrofit(FindIDRequest(name, mail)).enqueue(object: retrofit2.Callback<FindIDResponse> {
+            override fun onResponse(call: Call<FindIDResponse>, response: Response<FindIDResponse>){
+                if (response.isSuccessful) {
+                    Log.e("Find id response", response.body().toString())
+                    viewModel.userID = response.body()?.response.toString()
+                    (activity as FindaccountActivity?)!!.nextFragment(FragmentFindID2())
+
+                } else {
+                    try {
+                        val body = Gson().fromJson(response.errorBody()!!.string(), FindIDErrorResponse::class.java)
+                        Log.e(ContentValues.TAG, "body : $body")
+                        tlVerify.error = body.error.errorMessage
+                    } catch (e: IOException) {
+                        e.printStackTrace()
                     }
                 }
-                override fun onFailure(p0: Call<FindIDResponse?>, error: Throwable) {
-
-                    Log.i("error", error.message.toString())
-                    message = error.message.toString()
-                }
-            })
-        Log.i("message", message)
-
-        return message
+            }
+            override fun onFailure(call: Call<FindIDResponse>, t: Throwable) {
+                Log.e("find id failure", t.message.toString())
+            }
+        })
     }
 }

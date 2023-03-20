@@ -1,5 +1,6 @@
 package com.example.buildupfrontend
 
+import android.content.ContentValues
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
@@ -13,11 +14,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.buildupfrontend.retrofit.Client.EmailService
+import com.example.buildupfrontend.retrofit.Client.LoginTokenService
+import com.example.buildupfrontend.retrofit.Request.EmailRequest
+import com.example.buildupfrontend.retrofit.Request.LoginRequest
 import com.example.buildupfrontend.retrofit.Response.SimpleResponse
+import com.example.buildupfrontend.retrofit.Response.TokenResponse
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Response
+import java.io.IOException
 import java.util.regex.Pattern
 
 
@@ -59,7 +66,7 @@ open class FragmentSharedUser(): Fragment(), onBackPressedListener, Patterns {
             }
             override fun onFinish() {
                 verifyCode = ""
-                TODO("when time is over")
+//                TODO("when time is over")
             }
         }
     }
@@ -263,25 +270,29 @@ open class FragmentSharedUser(): Fragment(), onBackPressedListener, Patterns {
     }
 
     private fun getRetrofitData() {
-        val api = EmailService.create()
-        val body = EmailService.body(etName.text.toString(), etEmail.text.toString())
-
-        api.post(body)
-            .enqueue(object : retrofit2.Callback<SimpleResponse?> {
-                override fun onResponse(call: Call<SimpleResponse?>, response: Response<SimpleResponse?>,
-                ) {
+        EmailService.getRetrofit(EmailRequest(etName.text.toString(), etEmail.text.toString()))
+            .enqueue(object: retrofit2.Callback<SimpleResponse> {
+            override fun onResponse(call: Call<SimpleResponse>, response: Response<SimpleResponse>){
+                if (response.isSuccessful) {
                     if (response.code() != 200) {
-                        Log.i("error", response.errorBody().toString())
+                        Log.e("error", response.errorBody().toString())
                     }
                     val responseBody = response.body()!!
-                    Log.i("Response", responseBody.response.toString())
+                    Log.e("Response", responseBody.response.toString())
                     setVerifyCode(responseBody.response.message)
+                }else {
+                    try {
+                        val body = response.errorBody()!!.string()
+                        Log.e(ContentValues.TAG, "body : $body")
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
                 }
-
-                override fun onFailure(p0: Call<SimpleResponse?>, error: Throwable) {
-                    Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
-                }
-            })
+            }
+            override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
+                Log.e("email failure",t.message.toString())
+            }
+        })
     }
 
     @JvmName("setVerifyCode1")

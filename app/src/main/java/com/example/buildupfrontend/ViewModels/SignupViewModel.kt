@@ -11,6 +11,11 @@ class SignupViewModel @Inject constructor(
 
 ) : ViewModel() {
 
+    // if fragment starts after socialAccess
+    var provider: String? = null
+    var accessToken: String? = null
+    var refreshToken: String? = null
+
     var validName = false
     var validEmail = false
     var validId = false
@@ -34,11 +39,5 @@ class SignupViewModel @Inject constructor(
     var userMajor: String = ""
     var userGrade: String = ""
     var userArea: ArrayList<String> = arrayListOf()
-
-    val KorEng = Pattern.compile("^[a-zA-Zㄱ-ㅎ가-힣]+$")
-    val Num = Pattern.compile("^[0-9]+$")
-    val Num1 = Pattern.compile("^[0-4]{1}$")
-    val Num6 = Pattern.compile("^[0-9]{6}$")
-    val Num11 = Pattern.compile("^[0-9]{11}$")
 
 }

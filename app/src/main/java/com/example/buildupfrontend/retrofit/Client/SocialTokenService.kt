@@ -1,61 +1,25 @@
 package com.example.buildupfrontend.retrofit.Client
 
-import com.example.buildupfrontend.retrofit.Response.SocialTokenResponse
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import org.json.JSONObject
+import com.example.buildupfrontend.retrofit.Request.SocialTokenRequest
+import com.example.buildupfrontend.retrofit.Response.TokenResponse
 import retrofit2.Call
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
 
 interface SocialTokenService {
-    @Headers(
-        "accept: application/json",
-        "Content-Type:application/json")
+    @Headers("Content-Type:application/json")
     @POST("member/social-token")
     fun post(
-        @Body userInfo: JsonObject,
-    ): Call<SocialTokenResponse>
+        @Body userInfo: SocialTokenRequest
+    ): Call<TokenResponse>
 
     companion object{
-        private const val BASE_URL = "http://3.39.183.184"
-
-        fun create(): SocialTokenService {
-            val okHttpClient = OkHttpClient.Builder()
-                .addInterceptor(
-                    HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC)
-                        .setLevel(HttpLoggingInterceptor.Level.BODY)
-                        .setLevel(HttpLoggingInterceptor.Level.HEADERS)
-                )
-                .build()
-            return Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(SocialTokenService::class.java)
-        }
-
         /**
          * @provider: "GOOGLE", "NAVER", "KAKAO"
          * @email: 이메일 주소
          */
-        fun body(provider: String, email: String): JsonObject {
-            val jsonObject = JSONObject()
-            jsonObject.put("provider", provider)
-            jsonObject.put("email", email)
-            return JsonParser.parseString(jsonObject.toString()) as JsonObject
-
-//            return PostSocialTokenModel(provider, email)
-
-//            val requestBody = jsonObject.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
-//            Log.i("jsonObject", jsonObject.toString())
-//            return requestBody
+        fun getRetrofit(userInfo: SocialTokenRequest): Call<TokenResponse> {
+            return ApiClient.create(SocialTokenService::class.java).post(userInfo)
         }
-
     }
 }

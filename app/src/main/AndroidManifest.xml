@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.buildupfrontend">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".GlobalApplication"
         android:allowBackup="true"
@@ -14,10 +16,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity
-            android:name=".EditRecordActivity"
+            android:name=".record.EditRecordActivity"
             android:exported="false" />
         <activity
-            android:name=".EditActivityActivity"
+            android:name=".record.EditActivityActivity"
             android:exported="false" />
         <activity
             android:name=".record.WriteRecordActivity"
@@ -41,22 +43,21 @@
         <activity
             android:name=".FindaccountActivity.FindaccountActivity"
             android:theme="@style/LoginTheme" />
+        <activity android:name=".MainActivity" />
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".SignupActivity.SignupActivity"
+            android:theme="@style/LoginTheme" />
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:theme="@style/FullScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".SignupActivity.SignupActivity"
-            android:theme="@style/LoginTheme" />
-        <activity
-            android:name=".SplashActivity"
-            android:exported="false"
-            android:theme="@style/FullScreenTheme" />
+    
         <activity
             android:name=".LoginActivity"
             android:theme="@style/LoginTheme" />
