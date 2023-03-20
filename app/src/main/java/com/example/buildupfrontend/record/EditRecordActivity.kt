@@ -11,5 +11,13 @@ class EditRecordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding=ActivityEditRecordBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setSupportActionBar(binding.toolbarEditRecord)
+        val toolbar = supportActionBar!!
+        toolbar.setDisplayShowTitleEnabled(false)
+
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
     }
 }

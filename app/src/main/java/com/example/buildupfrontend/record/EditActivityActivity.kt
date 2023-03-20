@@ -11,5 +11,13 @@ class EditActivityActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding=ActivityEditActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setSupportActionBar(binding.toolbarEditActivity)
+        val toolbar = supportActionBar!!
+        toolbar.setDisplayShowTitleEnabled(false)
+
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
     }
 }

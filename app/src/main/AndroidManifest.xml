@@ -32,8 +32,13 @@
             android:exported="false" />
         <activity
             android:name=".record.ReadActivityActivity"
-            android:exported="true"
-            android:theme="@style/LoginTheme" />
+            android:exported="false" />
+        <activity
+            android:name=".record.WriteActivityActivity"
+            android:exported="false" />
+        <activity
+            android:name=".record.EditCategoryActivity"
+            android:exported="false" />
         <activity
             android:name=".LoginProfileActivity"
             android:theme="@style/LoginTheme" />
@@ -43,7 +48,9 @@
         <activity
             android:name=".FindaccountActivity.FindaccountActivity"
             android:theme="@style/LoginTheme" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"
+            android:exported="false">
+        </activity>
         <activity
             android:name=".SignupActivity.SignupActivity"
             android:theme="@style/LoginTheme" />
@@ -53,7 +60,6 @@
             android:theme="@style/FullScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -75,12 +81,6 @@
                     android:scheme="@string/kakao_oauth_host" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".record.WriteActivityActivity"
-            android:exported="false" />
-        <activity
-            android:name=".record.EditCategoryActivity"
-            android:exported="false" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
