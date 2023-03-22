@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".record.CategoryDialog"
+    android:background="@drawable/dialog_background"
+    android:paddingVertical="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="15.5dp"
+        android:layout_marginHorizontal="24dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="활동기간 설정"
+            android:textSize="17sp"
+            android:layout_weight="1"
+            android:textColor="@color/text_primary"
+            android:textFontWeight="700"
+            android:lineHeight="25dp"
+            />
+        <ImageView
+            android:id="@+id/img_calendar_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_close_nor"/>
+    </LinearLayout>
+
+    <DatePicker
+        android:id="@+id/datepicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:datePickerMode="spinner"
+        android:calendarViewShown="false"
+        android:layout_marginBottom="20dp"/>
+
+    <LinearLayout
+        android:id="@+id/calendar_dialog_complete"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:gravity="center"
+        android:background="@drawable/write_btn_purple"
+        android:backgroundTint="@color/solid_accent_normal"
+        android:layout_marginHorizontal="24dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="완료"
+            android:textSize="15sp"
+            android:textFontWeight="700"
+            android:lineHeight="22dp"
+            android:textColor="@color/text_white" />
+
+    </LinearLayout>
+</LinearLayout>
