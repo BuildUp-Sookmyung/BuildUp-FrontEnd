@@ -1,9 +1,11 @@
 package com.example.buildupfrontend.FindaccountActivity
 
+import android.content.ContentValues
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +15,17 @@ import androidx.fragment.app.activityViewModels
 import com.example.buildupfrontend.FragmentSharedUser
 import com.example.buildupfrontend.R
 import com.example.buildupfrontend.ViewModels.SignupViewModel
+import com.example.buildupfrontend.retrofit.Client.EmailService
+import com.example.buildupfrontend.retrofit.Client.FindPWService
+import com.example.buildupfrontend.retrofit.Request.EmailRequest
+import com.example.buildupfrontend.retrofit.Request.FindPWRequest
+import com.example.buildupfrontend.retrofit.Response.SimpleResponse
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
+import retrofit2.Call
+import retrofit2.Response
+import java.io.IOException
 
 @AndroidEntryPoint
 class FragmentFindPW : FragmentSharedUser() {
@@ -64,7 +74,7 @@ class FragmentFindPW : FragmentSharedUser() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                btnOk.isEnabled = etVerify.text.toString().isNotEmpty() && Num6.matcher(etVerify.text.toString()).find()
+                btnOk.isEnabled = etVerify.text.toString().isNotEmpty()
             }
         })
         // 확인 버튼 누르면 다음 단계로

@@ -101,7 +101,7 @@ open class SignupActivity : AppCompatActivity() {
                 ),
                 emailAgreeYn = "N"
             )
-            signupUser(signUpRequest, intent)
+            signupUser(signUpRequest, userInfo, intent)
         } else {
              signUpRequest =SignUpSocialRequest(
                  userInfo.provider,
@@ -116,15 +116,11 @@ open class SignupActivity : AppCompatActivity() {
                  ),
                  emailAgreeYn = "N"
              )
-             signupUser(signUpRequest, intent)
+             signupUser(signUpRequest, userInfo, intent)
         }
-        Log.e(ContentValues.TAG, "Signup userInfo: $userInfo")
-        intent.putExtra("userInfo", userInfo)
-        startActivity(intent)
-        finish()
     }
 
-    private fun signupUser(signUpRequest: SignUpLocalRequest, intent: Intent) {
+    private fun signupUser(signUpRequest: SignUpLocalRequest, userInfo: UserInfoData, intent: Intent) {
         SignUpLocalService.getRetrofit(signUpRequest).enqueue(object: retrofit2.Callback<SignUpResponse> {
             override fun onResponse(call: Call<SignUpResponse>, response: Response<SignUpResponse>){
                 if (response.isSuccessful) {
@@ -134,6 +130,10 @@ open class SignupActivity : AppCompatActivity() {
                     intent.putExtra("accessToken", accessToken)
                     intent.putExtra("refreshToken", refreshToken)
 
+                    Log.e(ContentValues.TAG, "Signup userInfo: $userInfo")
+                    intent.putExtra("userInfo", userInfo)
+                    startActivity(intent)
+                    finish()
                 }else {
                     try {
                         val body = response.body()?.response.toString()
@@ -150,16 +150,18 @@ open class SignupActivity : AppCompatActivity() {
         })
     }
 
-    private fun signupUser(signUpRequest: SignUpSocialRequest, intent: Intent) {
+    private fun signupUser(signUpRequest: SignUpSocialRequest, userInfo: UserInfoData, intent: Intent) {
         SignUpSocialService.getRetrofit(signUpRequest).enqueue(object: retrofit2.Callback<SignUpResponse> {
             override fun onResponse(call: Call<SignUpResponse>, response: Response<SignUpResponse>){
                 if (response.isSuccessful) {
                     Log.e("social signup response", response.body()?.response.toString())
-                    val accessToken = response.body()?.response?.accessToken
-                    val refreshToken = response.body()?.response?.refreshToken
-                    intent.putExtra("accessToken", accessToken)
-                    intent.putExtra("refreshToken", refreshToken)
+                    userInfo.accessToken = response.body()?.response?.accessToken
+                    userInfo.refreshToken = response.body()?.response?.refreshToken
 
+                    Log.e(ContentValues.TAG, "Signup userInfo: $userInfo")
+                    intent.putExtra("userInfo", userInfo)
+                    startActivity(intent)
+                    finish()
                 }else {
                     try {
                         val body = response.body()?.response.toString()

@@ -11,10 +11,6 @@ interface Patterns {
         get() = Pattern.compile("^[0-9]+$")
     val Num1: Pattern
         get() = Pattern.compile("^[1-4]{1}$")
-    val Num6: Pattern
-        get() = Pattern.compile("^[0-9]{6}$")
-    val Num11: Pattern
-        get() = Pattern.compile("^[0-9]{11}$")
     val typeID: Pattern
         get() = Pattern.compile("^[a-z0-9]{5,20}+$")
     val typeEmail: Pattern

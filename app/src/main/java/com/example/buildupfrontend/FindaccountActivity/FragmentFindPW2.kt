@@ -1,6 +1,8 @@
 package com.example.buildupfrontend.FindaccountActivity
 
+import android.content.ContentValues
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +14,15 @@ import com.example.buildupfrontend.SignupActivity.FragmentSU1
 import com.example.buildupfrontend.SignupActivity.FragmentSU2
 import com.example.buildupfrontend.SignupActivity.SignupActivity
 import com.example.buildupfrontend.ViewModels.SignupViewModel
+import com.example.buildupfrontend.retrofit.Client.FindPWService
+import com.example.buildupfrontend.retrofit.Request.FindPWRequest
+import com.example.buildupfrontend.retrofit.Response.SimpleResponse
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.gson.Gson
+import retrofit2.Call
+import retrofit2.Response
+import java.io.IOException
 
 class FragmentFindPW2 : FragmentSU2() {
 
@@ -63,6 +72,30 @@ class FragmentFindPW2 : FragmentSU2() {
     }
 
     override fun nextStep() {
-        Toast.makeText(context, "비밀번호 재설정이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+        getRetrofitData()
+    }
+
+    override fun getRetrofitData() {
+        FindPWService.getRetrofit(FindPWRequest(viewModel.userEmail, viewModel.userPW))
+            .enqueue(object: retrofit2.Callback<SimpleResponse> {
+                override fun onResponse(call: Call<SimpleResponse>, response: Response<SimpleResponse>){
+                    if (response.isSuccessful) {
+                        // "비밀번호 재설정이 완료되었습니다."
+                        val responseMessage = response.body()!!.response.message
+                        Toast.makeText(context, responseMessage, Toast.LENGTH_SHORT).show()
+                    } else {
+                        try {
+                            val body = Gson().fromJson(response.errorBody()!!.string(), SimpleResponse::class.java)
+                            // "비밀번호 재설정에 실패하였습니다."
+                            Toast.makeText(activity, body.error?.errorMessage, Toast.LENGTH_LONG).show()
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+                override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
+//                    TODO('')
+                }
+            })
     }
 }

@@ -48,7 +48,8 @@ class FragmentFindID : FragmentSharedUser() {
             override fun onResponse(call: Call<FindIDResponse>, response: Response<FindIDResponse>){
                 if (response.isSuccessful) {
                     Log.e("Find id response", response.body().toString())
-                    viewModel.userID = response.body()?.response.toString()
+                    viewModel.userID = response.body()?.response?.username.toString()
+                    viewModel.createdDate = response.body()?.response?.createdDate
                     (activity as FindaccountActivity?)!!.nextFragment(FragmentFindID2())
 
                 } else {
