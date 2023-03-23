@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".record.WriteActivityActivity"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@color/background">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_record"
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        android:background="@drawable/border_divider">
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back_nor"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="활동 등록"
+            android:textSize="17sp"
+            android:layout_gravity="center"
+            android:textColor="#000000" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="21dp"
+        android:orientation="vertical">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="20dp">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="카테고리 "
+                        android:textSize="15sp"
+                        android:textColor="@color/text_primary"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="*"
+                            android:textSize="15sp"
+                            android:textColor="@color/text_accent"/>
+                    </LinearLayout>
+
+                    <Spinner
+                        android:id="@+id/spinner_category"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="46dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/border_normal_round"
+                        android:spinnerMode="dropdown"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="20dp">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="활동명 "
+                            android:textSize="15sp"
+                            android:textColor="@color/text_primary"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="*"
+                            android:textSize="15sp"
+                            android:textColor="@color/text_accent"/>
+                    </LinearLayout>
+                    <EditText
+                        android:id="@+id/et_activity_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="46dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/border_normal_round"
+                        android:textSize="15sp"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="12dp"
+                        android:hint="활동명을 입력해주세요."/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="20dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="주최 기관"
+                        android:layout_marginRight="15dp"
+                        android:textSize="15sp"
+                        android:textColor="@color/text_primary"/>
+                    <EditText
+                        android:id="@+id/et_host"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="46dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/border_normal_round"
+                        android:textSize="15sp"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="12dp"
+                        android:hint="주최기관을 입력해주세요."/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="20dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="대표사진"
+                        android:textSize="15sp"
+                        android:textColor="#000000"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="활동과 관련된 대표 사진이나 모집 공고를 업로드해주세요"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="12dp"
+                        android:textSize="13sp"
+                        android:textColor="#707070"/>
+
+                    <LinearLayout
+                        android:id="@+id/linear_add_image"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:background="@drawable/border_normal_round"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_add_image"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="(0/1)"
+                            android:textSize="13sp"
+                            android:textColor="@color/text_unavailable"
+                            android:textFontWeight="400"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="20dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="맡은 역할"
+                        android:layout_marginRight="15dp"
+                        android:textSize="15sp"
+                        android:textColor="@color/text_primary"/>
+                    <EditText
+                        android:id="@+id/et_role"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="46dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/border_normal_round"
+                        android:textSize="15sp"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="12dp"
+                        android:hint="맡은 역할을 입력해주세요."/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="20dp">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="12dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="활동 기간 "
+                            android:textSize="15sp"
+                            android:textColor="@color/text_primary"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="*"
+                            android:textSize="15sp"
+                            android:textColor="@color/text_accent"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+                        <LinearLayout
+                            android:id="@+id/linear_calendar_start"
+                            android:layout_width="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:minHeight="46dp"
+                            android:background="@drawable/border_normal_round"
+                            android:orientation="horizontal"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/tv_calendar_start"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="yyyy-mm-dd"
+                                android:textColor="@color/text_unavailable"
+                                android:textSize="15dp"
+                                android:textFontWeight="400"
+                                android:layout_marginRight="8dp"
+                                />
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_calendar"/>
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="~"
+                            android:textColor="@color/text_primary"
+                            android:textSize="15sp"
+                            android:textFontWeight="400"
+                            android:layout_marginHorizontal="8dp"/>
+
+                        <LinearLayout
+                            android:id="@+id/linear_calendar_end"
+                            android:layout_width="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:minHeight="46dp"
+                            android:background="@drawable/border_normal_round"
+                            android:orientation="horizontal"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/tv_calendar_end"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="yyyy-mm-dd"
+                                android:textColor="@color/text_unavailable"
+                                android:textSize="15dp"
+                                android:textFontWeight="400"
+                                android:layout_marginRight="8dp"
+                                />
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_calendar"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="40dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="URL"
+                        android:layout_marginRight="15dp"
+                        android:textSize="15sp"
+                        android:textColor="#000000"/>
+
+                    <EditText
+                        android:id="@+id/et_url"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="46dp"
+                        android:layout_marginTop="12dp"
+                        android:textSize="15sp"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="12dp"
+                        android:hint="ex) https://www.buildup.kr"
+                        android:background="@drawable/border_normal_round"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/write_btn_purple"
+                    android:backgroundTint="#4D845EF1">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="등록"
+                        android:textSize="16sp"
+                        android:textColor="@color/background"/>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</LinearLayout>

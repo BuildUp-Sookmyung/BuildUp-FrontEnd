@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".record.ReadActivityActivity"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_read_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back_nor"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="활동"
+            android:textSize="17sp"
+            android:layout_gravity="center"
+            android:textColor="#000000" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:id="@+id/linear_title_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="20dp"
+        android:paddingHorizontal="24dp"
+        android:layout_marginBottom="30dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/border_divider">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        <ProgressBar
+            android:id="@+id/pb_activity"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_gravity="center"
+            android:indeterminate="false"
+            android:max="100"
+            android:progress="75"
+            android:progressDrawable="@drawable/circle_progressbar"
+            />
+
+            <TextView
+                android:id="@+id/tv_progress"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignLeft="@id/pb_activity"
+                android:layout_alignTop="@id/pb_activity"
+                android:layout_alignRight="@id/pb_activity"
+                android:layout_alignBottom="@id/pb_activity"
+                android:fontFamily="@font/pretendard_bold"
+                android:gravity="center"
+                android:text="75%"
+                android:textColor="@color/text_primary"
+                android:textSize="15dp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/cl_brief"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_category"
+                android:layout_width="wrap_content"
+                android:layout_height="19dp"
+                android:fontFamily="@font/pretendard"
+                android:text="대외활동"
+                android:textColor="@color/text_accent"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/pretendard_m"
+                android:text="KB 라스쿨"
+                android:textColor="@color/text_primary"
+                android:textSize="17dp" />
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/pretendard"
+                android:text="2022-01-24 ~ 2023-02-14"
+                android:textColor="@color/text_secondary"
+                android:textSize="13dp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_list_arrow"
+            android:layout_marginStart="20dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_record_exist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+    <LinearLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="기록"
+            android:textSize="17dp"
+            android:textColor="@color/text_primary"
+            android:fontFamily="@font/pretendard_bold"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/tv_deleteCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contextClickable="true"
+            android:clickable="true"
+            android:text="선택 삭제"
+            android:textSize="15dp"
+            android:textFontWeight="700"
+            android:textColor="@color/text_secondary"
+            android:fontFamily="@font/pretendard_bold" />
+
+        <TextView
+            android:id="@+id/tv_complete_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:contextClickable="true"
+            android:clickable="true"
+            android:text="삭제 완료"
+            android:textSize="15dp"
+            android:textFontWeight="700"
+            android:textColor="@color/text_error"
+            android:fontFamily="@font/pretendard_bold"
+            android:layout_marginLeft="12dp"/>
+
+    </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cl_record"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingBottom="24dp">
+
+                <ImageView
+                    android:id="@+id/btn_add_list"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/btn_add_list"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_gravity="center_horizontal" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_card_record"
+                        android:backgroundTint="@color/background"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_record_none"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp"
+        android:gravity="center_horizontal"
+        android:visibility="gone">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_start_recording"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="기록을 시작해볼까요?"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            android:textFontWeight="700"
+            android:lineHeight="30dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="아래 버튼을 눌러 새로운 기록을 추가해보세요."
+            android:textColor="@color/text_primary"
+            android:textSize="15sp"
+            android:textFontWeight="400"
+            android:lineHeight="22dp" />
+
+        <LinearLayout
+            android:id="@+id/linear_write_activity"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:background="@drawable/write_btn_purple"
+            android:backgroundTint="@color/solid_accent_normal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="기록하기"
+                android:textSize="15sp"
+                android:textFontWeight="700"
+                android:lineHeight="22dp"
+                android:textColor="@color/text_white" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

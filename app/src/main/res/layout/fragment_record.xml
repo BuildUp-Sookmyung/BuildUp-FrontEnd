@@ -3,199 +3,162 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".record.RecordFragment">
+    tools:context=".record.RecordFragment"
+    android:background="@color/background">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center_horizontal">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_record"
+            android:layout_width="match_parent"
+            android:layout_height="57dp"
+            android:background="@drawable/border_divider">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="기록"
+                android:textSize="17sp"
+                android:layout_gravity="center"
+                android:textColor="#000000" />
+        </androidx.appcompat.widget.Toolbar>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="활동 등록하기"
-            android:layout_marginTop="40dp"
-            android:textSize="18sp"
-            android:textColor="#000000" />
-
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="24dp">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="카테고리"
+                android:textSize="15sp"
+                android:textColor="#000000"
+                />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end">
+            <TextView
+                android:id="@+id/tv_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="편집"
+                android:textSize="15sp"
+                android:textColor="#845EF1" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
+            android:paddingHorizontal="8dp"
+            android:background="@drawable/border_divider">
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="21dp"
             android:scrollbars="none"
             >
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_record"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </HorizontalScrollView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="24dp">
+
+        <LinearLayout
+            android:id="@+id/linear_activity_none"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="30dp"
+                    android:src="@drawable/image_empty" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="활동 기록이 없어요!"
+                    android:textSize="20sp"
+                    android:textFontWeight="700"
+                    android:lineHeight="30dp"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginBottom="8dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="아래 버튼을 눌러 새로운 활동을 등록해보세요."
+                android:textSize="15sp"
+                android:textFontWeight="400"
+                android:lineHeight="22dp"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="30dp"/>
+            <LinearLayout
+                android:id="@+id/linear_write_activity"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:gravity="center"
+                android:background="@drawable/write_btn_purple"
+                android:backgroundTint="@color/solid_accent_normal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="활동 등록하기"
+                    android:textSize="15sp"
+                    android:textFontWeight="700"
+                    android:lineHeight="22dp"
+                    android:textColor="@color/text_white" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="17dp"
-                android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:paddingHorizontal="10dp"
-                    android:background="@drawable/step1_round_btn"
-                    android:gravity="center"
-                    android:elevation="20dp"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="대회"
-                        android:textSize="15sp"
-                        android:textColor="#000000" />
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/interview"
-                        android:layout_marginTop="7dp"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/step1_round_btn"
-                    android:gravity="center"
-                    android:layout_marginLeft="5dp"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="자격증"
-                        android:textSize="15sp"
-                        android:textColor="#000000"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/certificate"
-                        android:layout_marginTop="7dp"/>
-                </LinearLayout>
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
 
-                <LinearLayout
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/step1_round_btn"
-                    android:gravity="center"
-                    android:layout_marginLeft="7dp"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="과제"
-                        android:textSize="15sp"
-                        android:textColor="#000000" />
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/task"
-                        android:layout_marginTop="7dp"/>
-                </LinearLayout>
+                <ImageView
+                    android:id="@+id/btn_add_activity"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/btn_add_list"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="12dp"/>
 
-                <LinearLayout
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/step1_round_btn"
-                    android:gravity="center"
-                    android:layout_marginLeft="7dp"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="대외활동"
-                        android:textSize="15sp"
-                        android:textColor="#000000"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/activity"
-                        android:layout_marginTop="7dp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/step1_round_btn"
-                    android:gravity="center"
-                    android:layout_marginLeft="7dp"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="면접"
-                        android:textSize="15sp"
-                        android:textColor="#000000" />
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/interview"
-                        android:layout_marginTop="7dp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/step1_round_btn"
-                    android:gravity="center"
-                    android:layout_marginLeft="7dp"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="자기소개서"
-                        android:textSize="15sp"
-                        android:textColor="#000000"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/introduction"
-                        android:layout_marginTop="7dp"/>
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/step1_round_btn"
-                    android:gravity="center"
-                    android:layout_marginLeft="7dp"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="프로젝트"
-                        android:textSize="15sp"
-                        android:textColor="#000000" />
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/project"
-                        android:layout_marginTop="7dp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:gravity="center"
-                    android:layout_marginLeft="7dp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                        <LinearLayout
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:background="@drawable/step1_circle_btn"
-                            android:gravity="center">
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/ic_add"/>
-                        </LinearLayout>
-                    </LinearLayout>
-
-                </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview_read_activity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
-        </HorizontalScrollView>
+
+        </ScrollView>
+        </LinearLayout>
 
     </LinearLayout>
 

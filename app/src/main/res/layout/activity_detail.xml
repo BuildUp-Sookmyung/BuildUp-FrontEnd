@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".record.DetailActivity"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_activity_detail"
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        android:background="@drawable/border_divider"
+        app:theme="@style/ToolbarTitleColor">
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back_nor"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="활동 상세"
+            android:textSize="17sp"
+            android:layout_gravity="center"
+            android:textColor="#000000" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="24dp"
+        android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="30dp"
+        android:paddingBottom="24dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/border_divider"
+        android:gravity="center_vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="KB 라스쿨"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            android:textFontWeight="700"
+            android:lineHeight="30dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="대외활동"
+            android:textSize="15sp"
+            android:textColor="@color/text_secondary"
+            android:textFontWeight="500"
+            android:lineHeight="22dp"/>
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="주최 기관"
+                android:textColor="@color/text_secondary"
+                android:textSize="15sp"
+                android:textFontWeight="400"
+                android:lineHeight="22dp"
+                android:layout_weight="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="KB 사회공헌사업부"
+                android:textSize="15sp"
+                android:textColor="@color/text_primary"
+                android:textFontWeight="500"
+                android:lineHeight="22dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="맡은 역할"
+                android:textColor="@color/text_secondary"
+                android:textSize="15sp"
+                android:textFontWeight="400"
+                android:lineHeight="22dp"
+                android:layout_weight="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="고2 전담멘토"
+                android:textSize="15sp"
+                android:textColor="@color/text_primary"
+                android:textFontWeight="500"
+                android:lineHeight="22dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="활동 기간"
+                android:textColor="@color/text_secondary"
+                android:textSize="15sp"
+                android:textFontWeight="400"
+                android:lineHeight="22dp"
+                android:layout_weight="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2023-01-09 ~ 2023-12-09"
+                android:textSize="15sp"
+                android:textColor="@color/text_primary"
+                android:textFontWeight="500"
+                android:lineHeight="22dp"/>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="327dp"
+            android:src="@drawable/ic_add_image"
+            android:layout_marginBottom="26.5dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_url"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="https://"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:lineHeight="19dp"
+                android:textFontWeight="400"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
