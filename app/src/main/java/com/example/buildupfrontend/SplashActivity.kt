@@ -29,12 +29,13 @@ class SplashActivity : AppCompatActivity() {
 
         val accessToken = GlobalApplication.prefs.getString("accessToken","")
         // 로그인한 적 있는 사용자
-        val intent = if (accessToken.isNullOrEmpty()) {
+        val intent = if (accessToken.isEmpty()) {
             Intent( this,LoginActivity::class.java)
         }
         // 로그인한 적 있는 사용자
         else {
-            Intent(this, MainActivity::class.java)
+            Intent( this,LoginActivity::class.java)
+//            Intent(this, MainActivity::class.java)
 
         }
 

@@ -305,7 +305,7 @@
                 app:layout_constraintStart_toStartOf="parent">
 
                 <TextView
-                    android:id="@+id/tv_select1"
+                    android:id="@+id/tv_select4"
                     style="@style/AreaButtonTheme"
                     android:background="@drawable/ui_square_b"
                     android:layout_width="wrap_content"
@@ -315,6 +315,28 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/tv_select5"
+                    style="@style/AreaButtonTheme"
+                    android:background="@drawable/ui_square_b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:minWidth="0dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toEndOf="@id/tv_select4"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_select1"
+                    style="@style/AreaButtonTheme"
+                    android:background="@drawable/ui_square_b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:minWidth="0dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_select4" />
+
+                <TextView
                     android:id="@+id/tv_select2"
                     style="@style/AreaButtonTheme"
                     android:background="@drawable/ui_square_b"
@@ -322,8 +344,9 @@
                     android:layout_height="30dp"
                     android:minWidth="0dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
                     app:layout_constraintStart_toEndOf="@id/tv_select1"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_select5"/>
 
                 <TextView
                     android:id="@+id/tv_select3"
@@ -333,8 +356,9 @@
                     android:layout_height="30dp"
                     android:minWidth="0dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
                     app:layout_constraintStart_toEndOf="@id/tv_select2"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_select5"/>
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/btn_area"
@@ -344,8 +368,9 @@
                     android:src="@drawable/btn_square"
                     android:scaleType="fitCenter"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
                     app:layout_constraintStart_toEndOf="@id/tv_select3"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toBottomOf="@+id/tv_select5" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

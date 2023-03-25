@@ -43,8 +43,8 @@ open class SignupActivity : AppCompatActivity() {
 
     open fun firstView() {
         viewModel = ViewModelProvider(this)[SignupViewModel::class.java]
-        nextFragment(0, FragmentSU0())
-//        nextFragment(3, FragmentSU3())
+//        nextFragment(0, FragmentSU0())
+        nextFragment(3, FragmentSU3())
     }
 
     /**

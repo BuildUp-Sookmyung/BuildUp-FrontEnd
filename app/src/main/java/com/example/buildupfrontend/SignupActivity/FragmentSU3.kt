@@ -3,6 +3,7 @@ package com.example.buildupfrontend.SignupActivity
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatToggleButton
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.text.trimmedLength
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.buildupfrontend.Patterns
@@ -65,6 +67,8 @@ open class FragmentSU3: Fragment(), View.OnClickListener, onBackPressedListener,
     private lateinit var selectedArea1: TextView
     private lateinit var selectedArea2: TextView
     private lateinit var selectedArea3: TextView
+    private lateinit var selectedArea4: TextView
+    private lateinit var selectedArea5: TextView
     private var checkedList: ArrayList<String> = arrayListOf()
 
     private val areaMap = HashMap<Int, Area>() // Button ID-Title-checked
@@ -138,8 +142,33 @@ open class FragmentSU3: Fragment(), View.OnClickListener, onBackPressedListener,
     }
 
     private fun showArea(tvList: List<TextView>, checkedArea: ArrayList<String>) {
-        val tvIterator = tvList.iterator()
-        val checkedIterator = checkedArea.iterator()
+        val tvList2 = listOf<TextView>(selectedArea4, selectedArea5, selectedArea1)
+        var checkedIterator = checkedArea.iterator()
+        var textLength: Int = 0
+
+
+        // checking the total text length
+        // --> if > 20, make views into two rows
+        for (i in 1..areaMax) {
+            if (checkedIterator.hasNext()) {
+                textLength += checkedIterator.next().trimmedLength()
+            }
+        }
+        Log.e("textLength", textLength.toString())
+
+        if (textLength > 18) {
+            twoRows(areaMax, checkedArea.iterator(), tvList2.iterator())
+        } else {
+            oneRow(areaMax, checkedArea.iterator(), tvList.iterator())
+        }
+
+
+    }
+
+    private fun oneRow(areaMax: Int, checkedIterator: MutableIterator<String>, tvIterator: Iterator<TextView>) {
+        Log.e("fct", "oneRow")
+        selectedArea4.visibility = View.GONE
+        selectedArea5.visibility = View.GONE
 
         for (i in 1..areaMax) {
             val nextArea = tvIterator.next()
@@ -147,10 +176,25 @@ open class FragmentSU3: Fragment(), View.OnClickListener, onBackPressedListener,
                 nextArea.visibility = View.VISIBLE
                 nextArea.text = checkedIterator.next()
             } else {
-              nextArea.visibility = View.GONE
+                nextArea.visibility = View.GONE
             }
         }
+    }
 
+    private fun twoRows(areaMax: Int, checkedIterator: MutableIterator<String>, tvIterator: Iterator<TextView>) {
+        Log.e("fct", "twoRows")
+        selectedArea2.visibility = View.GONE
+        selectedArea3.visibility = View.GONE
+        for (i in 1..areaMax) {
+            var nextArea = tvIterator.next()
+            if (checkedIterator.hasNext()) {
+                nextArea.visibility = View.VISIBLE
+                nextArea.text = checkedIterator.next()
+                Log.e("next area", nextArea.text.toString())
+            } else {
+                nextArea.visibility = View.GONE
+            }
+        }
     }
 
     private fun enableOkBtn() {
@@ -292,9 +336,13 @@ open class FragmentSU3: Fragment(), View.OnClickListener, onBackPressedListener,
         selectedArea1 = view.findViewById<TextView>(R.id.tv_select1)
         selectedArea2 = view.findViewById<TextView>(R.id.tv_select2)
         selectedArea3 = view.findViewById<TextView>(R.id.tv_select3)
+        selectedArea4 = view.findViewById<TextView>(R.id.tv_select4)
+        selectedArea5 = view.findViewById<TextView>(R.id.tv_select5)
         selectedArea1.visibility = View.GONE
         selectedArea2.visibility = View.GONE
         selectedArea3.visibility = View.GONE
+        selectedArea4.visibility = View.GONE
+        selectedArea5.visibility = View.GONE
     }
 
     private fun setDropdown() {
