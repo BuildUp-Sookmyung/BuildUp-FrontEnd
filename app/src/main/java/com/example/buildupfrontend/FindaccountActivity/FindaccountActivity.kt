@@ -1,12 +1,16 @@
 package com.example.buildupfrontend.FindaccountActivity
 
 import android.annotation.SuppressLint
+import android.app.ActionBar
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.example.buildupfrontend.LoginActivity
 import com.example.buildupfrontend.R
@@ -76,6 +80,8 @@ class FindaccountActivity : AppCompatActivity() {
         btnPw.isSelected=true
         barPw.setImageResource(R.drawable.fill)
         barId.setImageResource(R.drawable.divider)
+        btnPw.setTextBold(true)
+        btnId.setTextBold(false)
     }
 
     @SuppressLint("ResourceAsColor")
@@ -84,6 +90,8 @@ class FindaccountActivity : AppCompatActivity() {
         btnPw.isSelected=false
         barId.setImageResource(R.drawable.fill)
         barPw.setImageResource(R.drawable.divider)
+        btnId.setTextBold(true)
+        btnPw.setTextBold(false)
     }
 
     fun nextFragment(fragment: Fragment) {
@@ -97,4 +105,8 @@ class FindaccountActivity : AppCompatActivity() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
     }
+}
+
+private fun Button.setTextBold(b: Boolean) {
+    this.typeface = ResourcesCompat.getFont(this.context,if(b) R.font.pretendard_bold else R.font.pretendard_m)
 }

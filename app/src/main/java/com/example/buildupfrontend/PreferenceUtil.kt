@@ -2,6 +2,7 @@ package com.example.buildupfrontend
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 
 class PreferenceUtil(context: Context) {
     private val prefs: SharedPreferences =

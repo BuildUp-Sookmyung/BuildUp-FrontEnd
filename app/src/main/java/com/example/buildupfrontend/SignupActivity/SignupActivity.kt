@@ -120,15 +120,17 @@ open class SignupActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * 일반 회원가입
+     */
     private fun signupUser(signUpRequest: SignUpLocalRequest, userInfo: UserInfoData, intent: Intent) {
         SignUpLocalService.getRetrofit(signUpRequest).enqueue(object: retrofit2.Callback<SignUpResponse> {
             override fun onResponse(call: Call<SignUpResponse>, response: Response<SignUpResponse>){
                 if (response.isSuccessful) {
                     Log.e("local signup response", response.body()?.response.toString())
-                    val accessToken = response.body()?.response?.accessToken
-                    val refreshToken = response.body()?.response?.refreshToken
-                    intent.putExtra("accessToken", accessToken)
-                    intent.putExtra("refreshToken", refreshToken)
+                    userInfo.accessToken = response.body()?.response?.accessToken
+                    userInfo.refreshToken = response.body()?.response?.refreshToken
+                    GlobalApplication.prefs.setString("accessToken", userInfo.accessToken!!)
 
                     Log.e(ContentValues.TAG, "Signup userInfo: $userInfo")
                     intent.putExtra("userInfo", userInfo)
@@ -150,6 +152,9 @@ open class SignupActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * 간편 회원가입
+     */
     private fun signupUser(signUpRequest: SignUpSocialRequest, userInfo: UserInfoData, intent: Intent) {
         SignUpSocialService.getRetrofit(signUpRequest).enqueue(object: retrofit2.Callback<SignUpResponse> {
             override fun onResponse(call: Call<SignUpResponse>, response: Response<SignUpResponse>){
@@ -157,6 +162,7 @@ open class SignupActivity : AppCompatActivity() {
                     Log.e("social signup response", response.body()?.response.toString())
                     userInfo.accessToken = response.body()?.response?.accessToken
                     userInfo.refreshToken = response.body()?.response?.refreshToken
+                    GlobalApplication.prefs.setString("accessToken", userInfo.accessToken!!)
 
                     Log.e(ContentValues.TAG, "Signup userInfo: $userInfo")
                     intent.putExtra("userInfo", userInfo)
