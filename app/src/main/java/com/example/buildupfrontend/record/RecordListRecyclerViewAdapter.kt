@@ -11,12 +11,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.recyclerview.widget.RecyclerView
 import com.example.buildupfrontend.R
+import com.example.buildupfrontend.retrofit.Response.RecordList
 import com.google.android.material.checkbox.MaterialCheckBox
 
 class RecordListRecyclerViewAdapter(
     private var context: Context,
-    private val titles: Array<String>,
-    private val dates: Array<String>
+    private val dataList: ArrayList<RecordList>
 ) : RecyclerView.Adapter<RecordListRecyclerViewAdapter.MyViewHolder>() {
     var hideItem = true
 
@@ -39,8 +39,8 @@ class RecordListRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.itemlabel.text = (position+1).toString()
-        holder.itemtitle.text = titles[position]
-        holder.itemdate.text = dates[position]
+        holder.itemtitle.text = dataList[position].title
+        holder.itemdate.text = dataList[position].date
 
 //        if(position==0){
 //            Log.e("label","${holder.itemlabel.text}")
@@ -77,7 +77,7 @@ class RecordListRecyclerViewAdapter(
     }
 
     override fun getItemCount(): Int {
-        return titles.size
+        return dataList.size
     }
 
 }

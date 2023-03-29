@@ -240,6 +240,8 @@ class LoginActivity : AppCompatActivity() {
                     inputPW = userPW
                     val accessToken = response.body()?.response?.accessToken
                     val refreshToken = response.body()?.response?.refreshToken
+                    GlobalApplication.prefs.setString("accessToken", accessToken!!)
+                    GlobalApplication.prefs.setString("refreshToken", refreshToken!!)
 
                     nextStep(null, accessToken, refreshToken, Intent(this@LoginActivity, MainActivity::class.java))
 

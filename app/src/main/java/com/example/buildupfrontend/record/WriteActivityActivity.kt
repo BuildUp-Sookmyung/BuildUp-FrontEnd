@@ -1,26 +1,101 @@
 package com.example.buildupfrontend.record
 
+import android.Manifest
 import android.R
+import android.content.ContentValues
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.TextView
+import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.buildupfrontend.databinding.ActivityWriteActivityBinding
+import com.example.buildupfrontend.retrofit.Client.ActivityService
+import com.example.buildupfrontend.retrofit.Response.SimpleResponse
+import com.kakao.auth.StringSet.file
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.*
+import kotlin.collections.ArrayList
 
 class WriteActivityActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWriteActivityBinding
     private lateinit var dialog: CalendarDialog
     private lateinit var categoryText: String
-    private lateinit var activityText: String
-    private lateinit var dateStart: Date
-    private lateinit var dateEnd: Date
+    private lateinit var categoryIdList: ArrayList<Int>
+    private var categoryPos: Int=0
+    private var categoryValue: String = "카테고리를 선택해주세요."
+    private var activityValue: String = ""
+    private var startDateValue: String = "yyyy-mm-dd"
+    private var endDateValue: String = "yyyy-mm-dd"
+    private lateinit var imageFile: File
+    private lateinit var imgFile: MultipartBody.Part
+    private lateinit var imagePath: String
+    private lateinit var date: LocalDate
+    private var REQ_GALLERY=1
+    private var check=false
+
+    val imageResult=registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ){
+            result->
+        if(result.resultCode==RESULT_OK){
+            val imageUri=result.data?.data
+            imageUri?.let{
+                imageFile= File(getRealPathFromURI(it))
+                Log.d("imageFile", "${imageFile}")
+                imagePath = getRealPathFromURI(it)
+
+                val now = Date()
+                val time: String = SimpleDateFormat("yyyyMMddHHmmss", Locale.ENGLISH).format(now)
+
+                val renameFile= File(imageFile.parent,"${time}.jpg")
+                val requestBody = imageFile?.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                imgFile= MultipartBody.Part.createFormData("img", renameFile.name, requestBody)
+
+                Log.e("file name", "${renameFile.name}")
+                Log.d("tag", "imagePath: ${imagePath}")
+                Log.e("tag", "imageUri: ${imageUri}")
+
+                Glide.with(this)
+                    .load(imageUri)
+                    .fitCenter()
+                    .apply(RequestOptions().override(500,500))
+                    .into(binding.ivActivity)
+
+                binding.linearImageNull.visibility=View.GONE
+                binding.ivActivity.visibility=View.VISIBLE
+                binding.ivDeleteImage.visibility=View.VISIBLE
+//                binding.recyclerviewWritediary[pos].findViewById<ImageView>(R.id.imageview_addpicture).adjustViewBounds=true
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +110,15 @@ class WriteActivityActivity : AppCompatActivity() {
             finish()
         }
 
-        val categoryList=listOf("대외활동","공모전","자격증","교내활동","동아리","프로젝트","카테고리를 선택해주세요.")
-        val categoryAdapter=object: ArrayAdapter<String>(this@WriteActivityActivity, R.layout.simple_list_item_1, categoryList){
+        categoryIdList= intent.getIntegerArrayListExtra("categoryId") as ArrayList<Int>
+        val categoryList:ArrayList<String> = intent.getStringArrayListExtra("categoryName") as ArrayList<String>
+        if (categoryList != null) {
+            categoryList.add("카테고리를 선택해주세요")
+        }
+//            listOf("대외활동","공모전","자격증","교내활동","동아리","프로젝트","카테고리를 선택해주세요.")
+        val categoryAdapter=object: ArrayAdapter<String>(this@WriteActivityActivity, R.layout.simple_list_item_1,
+            categoryList!!
+        ){
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
                 val v = super.getView(position, convertView, parent)
@@ -56,30 +138,85 @@ class WriteActivityActivity : AppCompatActivity() {
                 return super.getCount() - 1
             }
         }
+        watchData()
 
-        binding.spinnerCategory.onItemSelectedListener=object: AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                categoryText=binding.spinnerCategory.selectedItem.toString()
-                Log.e("categoryText", "$categoryText")
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-        }
-
-//        categoryAdapter.addAll(categoryList.toMutableList())
         binding.spinnerCategory.adapter=categoryAdapter
         binding.spinnerCategory.setSelection(categoryAdapter.count)
 
         Log.e("category", "${binding.spinnerCategory.selectedItem}")
 
         datePick()
+//        Manifest.permission()
+
+        binding.linearAddImage.setOnClickListener {
+            selectGallery()
+        }
+
+        binding.btnWriteActivity.setOnClickListener {
+            if(check){
+                var hostName=binding.etHost.text.toString()
+                var roleName=binding.etRole.text.toString()
+                var urlName=binding.etUrl.text.toString()
+
+//                if(binding.ivDeleteImage.visibility==View.VISIBLE){
+////                    val renameFile= File(imageFile.parent,"${time}.jpg")
+////                    val requestFile = imageFile?.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+////                    val part = requestFile?.let { MultipartBody.Part.createFormData("file", renameFile.name, it) }
+//
+//                }else{
+//                    val emptyRequestBody = "".toRequestBody("multipart/form-data".toMediaTypeOrNull())
+//                    val emptyPart = MultipartBody.Part.createFormData("file", "", emptyRequestBody)
+//                }
+
+                if(binding.ivDeleteImage.visibility==View.GONE){
+                    val emptyRequestBody = "".toRequestBody("multipart/form-data".toMediaTypeOrNull())
+                    imgFile= MultipartBody.Part.createFormData("img", "", emptyRequestBody)
+                    Log.e("Image", "empty")
+                }
+
+                val jsonObject= JSONObject("{\"categoryId\":\"${categoryIdList[categoryPos]}\", \"activityName\":\"${activityValue}\",\"hostName\":\"${hostName}\",\"roleName\":\"${roleName}\", \"startDate\":\"${startDateValue}\", \"endDate\":\"${endDateValue}\", \"urlName\":\"${urlName}\"}")
+                val mediaType = "application/json".toMediaType()
+                val jsonBody=jsonObject.toString().toRequestBody(mediaType)
+
+                Log.e("activity_data", "$jsonBody $imgFile")
+                ActivityService.retrofitPost(jsonBody,imgFile).enqueue(object:
+                    Callback<SimpleResponse>{
+                        override fun onResponse(
+                            call: Call<SimpleResponse>,
+                            response: Response<SimpleResponse>
+                        ) {
+                            if (response.isSuccessful) {
+                                Log.e("log", response.toString())
+                                Log.e("log", response.body().toString())
+
+                                finish()
+                            }else {
+                                try {
+                                    val body = response.errorBody()!!.string()
+
+                                    Log.e(ContentValues.TAG, "body : $body")
+                                } catch (e: IOException) {
+                                    e.printStackTrace()
+                                }
+                            }
+                        }
+
+                        override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
+                            Log.e("TAG", "실패원인: {$t}")
+
+                        }
+                    })
+            }
+            else{
+                Toast.makeText(this,"별 표시 부분은 모두 입력해주세요.", Toast.LENGTH_SHORT)
+            }
+        }
+
+        binding.ivDeleteImage.setOnClickListener {
+            binding.linearImageNull.visibility=View.VISIBLE
+            binding.ivActivity.visibility=View.GONE
+            binding.ivDeleteImage.visibility=View.GONE
+        }
     }
 
     private fun datePick(){
@@ -90,6 +227,8 @@ class WriteActivityActivity : AppCompatActivity() {
                 override fun onClicked(date: String) {
                     binding.tvCalendarStart.text=date
                     binding.tvCalendarStart.setTextColor(Color.parseColor("#262626"))
+                    startDateValue=date
+                    checkValuesAndChangeButtonColor()
                 }
             })
         }
@@ -101,15 +240,92 @@ class WriteActivityActivity : AppCompatActivity() {
                 override fun onClicked(date: String) {
                     binding.tvCalendarEnd.text=date
                     binding.tvCalendarEnd.setTextColor(Color.parseColor("#262626"))
+                    endDateValue=date
+                    checkValuesAndChangeButtonColor()
                 }
             })
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+    private fun watchData(){
+        binding.spinnerCategory.onItemSelectedListener=object: AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                categoryText=binding.spinnerCategory.selectedItem.toString()
+                categoryValue=parent?.getItemAtPosition(position).toString()
+                categoryPos=position
+                checkValuesAndChangeButtonColor()
+                Log.e("categoryText", "$categoryText")
+                Log.e("categoryId", "${position+1}")
+            }
 
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
         }
-        return super.onOptionsItemSelected(item)
+
+        binding.etActivityName.addTextChangedListener(object: TextWatcher{
+            override fun afterTextChanged(s: Editable?) {
+                activityValue = s.toString()
+                checkValuesAndChangeButtonColor()
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
     }
+
+    private fun checkValuesAndChangeButtonColor() {
+        if (categoryValue!="카테고리를 선택해주세요." && activityValue.isNotEmpty() && startDateValue!="yyyy-mm-dd" && endDateValue!="yyyy-mm-dd") {
+            binding.btnWriteActivity.setBackgroundColor(Color.parseColor("#845EF1"))
+            check=true
+        } else {
+            binding.btnWriteActivity.setBackgroundColor(Color.parseColor("#4D845EF1"))
+            check=false
+        }
+    }
+
+    fun getRealPathFromURI(uri: Uri): String{
+        val buildName= Build.MANUFACTURER
+        if(buildName.equals("Xiaomi")){
+            return uri.path!!
+        }
+        var columnIndex=0
+        val proj=arrayOf(MediaStore.Images.Media.DATA)
+        val cursor=contentResolver.query(uri, proj, null, null, null)
+        if(cursor!!.moveToFirst()){
+            columnIndex=cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        }
+        val result=cursor.getString(columnIndex)
+        cursor.close()
+        return result
+
+    }
+    //
+    private fun selectGallery(){
+        val writePermission= ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val readPermission=ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+
+        if(writePermission==PackageManager.PERMISSION_DENIED || readPermission==PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), REQ_GALLERY)
+        }else{
+            val intent=Intent(Intent.ACTION_PICK)
+            intent.setDataAndType(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                "image/*"
+            )
+            imageResult.launch(intent)
+        }
+    }
+
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when (item.itemId) {
+//
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 }

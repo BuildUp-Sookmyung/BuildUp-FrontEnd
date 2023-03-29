@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.util.Log
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.buildupfrontend.R
 import com.example.buildupfrontend.databinding.CategoryDialogBinding
@@ -12,6 +13,7 @@ class CategoryDialog(context: Context): Dialog(context) {
     private lateinit var binding: CategoryDialogBinding
     private lateinit var addCategoryRecyclerViewDataList:ArrayList<AddCategoryRecyclerViewData>
     private lateinit var onClickListener: OnDialogClickListener
+    private lateinit var recyclerview: RecyclerView
 
     fun setOnClickListener(listener: OnDialogClickListener)
     {
@@ -72,8 +74,6 @@ class CategoryDialog(context: Context): Dialog(context) {
                 super.onPageSelected(position)
                 page=position
                 Log.e("page: ", "$page")
-//                val recyclerView=viewPager2.getChildAt(position) as RecyclerView
-
             }
         })
 
@@ -110,7 +110,11 @@ class CategoryDialog(context: Context): Dialog(context) {
         }
 
         binding.categoryDialogComplete.setOnClickListener {
-            onClickListener.onClicked(binding.etCategoryName.text.toString(),1)
+            if(binding.etCategoryName.text.toString()==""){
+
+            }
+            else
+                onClickListener.onClicked(binding.etCategoryName.text.toString(),1)
         }
     }
 }

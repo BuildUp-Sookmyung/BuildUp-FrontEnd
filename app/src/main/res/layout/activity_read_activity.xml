@@ -119,6 +119,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:visibility="visible">
+
     <LinearLayout
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
@@ -164,6 +165,9 @@
 
     </LinearLayout>
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
             <LinearLayout
                 android:id="@+id/cl_record"
                 android:layout_width="match_parent"
@@ -188,6 +192,7 @@
                         android:layout_height="wrap_content" />
 
             </LinearLayout>
+        </ScrollView>
 
     </LinearLayout>
 

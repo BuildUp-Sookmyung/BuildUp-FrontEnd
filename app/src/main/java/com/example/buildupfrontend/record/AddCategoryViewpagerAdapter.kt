@@ -21,6 +21,7 @@ class AddCategoryViewpagerAdapter (
             recyclerView.layoutManager=
                 GridLayoutManager(context, 4, GridLayoutManager.VERTICAL, false)
             recyclerView.adapter=AddCategoryRecyclerViewAdapter(context, dataList)
+
         }
     }
 

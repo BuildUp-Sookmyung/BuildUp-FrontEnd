@@ -5,7 +5,7 @@
     android:layout_height="60dp"
     android:orientation="horizontal"
     android:background="@drawable/border_divider"
-    android:paddingRight="7dp"
+    android:paddingRight="10dp"
     android:gravity="center_vertical">
 
         <LinearLayout
@@ -26,6 +26,14 @@
             android:text="대외활동"
             android:textSize="15sp"
             android:textColor="@color/text_primary"
+            android:layout_weight="1"
             />
+        <ImageView
+            android:id="@+id/img_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_more_nor"
+            android:visibility="gone"
+            android:layout_marginLeft="12dp"/>
 
 </LinearLayout>
