@@ -14,7 +14,7 @@ interface RecordService {
     @POST("/records")
     fun postRecord(
         @Part("request") request: RequestBody,
-        @Part img: MultipartBody.Part
+        @Part img: ArrayList<MultipartBody.Part>
     ):Call<SimpleResponse>
 
     @GET("/records/{recordId}")
@@ -45,7 +45,7 @@ interface RecordService {
     ):Call<SimpleResponse>
 
     companion object{
-        fun retrofitPostRecord(request: RequestBody, img: MultipartBody.Part):Call<SimpleResponse>{
+        fun retrofitPostRecord(request: RequestBody, img: ArrayList<MultipartBody.Part>):Call<SimpleResponse>{
             return ApiClient.create(RecordService::class.java).postRecord(request,img)
         }
         fun retrofitRecordDetail(recordId: Long):Call<RecordDetailResponse>{

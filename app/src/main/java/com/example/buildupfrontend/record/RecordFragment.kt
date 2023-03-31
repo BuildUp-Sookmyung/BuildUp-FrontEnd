@@ -7,7 +7,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.buildupfrontend.GlobalApplication
@@ -17,7 +19,11 @@ import com.example.buildupfrontend.iconList
 import com.example.buildupfrontend.retrofit.Client.ActivityService
 import com.example.buildupfrontend.retrofit.Client.CategoryService
 import com.example.buildupfrontend.retrofit.Response.ActivityMeResponse
+import com.example.buildupfrontend.retrofit.Response.CategoryInfo
 import com.example.buildupfrontend.retrofit.Response.GetCategoryResponse
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,7 +36,7 @@ class RecordFragment : Fragment() {
     private var categoryList= arrayListOf<String>()
     private var categoryIdList= arrayListOf<Int>()
     private var iconIdList= arrayListOf<Int>()
-
+    private var emptyList= arrayListOf<CategoryInfo>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,9 +50,26 @@ class RecordFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        activityRecyclerViewDataList= arrayListOf()
+        loadActivity()
+
+        recordRecyclerViewDataList= arrayListOf()
+        recordRecyclerViewDataList.add(RecordRecyclerViewData(R.drawable.ic_category_all_nor, "전체"))
+        loadCategory()
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+//        viewLifecycleOwner.lifecycleScope.launch{
+//            val result=loadCategory()
+//
+//            withContext(Dispatchers.Main){
+
+//            }
+//        }
         binding.linearWriteActivity.setOnClickListener {
             val intent= Intent(requireContext(),WriteActivityActivity::class.java)
             intent.putStringArrayListExtra("categoryName", categoryList)
@@ -69,13 +92,6 @@ class RecordFragment : Fragment() {
             startActivity(intent)
         }
 
-        activityRecyclerViewDataList= arrayListOf()
-        loadActivity()
-
-        recordRecyclerViewDataList= arrayListOf()
-        recordRecyclerViewDataList.add(RecordRecyclerViewData(R.drawable.ic_category_all_nor, "전체"))
-        loadCategory()
-
 //        activityRecyclerViewDataList= arrayListOf(
 //            ActivityListRecyclerViewData("4", "국제 커뮤니케이션디자인 공모전","2023-01-24 ~ 2023-02-17"),
 //            ActivityListRecyclerViewData("75", "KB 라스쿨","2022-01-24 ~ 2023-02-14"),
@@ -83,53 +99,65 @@ class RecordFragment : Fragment() {
 //        )
     }
 
-    private fun loadCategory(){
-        CategoryService.retrofitGetCategory().enqueue(object: Callback<GetCategoryResponse> {
-            override fun onResponse(
-                call: Call<GetCategoryResponse>,
-                response: Response<GetCategoryResponse>
-            ) {
-                if (response.isSuccessful) {
-                    Log.e("log", response.toString())
-                    Log.e("log", response.body().toString())
+    private fun loadCategory() {
+//        val data = withContext(Dispatchers.IO) {
+            CategoryService.retrofitGetCategory().enqueue(object : Callback<GetCategoryResponse> {
+                override fun onResponse(
+                    call: Call<GetCategoryResponse>,
+                    response: Response<GetCategoryResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        Log.e("log", response.toString())
+                        Log.e("log", response.body().toString())
 
-                    val size = response.body()?.response?.size?.minus(1)
-                    for (i: Int in 0..size!!){
-                        val categoryName=response.body()?.response?.get(i)?.categoryName
-                        val iconId= response.body()?.response?.get(i)?.iconId
-                        val categoryId=response.body()?.response?.get(i)?.categoryId
+                        val size = response.body()?.response?.size?.minus(1)
+                        for (i: Int in 0..size!!) {
+                            val categoryName = response.body()?.response?.get(i)?.categoryName
+                            val iconId = response.body()?.response?.get(i)?.iconId
+                            val categoryId = response.body()?.response?.get(i)?.categoryId
 
-                        categoryList.add(categoryName!!)
-                        categoryIdList.add(categoryId!!)
-                        iconIdList.add(iconId!!)
-                    }
-                    GlobalApplication.prefs.setIntegerList("categoryIdList",categoryIdList)
+                            categoryList.add(categoryName!!)
+                            categoryIdList.add(categoryId!!)
+                            iconIdList.add(iconId!!)
+                        }
+                        GlobalApplication.prefs.setIntegerList("categoryIdList", categoryIdList)
 //                    Log.e("shared preference categoryIdList", "${GlobalApplication.prefs.getIntegerList("categoryIdList",0)}")
-                    GlobalApplication.prefs.setStringList("categoryList",categoryList)
+                        GlobalApplication.prefs.setStringList("categoryList", categoryList)
 //                    Log.e("shared preference categoryList", "${GlobalApplication.prefs.getStringList("categoryList",0)}")
 
-                    val dataList=response.body()?.response
-                    binding.recyclerviewRecord.apply{
-                        layoutManager=GridLayoutManager(requireActivity(), 7,GridLayoutManager.VERTICAL, false)
-                        adapter=RecordRecyclerViewAdapter(requireActivity(),dataList!!)
+                        val dataList:ArrayList<CategoryInfo> = response.body()?.response!!
+
+                        binding.recyclerviewRecord.apply {
+                            layoutManager = GridLayoutManager(
+                                requireActivity(),
+                                7,
+                                GridLayoutManager.VERTICAL,
+                                false
+                            )
+                            adapter = RecordRecyclerViewAdapter(requireActivity(), dataList)
+                        }
+//                        dataList
+                    } else {
+                        try {
+                            val body = response.errorBody()!!.string()
+
+                            Log.e(ContentValues.TAG, "body : $body")
+
+//                            emptyList
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
                     }
 
-                }else {
-                    try {
-                        val body = response.errorBody()!!.string()
-
-                        Log.e(ContentValues.TAG, "body : $body")
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                    }
                 }
 
-            }
-
-            override fun onFailure(call: Call<GetCategoryResponse>, t: Throwable) {
-                Log.e("TAG", "실패원인: {$t}")
-            }
-        })
+                override fun onFailure(call: Call<GetCategoryResponse>, t: Throwable) {
+                    Log.e("TAG", "실패원인: {$t}")
+//                    emptyList
+                }
+            })
+//        }
+//        return data
     }
 
     private fun loadActivity(){

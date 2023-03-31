@@ -1,6 +1,7 @@
 package com.example.buildupfrontend.record
 
 import android.Manifest
+import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -25,10 +26,20 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.buildupfrontend.GlobalApplication
 import com.example.buildupfrontend.R
 import com.example.buildupfrontend.databinding.ActivityEditActivityBinding
+import com.example.buildupfrontend.retrofit.Client.ActivityService
+import com.example.buildupfrontend.retrofit.Request.EditActivityRequest
+import com.example.buildupfrontend.retrofit.Response.SimpleResponse
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
@@ -39,6 +50,7 @@ class EditActivityActivity : AppCompatActivity() {
     private lateinit var categoryIdList: ArrayList<Int>
     private lateinit var dialog: CalendarDialog
     private lateinit var categoryText: String
+    private var activityId:Long =0
     private var categoryPos: Int=0
     private var categoryValue: String = ""
     private var activityValue: String = ""
@@ -50,6 +62,7 @@ class EditActivityActivity : AppCompatActivity() {
     private lateinit var date: LocalDate
     private var REQ_GALLERY=1
     private var check=false
+    private var changeImg=false
 
     val imageResult=registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -100,7 +113,7 @@ class EditActivityActivity : AppCompatActivity() {
             finish()
         }
 
-        var activityId=intent.getLongExtra("activityId",0)
+        activityId=intent.getLongExtra("activityId",0)
         categoryValue= intent.getStringExtra("categoryName").toString()
         activityValue=intent.getStringExtra("activityName").toString()
         var hostName=intent.getStringExtra("hostName")
@@ -172,16 +185,91 @@ class EditActivityActivity : AppCompatActivity() {
         binding.spinnerCategory.setSelection(categoryPos)
 
         binding.linearAddImage.setOnClickListener {
+            changeImg=true
             selectGallery()
         }
         datePick()
         watchData()
 
+        binding.btnEditActivity.setOnClickListener {
+            if(changeImg){
+                editImg()
+            }
+            if(check){
+                editActivity()
+            }
+        }
+
         binding.ivDeleteImage.setOnClickListener {
+            changeImg=true
             binding.linearImageNull.visibility=View.VISIBLE
             binding.ivActivity.visibility=View.GONE
             binding.ivDeleteImage.visibility=View.GONE
         }
+    }
+
+    private fun editImg(){
+        val jsonObject= JSONObject("{\"activityId\":\"${activityId}\"}")
+        val mediaType = "application/json".toMediaType()
+        val jsonBody=jsonObject.toString().toRequestBody(mediaType)
+
+        ActivityService.retrofitEditActivityImg(jsonBody,imgFile).enqueue(object: Callback<SimpleResponse>{
+            override fun onResponse(
+                call: Call<SimpleResponse>,
+                response: Response<SimpleResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.e("log", response.toString())
+                    Log.e("log", response.body().toString())
+
+                    finish()
+                }else {
+                    try {
+                        val body = response.errorBody()!!.string()
+
+                        Log.e(ContentValues.TAG, "body : $body")
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
+                Log.e("TAG", "실패원인: {$t}")
+            }
+        })
+    }
+
+    private fun editActivity(){
+        var hostName=binding.etHost.text.toString()
+        var roleName=binding.etRole.text.toString()
+        var urlName=binding.etUrl.text.toString()
+
+        ActivityService.retrofitEditActivity(EditActivityRequest(activityId,categoryIdList[categoryPos],activityValue,hostName,roleName,startDateValue,endDateValue,urlName)).enqueue(object: Callback<SimpleResponse>{
+            override fun onResponse(
+                call: Call<SimpleResponse>,
+                response: Response<SimpleResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.e("log", response.toString())
+                    Log.e("log", response.body().toString())
+
+                    finish()
+                }else {
+                    try {
+                        val body = response.errorBody()!!.string()
+
+                        Log.e(ContentValues.TAG, "body : $body")
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
+                Log.e("TAG", "실패원인: {$t}")
+            }
+        })
     }
 
     private fun datePick(){

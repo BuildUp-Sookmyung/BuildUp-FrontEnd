@@ -18,7 +18,7 @@ data class ActivityRequest(
 
 data class EditActivityRequest(
     val id: Long,
-    val categoryId: Long,
+    val categoryId: Int,
     val activityName: String,
     val hostName: String,
     val roleName: String,

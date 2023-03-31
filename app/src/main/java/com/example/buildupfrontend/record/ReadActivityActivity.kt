@@ -62,8 +62,6 @@ class ReadActivityActivity : AppCompatActivity() {
         binding.tvTitle.text=activityName
         binding.tvDate.text=date
 
-        loadRecordList()
-
         binding.linearTitleActivity.setOnClickListener {
             var intent= Intent(this, DetailActivity::class.java)
             intent.putExtra("activityId", activityId)
@@ -94,13 +92,21 @@ class ReadActivityActivity : AppCompatActivity() {
 
         binding.btnAddList.setOnClickListener {
             var intent=Intent(this,WriteRecordActivity::class.java)
+            intent.putExtra("activityId",activityId)
             startActivity(intent)
         }
 
         binding.linearWriteActivity.setOnClickListener {
             var intent=Intent(this,WriteRecordActivity::class.java)
+            intent.putExtra("activityId",activityId)
             startActivity(intent)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadRecordList()
+
     }
 
     private fun loadRecordList(){
