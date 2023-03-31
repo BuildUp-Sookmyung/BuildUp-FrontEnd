@@ -269,7 +269,7 @@ open class FragmentSharedUser(): Fragment(), onBackPressedListener, Patterns {
         getRetrofitData()
     }
 
-    private fun getRetrofitData() {
+    open fun getRetrofitData() {
         EmailService.getRetrofit(EmailRequest(etName.text.toString(), etEmail.text.toString()))
             .enqueue(object: retrofit2.Callback<SimpleResponse> {
             override fun onResponse(call: Call<SimpleResponse>, response: Response<SimpleResponse>){
@@ -296,7 +296,7 @@ open class FragmentSharedUser(): Fragment(), onBackPressedListener, Patterns {
     }
 
     @JvmName("setVerifyCode1")
-    private fun setVerifyCode(message: String) {
+    fun setVerifyCode(message: String) {
         verifyCode = message.split(':').last().trim()
     }
 

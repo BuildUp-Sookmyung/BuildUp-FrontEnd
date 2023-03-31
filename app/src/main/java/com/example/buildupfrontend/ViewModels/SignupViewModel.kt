@@ -15,6 +15,7 @@ class SignupViewModel @Inject constructor(
     var provider: String? = null
     var accessToken: String? = null
     var refreshToken: String? = null
+    var createdDate: String? = null
 
     var validName = false
     var validEmail = false
@@ -31,6 +32,7 @@ class SignupViewModel @Inject constructor(
     var checkMarketing: Boolean = false
     var checkSms: Boolean = false
     var checkEmail: Boolean = false
+
     // SU2
     var userID: String = ""
     var userPW: String = ""

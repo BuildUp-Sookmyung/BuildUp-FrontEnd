@@ -8,22 +8,25 @@ import com.example.buildupfrontend.home.HomeFragment
 import com.example.buildupfrontend.mypage.MypageFragment
 import com.example.buildupfrontend.record.RecordFragment
 import com.example.buildupfrontend.search.SearchFragment
+import com.google.firebase.auth.UserInfo
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var  userInfo: UserInfoData
+    private lateinit var  accessToken: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val userInfo: UserInfoData = intent.getSerializableExtra("userInfo") as UserInfoData
-        val (provider, accessToken, refreshToken,
-            userName, userEmail,
-            checkAll, checkService, checkPersInfo, checkMarketing, checkSms, checkEmail,
-            userID, userPW,
-            userSchool, userMajor, userGrade, userArea) = userInfo
-
-        Log.e("MainAct userinfo", userInfo.toString())
+        if (intent.getSerializableExtra("userInfo") is String) {
+            accessToken = intent.getSerializableExtra("userInfo") as String
+            Log.e("MainAct accessToken", accessToken)
+        } else {
+            userInfo = (intent.getSerializableExtra("userInfo") as UserInfoData?)!!
+            Log.e("MainAct userinfo", userInfo.toString())
+        }
 
         binding.bottomnav.run {
             setOnItemSelectedListener {

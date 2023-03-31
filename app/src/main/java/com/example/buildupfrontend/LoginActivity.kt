@@ -377,7 +377,7 @@ class LoginActivity : AppCompatActivity() {
             null, null, null, null, null, null,
             inputID.value(), inputPW.value(),
             "", "", "", arrayListOf())
-
+        GlobalApplication.prefs.setString("accessToken", accessToken!!)
         intent.putExtra("userInfo", userInfo)
         startActivity(intent)
         finish()

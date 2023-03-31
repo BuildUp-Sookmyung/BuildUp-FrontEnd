@@ -122,7 +122,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_number"
+                android:id="@+id/cl_email"
                 android:layout_width="327dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -131,96 +131,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/cl_name">
 
                 <TextView
-                    android:id="@+id/tv_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendard_m"
-                    android:text="주민등록번호"
-                    android:textColor="@color/text_primary"
-                    android:textSize="15dp"
-
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tl_bday"
-                    style="@style/MyIDInputLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginTop="12dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_number">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_bday"
-                        style="@style/MyTextInputEditText"
-                        android:layout_width="152dp"
-                        android:layout_height="wrap_content"
-                        android:hint="생년월일 6자리"
-                        android:maxLength="6"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="12dp"
-
-                        android:selectAllOnFocus="true"
-                        android:textCursorDrawable="@drawable/input_cursor"
-                        android:textSize="15sp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tl_number"
-                    style="@style/MyIDInputLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:gravity="end"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_number">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_number"
-                        style="@style/MyTextInputEditText"
-                        android:layout_width="152dp"
-                        android:layout_height="wrap_content"
-                        android:hint="•"
-                        android:maxLength="1"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="12dp"
-
-                        android:selectAllOnFocus="true"
-                        android:textCursorDrawable="@drawable/input_cursor"
-                        android:textSize="15sp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <ImageView
-                    android:layout_width="98dp"
-                    android:layout_height="22dp"
-                    android:layout_marginStart="38dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="40dp"
-                    android:lineSpacingMultiplier="40"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/dots"
-                    app:layout_constraintBottom_toBottomOf="@+id/tl_number"
-                    app:layout_constraintEnd_toEndOf="@id/tl_number"
-                    app:layout_constraintTop_toTopOf="@+id/tl_number" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_mobile"
-                android:layout_width="327dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cl_number">
-
-                <TextView
-                    android:id="@+id/tv_mobile"
+                    android:id="@+id/tv_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendard_m"
@@ -232,22 +143,22 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tl_mobile"
+                    android:id="@+id/tl_email"
                     style="@style/MyIDInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
                     android:layout_marginTop="12dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_mobile">
+                    app:layout_constraintTop_toBottomOf="@+id/tv_email">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_mobile"
+                        android:id="@+id/et_email"
                         style="@style/MyTextInputEditText"
                         android:layout_width="227dp"
                         android:layout_height="wrap_content"
-                        android:hint="핸드폰번호를 입력해주세요."
-                        android:maxLength="11"
+                        android:hint="이메일을 입력해주세요."
+                        android:maxLines="1"
                         android:paddingHorizontal="16dp"
                         android:paddingVertical="12dp"
 
@@ -269,7 +180,7 @@
                     android:textColor="@color/background"
                     android:textSize="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_mobile" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_email" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tl_verify"
@@ -279,7 +190,7 @@
 
                     android:layout_marginTop="12dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tl_mobile">
+                    app:layout_constraintTop_toBottomOf="@+id/tl_email">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_verify"
@@ -287,7 +198,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="인증번호를 입력해주세요."
-                        android:maxLength="6"
+                        android:maxLines="1"
                         android:paddingHorizontal="16dp"
                         android:paddingVertical="12dp"
 
