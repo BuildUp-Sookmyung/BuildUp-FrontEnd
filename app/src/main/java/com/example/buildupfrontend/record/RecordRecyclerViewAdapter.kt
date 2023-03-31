@@ -10,10 +10,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.buildupfrontend.R
+import com.example.buildupfrontend.iconList
+import com.example.buildupfrontend.retrofit.Response.CategoryInfo
 
 class RecordRecyclerViewAdapter(
     private val context: Context,
-    private var dataList: ArrayList<RecordRecyclerViewData>,
+    private var dataList: ArrayList<CategoryInfo>,
     ): RecyclerView.Adapter<RecordRecyclerViewAdapter.ViewHolder>() {
     private var selectPos=0
 
@@ -22,9 +24,9 @@ class RecordRecyclerViewAdapter(
         var category: TextView=itemView.findViewById(R.id.tv_category)
         var layout: LinearLayout=itemView.findViewById(R.id.linear_category)
 
-        fun bind(data: RecordRecyclerViewData){
-            image.setImageResource(data.image)
-            category.text=data.category
+        fun bind(data: CategoryInfo){
+            image.setImageResource(iconList[data.iconId])
+            category.text=data.categoryName
         }
     }
 

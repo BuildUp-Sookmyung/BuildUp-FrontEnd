@@ -11,13 +11,14 @@ import com.example.buildupfrontend.R
 
 class EditCategoryRecyclerViewAdapter(
     private val context: Context,
-    private var dataList: ArrayList<RecordRecyclerViewData>
+    private var dataList: ArrayList<ReadCategoryRecyclerViewData>
 ): RecyclerView.Adapter<EditCategoryRecyclerViewAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         var image: ImageView =itemView.findViewById(R.id.image_category)
         var category: TextView =itemView.findViewById(R.id.tv_category)
+        var more: ImageView=itemView.findViewById(R.id.img_more)
 
-        fun bind(data: RecordRecyclerViewData){
+        fun bind(data: ReadCategoryRecyclerViewData){
             image.setImageResource(data.image)
             category.text=data.category
         }
@@ -30,6 +31,10 @@ class EditCategoryRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(dataList[position])
+
+        if(position>5){
+            holder.more.visibility=View.VISIBLE
+        }
     }
 
     override fun getItemCount(): Int {

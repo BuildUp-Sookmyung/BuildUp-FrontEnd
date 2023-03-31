@@ -32,24 +32,31 @@ class AddCategoryRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(dataList[position])
 
-        if(selectPos==position){
-            holder.image.setColorFilter(Color.parseColor("#845EF1"))
-        }
-        else{
-            holder.image.setColorFilter(Color.parseColor("#575757"))
-        }
-
         holder.image.setOnClickListener{
-            var beforePos=selectPos
             selectPos=holder.adapterPosition
-
-            notifyItemChanged(beforePos)
-            notifyItemChanged(selectPos)
+            notifyDataSetChanged()
+//            var beforePos=selectPos
+//            selectPos=holder.adapterPosition
+//
+//            notifyItemChanged(beforePos)
+//            notifyItemChanged(selectPos)
 
         }
+
+        holder.image.setColorFilter(if(selectPos==position) Color.parseColor("#845EF1") else Color.parseColor("#575757"))
     }
 
     override fun getItemCount(): Int {
         return dataList.size
     }
+
+//    fun restorePreviousSelectedPosition() {
+//        if (preSelectPos != RecyclerView.NO_POSITION) {
+//            selectPos = preSelectPos
+//            preSelectPos = RecyclerView.NO_POSITION
+//            notifyItemChanged(selectPos)
+//        }
+//    }
+//
+//    fun getCurrentSelectedPosition(): Int = selectPos
 }
