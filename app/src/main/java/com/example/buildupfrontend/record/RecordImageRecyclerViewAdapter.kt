@@ -46,7 +46,14 @@ class RecordImageRecyclerViewAdapter(
         holder.deleteImg.visibility=View.VISIBLE
         if(position==0)
             holder.linear.visibility=View.VISIBLE
-        
+
+        holder.deleteImg.setOnClickListener {
+            dataList.removeAt(position)
+            notifyItemChanged(position)
+
+            var activity=holder.itemView.context as WriteRecordActivity
+            activity.updateImageList(position)
+        }
     }
 
     override fun getItemCount(): Int {

@@ -31,11 +31,8 @@ class ReadActivityActivity : AppCompatActivity() {
     private lateinit var recordAdapter: RecordListRecyclerViewAdapter
     private var activityId:Long=0
     private var recordIdList= arrayListOf<Long>()
-    private var titleList= arrayListOf<String>()
-    private var dateList= arrayListOf<String>()
-//    var titles = arrayOf("첫 번째 멘토링", "두 번째 멘토링", "세 번째 멘토링", "네 번째 멘토링", "네 번째 멘토링", "네 번째 멘토링", "네 번째 멘토링", "네 번째 멘토링", "네 번째 멘토링", "네 번째 멘토링", "네 번째 멘토링")
-//    var dates = arrayOf("2023-01-27", "2023-01-26", "2023-01-25", "2023-01-24", "2023-01-24", "2023-01-24", "2023-01-24", "2023-01-24", "2023-01-24", "2023-01-24", "2023-01-24")
-
+    private var activityName:String=""
+    private var categoryName:String=""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,14 +50,16 @@ class ReadActivityActivity : AppCompatActivity() {
 
         activityId=intent.getLongExtra("activityId",0)
         var percentage=intent.getIntExtra("percentage",0)
-        var activityName=intent.getStringExtra("activityName")
+        activityName= intent.getStringExtra("activityName").toString()
         var date=intent.getStringExtra("date")
+        categoryName= intent.getStringExtra("categoryName").toString()
         Log.e("percentage","$percentage")
 
         binding.pbActivity.progress= percentage
         binding.tvProgress.text="$percentage%"
         binding.tvTitle.text=activityName
         binding.tvDate.text=date
+        binding.tvCategory.text=categoryName
 
         binding.linearTitleActivity.setOnClickListener {
             var intent= Intent(this, DetailActivity::class.java)
@@ -87,6 +86,27 @@ class ReadActivityActivity : AppCompatActivity() {
         }
 
         binding.tvCompleteDelete.setOnClickListener {
+            val mDialogView = LayoutInflater.from(this)
+                .inflate(R.layout.dialog_delete_record, null)
+            val mAlertDialog = AlertDialog.Builder(this, R.style.DetailDialog)
+                .setView(mDialogView)
+                .show()
+            // Dialog button control
+            val btnDelete =
+                mDialogView.findViewById<AppCompatButton>(R.id.btn_delete)
+            val btnCancel =
+                mDialogView.findViewById<AppCompatButton>(R.id.btn_cancel)
+            val btnClose =
+                mDialogView.findViewById<AppCompatButton>(R.id.btn_close)
+            btnDelete.setOnClickListener {
+
+            }
+            btnCancel.setOnClickListener {
+                mAlertDialog.dismiss()
+            }
+            btnClose.setOnClickListener {
+                mAlertDialog.dismiss()
+            }
 
         }
 
@@ -108,6 +128,11 @@ class ReadActivityActivity : AppCompatActivity() {
         loadRecordList()
 
     }
+
+    fun deleteRecord(){
+
+    }
+
 
     private fun loadRecordList(){
         RecordService.retrofitActivityRecord(activityId).enqueue(object:
@@ -136,7 +161,7 @@ class ReadActivityActivity : AppCompatActivity() {
                         layoutManager.stackFromEnd = true
                         binding.rvCardRecord.layoutManager = layoutManager
                         recordAdapter =
-                            RecordListRecyclerViewAdapter(this@ReadActivityActivity, dataList!!)
+                            RecordListRecyclerViewAdapter(this@ReadActivityActivity, dataList!!, activityName, categoryName)
                         binding.rvCardRecord.adapter = recordAdapter
 
                     }

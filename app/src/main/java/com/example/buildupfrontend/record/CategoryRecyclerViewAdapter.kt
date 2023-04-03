@@ -2,6 +2,7 @@ package com.example.buildupfrontend.record
 
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +12,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.buildupfrontend.R
 import com.example.buildupfrontend.iconList
-import com.example.buildupfrontend.retrofit.Response.CategoryInfo
 
-class RecordRecyclerViewAdapter(
+class CategoryRecyclerViewAdapter(
     private val context: Context,
-    private var dataList: ArrayList<CategoryInfo>,
-    ): RecyclerView.Adapter<RecordRecyclerViewAdapter.ViewHolder>() {
+    private val fragment: RecordFragment,
+    private var dataList: ArrayList<CategoryRecyclerViewData>,
+    ): RecyclerView.Adapter<CategoryRecyclerViewAdapter.ViewHolder>() {
     private var selectPos=0
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
@@ -24,9 +25,9 @@ class RecordRecyclerViewAdapter(
         var category: TextView=itemView.findViewById(R.id.tv_category)
         var layout: LinearLayout=itemView.findViewById(R.id.linear_category)
 
-        fun bind(data: CategoryInfo){
-            image.setImageResource(iconList[data.iconId])
-            category.text=data.categoryName
+        fun bind(data: CategoryRecyclerViewData){
+            image.setImageResource(iconList[data.image])
+            category.text=data.category
         }
     }
 
@@ -41,6 +42,11 @@ class RecordRecyclerViewAdapter(
         if(selectPos==position){
             holder.image.setColorFilter(Color.parseColor("#845EF1"))
             holder.category.setTextColor(Color.parseColor("#845EF1"))
+
+            if(position==0)
+                fragment.loadActivity()
+            else
+                fragment.loadCategoryActivity(dataList[position].categoryId)
         }
         else{
             holder.image.setColorFilter(Color.parseColor("#575757"))

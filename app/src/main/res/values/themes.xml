@@ -26,19 +26,20 @@
     <style name="FullScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowFullscreen">true</item>
     </style>
+
     <style name="NoActionBar" parent="Theme.AppCompat.Light.NoActionBar" />
 
     <style name="LoginTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-<!--        <item name="android:windowFullscreen">true</item>-->
+        <!--        <item name="android:windowFullscreen">true</item>-->
         <item name="android:statusBarColor" tools:targetApi="l">@color/background</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
     <style name="MyIDInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-        <item name="colorControlNormal"> @color/border_normal </item>
-        <item name="colorControlActivated"> @color/border_accent </item>
-        <item name="colorControlHighlight"> @color/solid_accent_normal </item>
-        <item name="android:textCursorDrawable"> @drawable/input_cursor </item>
+        <item name="colorControlNormal">@color/border_normal</item>
+        <item name="colorControlActivated">@color/border_accent</item>
+        <item name="colorControlHighlight">@color/solid_accent_normal</item>
+        <item name="android:textCursorDrawable">@drawable/input_cursor</item>
 
         <item name="boxStrokeColor">@color/solid_accent_normal</item>
         <item name="boxStrokeErrorColor">@color/border_error</item>
@@ -56,21 +57,21 @@
         <item name="helperTextTextAppearance">@style/HelperTextAppearance</item>
     </style>
 
-    <style name="HelperTextAppearance" >
+    <style name="HelperTextAppearance">
         <item name="fontFamily">@font/pretendard</item>
         <item name="android:textColor">@color/text_secondary</item>
         <item name="android:textStyle">normal</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:lineSpacingExtra">4sp</item>
         <item name="android:textSize">15sp</item>
-        <item name="android:layout_marginLeft"> -5dp</item>
+        <item name="android:layout_marginLeft">-5dp</item>
     </style>
 
     <style name="MyPWInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-        <item name="colorControlNormal"> @color/border_normal </item>
-        <item name="colorControlActivated"> @color/border_accent </item>
-        <item name="colorControlHighlight"> @color/solid_accent_normal </item>
-        <item name="android:textCursorDrawable"> @drawable/input_cursor </item>
+        <item name="colorControlNormal">@color/border_normal</item>
+        <item name="colorControlActivated">@color/border_accent</item>
+        <item name="colorControlHighlight">@color/solid_accent_normal</item>
+        <item name="android:textCursorDrawable">@drawable/input_cursor</item>
 
         <item name="boxStrokeColor">@color/solid_accent_normal</item>
         <item name="boxStrokeErrorColor">@color/border_error</item>
@@ -93,7 +94,7 @@
     <style name="ErrorTextAppearance" parent="TextAppearance.AppCompat">
         <item name="fontFamily">@font/pretendard_m</item>
         <item name="android:textColor">@color/border_error</item>
-        <item name="colorControlActivated" >@color/border_error</item>
+        <item name="colorControlActivated">@color/border_error</item>
         <item name="colorControlNormal">@color/border_error</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">15sp</item>
@@ -142,9 +143,9 @@
     </style>
 
     <style name="MyDropDownItem" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
-        <item name="colorControlNormal"> @color/border_normal </item>
-        <item name="colorControlActivated"> @color/border_accent </item>
-        <item name="colorControlHighlight"> @color/solid_accent_normal </item>
+        <item name="colorControlNormal">@color/border_normal</item>
+        <item name="colorControlActivated">@color/border_accent</item>
+        <item name="colorControlHighlight">@color/solid_accent_normal</item>
         <item name="background">@color/background</item>
         <item name="endIconDrawable">@drawable/selector_ic_input_arrow</item>
         <item name="boxStrokeColor">@color/solid_accent_normal</item>
@@ -175,4 +176,13 @@
         <item name="android:paddingHorizontal" tools:targetApi="o">8dp</item>
         <item name="android:paddingVertical" tools:targetApi="o">4dp</item>
     </style>
+
+    <style name="Theme.BuildUpFrontEnd.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.BuildUpFrontEnd.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.BuildUpFrontEnd.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

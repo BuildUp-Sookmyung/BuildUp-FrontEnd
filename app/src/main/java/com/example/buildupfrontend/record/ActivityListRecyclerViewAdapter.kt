@@ -49,6 +49,7 @@ class ActivityListRecyclerViewAdapter(
             intent.putExtra("percentage", dataList[position].percentage)
             intent.putExtra("activityName", dataList[position].activityName)
             intent.putExtra("date", date)
+            intent.putExtra("categoryName", dataList[position].categoryName)
 //            Log.e("percentage","${dataList[position].percentage}")
             ContextCompat.startActivity(holder.itemView.context, intent, null)
         }

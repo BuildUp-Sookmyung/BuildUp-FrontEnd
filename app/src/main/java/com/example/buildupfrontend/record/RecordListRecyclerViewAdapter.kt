@@ -16,7 +16,9 @@ import com.google.android.material.checkbox.MaterialCheckBox
 
 class RecordListRecyclerViewAdapter(
     private var context: Context,
-    private val dataList: ArrayList<RecordList>
+    private val dataList: ArrayList<RecordList>,
+    private var activityName: String,
+    private var categoryName: String
 ) : RecyclerView.Adapter<RecordListRecyclerViewAdapter.MyViewHolder>() {
     var hideItem = true
 
@@ -72,6 +74,9 @@ class RecordListRecyclerViewAdapter(
 
         holder.linear.setOnClickListener {
             var intent= Intent(holder.itemView.context, DetailRecordActivity::class.java)
+            intent.putExtra("recordId",dataList[position].recordId)
+            intent.putExtra("activityName",activityName)
+            intent.putExtra("categoryName",categoryName)
             ContextCompat.startActivity(holder.itemView.context, intent, null)
         }
     }

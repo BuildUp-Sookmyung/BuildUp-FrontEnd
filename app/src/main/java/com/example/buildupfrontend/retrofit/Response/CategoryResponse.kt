@@ -2,12 +2,6 @@ package com.example.buildupfrontend.retrofit.Response
 
 import com.google.gson.annotations.SerializedName
 
-data class AddCategoryResponse(
-    @SerializedName("success") val success: Boolean,
-    @SerializedName("response") val response: SimpleResponseData,
-    @SerializedName("error") val error: SimpleResponseError
-)
-
 data class GetCategoryResponse(
     @SerializedName("success") val success: Boolean,
     @SerializedName("response") val response: ArrayList<CategoryInfo>,

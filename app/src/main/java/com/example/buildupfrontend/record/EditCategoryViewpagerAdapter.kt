@@ -2,18 +2,17 @@ package com.example.buildupfrontend.record
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.buildupfrontend.R
 
-class AddCategoryViewpagerAdapter (
+class EditCategoryViewpagerAdapter(
     private val context: Context,
-    private val dialog: CategoryDialog,
-    private var dataList: ArrayList<AddCategoryRecyclerViewData>
-): RecyclerView.Adapter<AddCategoryViewpagerAdapter.PagerViewHolder>() {
+    private val dialog: CategoryEditDialog,
+    private var dataList: ArrayList<AddCategoryRecyclerViewData>,
+    private var selectedIcon: Int
+): RecyclerView.Adapter<EditCategoryViewpagerAdapter.PagerViewHolder>() {
 
     inner class PagerViewHolder(itemView: ViewGroup): RecyclerView.ViewHolder(itemView){
         val recyclerView=itemView.findViewById<RecyclerView>(R.id.recyclerview_add_category)
@@ -21,7 +20,7 @@ class AddCategoryViewpagerAdapter (
         fun bind(data: AddCategoryRecyclerViewData){
             recyclerView.layoutManager=
                 GridLayoutManager(context, 4, GridLayoutManager.VERTICAL, false)
-            recyclerView.adapter=AddCategoryRecyclerViewAdapter(dialog,this@AddCategoryViewpagerAdapter, dataList)
+            recyclerView.adapter=EditCategoryDialogRecyclerViewAdapter(dialog, dataList, selectedIcon)
         }
     }
 

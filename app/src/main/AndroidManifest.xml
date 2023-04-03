@@ -3,10 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.buildupfrontend">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <application
         android:name=".GlobalApplication"
         android:allowBackup="true"
@@ -17,6 +13,11 @@
         android:theme="@style/Theme.BuildUpFrontEnd"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
+        <activity
+            android:name=".CategoryEditDialog"
+            android:exported="false"
+            android:label="@string/title_activity_category_edit_dialog"
+            android:theme="@style/Theme.BuildUpFrontEnd.NoActionBar" />
         <activity
             android:name=".record.EditRecordActivity"
             android:exported="false" />
@@ -50,9 +51,9 @@
         <activity
             android:name=".FindaccountActivity.FindaccountActivity"
             android:theme="@style/LoginTheme" />
-        <activity android:name=".MainActivity"
-            android:exported="false">
-        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"></activity>
         <activity
             android:name=".SignupActivity.SignupActivity"
             android:theme="@style/LoginTheme" />
@@ -62,10 +63,10 @@
             android:theme="@style/FullScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    
         <activity
             android:name=".LoginActivity"
             android:theme="@style/LoginTheme" />
@@ -84,6 +85,9 @@
             </intent-filter>
         </activity>
     </application>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-permission android:name="android.permission.INTERNET" />
 
