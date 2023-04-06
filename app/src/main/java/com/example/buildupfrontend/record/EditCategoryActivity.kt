@@ -1,21 +1,18 @@
 package com.example.buildupfrontend.record
 
 import android.content.ContentValues
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.buildupfrontend.GlobalApplication
-import com.example.buildupfrontend.MainActivity
 import com.example.buildupfrontend.R
 import com.example.buildupfrontend.databinding.ActivityEditCategoryBinding
 import com.example.buildupfrontend.iconList
 import com.example.buildupfrontend.retrofit.Client.CategoryService
 import com.example.buildupfrontend.retrofit.Response.GetCategoryResponse
-import com.navercorp.nid.oauth.NidOAuthPreferencesManager.accessToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -37,23 +34,24 @@ class EditCategoryActivity : AppCompatActivity() {
         binding.btnBack.setOnClickListener {
             finish()
         }
+//        val categoryIdList= intent.getIntegerArrayListExtra("categoryId") as ArrayList<Int>
+//        val categoryList:ArrayList<String> = intent.getStringArrayListExtra("categoryName") as ArrayList<String>
+//        val iconIdList:ArrayList<Int> = intent.getIntegerArrayListExtra("iconId") as ArrayList<Int>
+//
+//        val size=categoryList.size-1
+//        for (i: Int in 0..size!!){
+//            editCategoryRecyclerViewDataList.add(ReadCategoryRecyclerViewData(iconList[iconIdList[i]], categoryList[i], iconIdList[i], categoryIdList[i]))
+//        }
 
-        editCategoryRecyclerViewDataList= arrayListOf()
-//        loadCategory()
+//        binding.recyclerviewEditCategory.apply{
+//            layoutManager= GridLayoutManager(context, editCategoryRecyclerViewDataList.size,GridLayoutManager.HORIZONTAL, false)
+//            adapter=EditCategoryRecyclerViewAdapter(context,editCategoryRecyclerViewDataList)
+//        }
+    }
 
-        val categoryIdList= intent.getIntegerArrayListExtra("categoryId") as ArrayList<Int>
-        val categoryList:ArrayList<String> = intent.getStringArrayListExtra("categoryName") as ArrayList<String>
-        val iconIdList:ArrayList<Int> = intent.getIntegerArrayListExtra("iconId") as ArrayList<Int>
-
-        val size=categoryList.size-1
-        for (i: Int in 0..size!!){
-            editCategoryRecyclerViewDataList.add(ReadCategoryRecyclerViewData(iconList[iconIdList[i]], categoryList[i], iconIdList[i], categoryIdList[i]))
-        }
-
-        binding.recyclerviewEditCategory.apply{
-            layoutManager= GridLayoutManager(context, editCategoryRecyclerViewDataList.size,GridLayoutManager.HORIZONTAL, false)
-            adapter=EditCategoryRecyclerViewAdapter(context,editCategoryRecyclerViewDataList)
-        }
+    override public fun onResume() {
+        super.onResume()
+        loadCategory()
     }
 
     private fun loadCategory(){
@@ -66,6 +64,8 @@ class EditCategoryActivity : AppCompatActivity() {
                     Log.e("log", response.toString())
                     Log.e("log", response.body().toString())
 
+                    editCategoryRecyclerViewDataList= arrayListOf()
+
                     val size = response.body()?.response?.size?.minus(1)
                     for (i: Int in 0..size!!){
                         val categoryName=response.body()?.response?.get(i)?.categoryName
@@ -77,7 +77,7 @@ class EditCategoryActivity : AppCompatActivity() {
 
                     binding.recyclerviewEditCategory.apply{
                         layoutManager= GridLayoutManager(context, editCategoryRecyclerViewDataList.size,GridLayoutManager.HORIZONTAL, false)
-                        adapter=EditCategoryRecyclerViewAdapter(context,editCategoryRecyclerViewDataList)
+                        adapter=EditCategoryRecyclerViewAdapter(context, this@EditCategoryActivity,editCategoryRecyclerViewDataList)
                     }
                 }else {
                     try {
@@ -109,13 +109,8 @@ class EditCategoryActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.add_category -> {
-                val dialog=CategoryDialog(this)
+                val dialog=CategoryDialog(this, this@EditCategoryActivity)
                 dialog.show()
-                dialog.setOnClickListener(object: CategoryDialog.OnDialogClickListener{
-                    override fun onClicked(name: String, id: Int) {
-
-                    }
-                })
             }
         }
         return super.onOptionsItemSelected(item)

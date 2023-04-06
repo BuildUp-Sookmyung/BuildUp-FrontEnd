@@ -33,15 +33,15 @@ interface RecordService {
     ):Call<SimpleResponse>
 
     @Multipart
-    @PUT("/records/img")
+    @PUT("/records/imgs")
     fun editRecordImg(
         @Part("request") request: RequestBody,
-        @Part img: MultipartBody.Part
+        @Part img: ArrayList<MultipartBody.Part>
     ):Call<SimpleResponse>
 
-    @DELETE("/records/{recordId}")
+    @DELETE("/records")
     fun deleteRecord(
-        @Path ("recordId") activityId: Long
+        @Query("id") ids: ArrayList<Long>
     ):Call<SimpleResponse>
 
     companion object{
@@ -57,11 +57,11 @@ interface RecordService {
         fun retrofitEditRecord(jsonParams: RecordRequest):Call<SimpleResponse>{
             return ApiClient.create(RecordService::class.java).editRecord(jsonParams)
         }
-        fun retrofitEditRecordImg(request: RequestBody, img: MultipartBody.Part):Call<SimpleResponse>{
+        fun retrofitEditRecordImg(request: RequestBody, img: ArrayList<MultipartBody.Part>):Call<SimpleResponse>{
             return ApiClient.create(RecordService::class.java).editRecordImg(request,img)
         }
-        fun retrofitDeleteRecord(recordId: Long):Call<SimpleResponse>{
-            return ApiClient.create(RecordService::class.java).deleteRecord(recordId)
+        fun retrofitDeleteRecord(id: ArrayList<Long>):Call<SimpleResponse>{
+            return ApiClient.create(RecordService::class.java).deleteRecord(id)
         }
     }
 }

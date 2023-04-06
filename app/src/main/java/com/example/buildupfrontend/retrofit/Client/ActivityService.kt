@@ -62,7 +62,7 @@ interface ActivityService {
         fun retrofitActivityMe(): Call<ActivityMeResponse> {
             return ApiClient.create(ActivityService::class.java).getAllActivities()
         }
-        fun retrofitCategoryActivites(categoryId: Int): Call<ActivityCategoryResponse>{
+        fun retrofitCategoryActivities(categoryId: Int): Call<ActivityCategoryResponse>{
             return ApiClient.create(ActivityService::class.java).getCategoryActivities(categoryId)
         }
         fun retrofitActivityDetail(activityId: Long):Call<ActivityDetailResponse>{

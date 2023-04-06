@@ -5,6 +5,7 @@ import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -13,11 +14,14 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -114,6 +118,7 @@ class EditActivityActivity : AppCompatActivity() {
         }
 
         activityId=intent.getLongExtra("activityId",0)
+        Log.e("activityId","$activityId")
         categoryValue= intent.getStringExtra("categoryName").toString()
         activityValue=intent.getStringExtra("activityName").toString()
         var hostName=intent.getStringExtra("hostName")
@@ -202,10 +207,13 @@ class EditActivityActivity : AppCompatActivity() {
 
         binding.ivDeleteImage.setOnClickListener {
             changeImg=true
+            Log.e("changeImg","이미지가 변경됨, $changeImg")
             binding.linearImageNull.visibility=View.VISIBLE
             binding.ivActivity.visibility=View.GONE
             binding.ivDeleteImage.visibility=View.GONE
         }
+
+        checkValuesAndChangeButtonColor()
     }
 
     private fun editImg(){
@@ -222,6 +230,7 @@ class EditActivityActivity : AppCompatActivity() {
                     Log.e("log", response.toString())
                     Log.e("log", response.body().toString())
 
+                    Toast.makeText(this@EditActivityActivity, "기록이 수정되었습니다.", Toast.LENGTH_LONG).show()
                     finish()
                 }else {
                     try {
@@ -254,7 +263,10 @@ class EditActivityActivity : AppCompatActivity() {
                     Log.e("log", response.toString())
                     Log.e("log", response.body().toString())
 
-                    finish()
+                    if(!changeImg) {
+                        Toast.makeText(this@EditActivityActivity, "기록이 수정되었습니다.", Toast.LENGTH_LONG).show()
+                        finish()
+                    }
                 }else {
                     try {
                         val body = response.errorBody()!!.string()
@@ -274,7 +286,7 @@ class EditActivityActivity : AppCompatActivity() {
 
     private fun datePick(){
         binding.linearCalendarStart.setOnClickListener {
-            dialog= CalendarDialog(this)
+            dialog= CalendarDialog(this,startDateValue)
             dialog.show()
             dialog.setOnClickListener(object: CalendarDialog.OnDialogClickListener{
                 override fun onClicked(date: String) {
@@ -287,7 +299,7 @@ class EditActivityActivity : AppCompatActivity() {
         }
 
         binding.linearCalendarEnd.setOnClickListener {
-            dialog= CalendarDialog(this)
+            dialog= CalendarDialog(this,endDateValue)
             dialog.show()
             dialog.setOnClickListener(object: CalendarDialog.OnDialogClickListener{
                 override fun onClicked(date: String) {
@@ -373,5 +385,22 @@ class EditActivityActivity : AppCompatActivity() {
             )
             imageResult.launch(intent)
         }
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        val focusView = currentFocus
+        if (focusView != null && ev != null) {
+            val rect = Rect()
+            focusView.getGlobalVisibleRect(rect)
+            val x = ev.x.toInt()
+            val y = ev.y.toInt()
+
+            if (!rect.contains(x, y)) {
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm?.hideSoftInputFromWindow(focusView.windowToken, 0)
+                focusView.clearFocus()
+            }
+        }
+        return super.dispatchTouchEvent(ev)
     }
 }

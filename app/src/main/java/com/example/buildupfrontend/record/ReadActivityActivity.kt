@@ -11,6 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.view.get
@@ -19,8 +20,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.buildupfrontend.R
 import com.example.buildupfrontend.databinding.ActivityReadActivityBinding
 import com.example.buildupfrontend.iconList
+import com.example.buildupfrontend.retrofit.Client.ActivityService
 import com.example.buildupfrontend.retrofit.Client.RecordService
 import com.example.buildupfrontend.retrofit.Response.ActivityRecordResponse
+import com.example.buildupfrontend.retrofit.Response.SimpleResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,11 +34,10 @@ class ReadActivityActivity : AppCompatActivity() {
     private lateinit var recordAdapter: RecordListRecyclerViewAdapter
     private var activityId:Long=0
     private var recordIdList= arrayListOf<Long>()
-    private var titleList= arrayListOf<String>()
-    private var dateList= arrayListOf<String>()
-//    var titles = arrayOf("첫 번째 멘토링", "두 번째 멘토링", "세 번째 멘토링", "네 번째 멘토링", "네 번째 멘토링", "네 번째 멘토링", "네 번째 멘토링", "네 번째 멘토링", "네 번째 멘토링", "네 번째 멘토링", "네 번째 멘토링")
-//    var dates = arrayOf("2023-01-27", "2023-01-26", "2023-01-25", "2023-01-24", "2023-01-24", "2023-01-24", "2023-01-24", "2023-01-24", "2023-01-24", "2023-01-24", "2023-01-24")
-
+    private var activityName:String=""
+    private var categoryName:String=""
+    private lateinit var checkedList: ArrayList<Boolean>
+    private var categoryList= arrayListOf("대외활동","공모전","자격증","교내활동","동아리","프로젝트")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,14 +55,16 @@ class ReadActivityActivity : AppCompatActivity() {
 
         activityId=intent.getLongExtra("activityId",0)
         var percentage=intent.getIntExtra("percentage",0)
-        var activityName=intent.getStringExtra("activityName")
+        activityName= intent.getStringExtra("activityName").toString()
         var date=intent.getStringExtra("date")
+        categoryName= intent.getStringExtra("categoryName").toString()
         Log.e("percentage","$percentage")
 
         binding.pbActivity.progress= percentage
         binding.tvProgress.text="$percentage%"
         binding.tvTitle.text=activityName
         binding.tvDate.text=date
+        binding.tvCategory.text=categoryName
 
         binding.linearTitleActivity.setOnClickListener {
             var intent= Intent(this, DetailActivity::class.java)
@@ -81,24 +85,61 @@ class ReadActivityActivity : AppCompatActivity() {
                 binding.tvDeleteCheck.text = "선택 삭제"
                 binding.tvCompleteDelete.visibility=View.GONE
 
+                recordAdapter.uncheckAll()
                 recordAdapter.hideItem=true
                 recordAdapter.notifyDataSetChanged()
             }
         }
 
         binding.tvCompleteDelete.setOnClickListener {
+            val mDialogView = LayoutInflater.from(this)
+                .inflate(R.layout.dialog_delete_record, null)
+            val mAlertDialog = AlertDialog.Builder(this, R.style.DetailDialog)
+                .setView(mDialogView)
+                .show()
+            // Dialog button control
+            val btnDelete =
+                mDialogView.findViewById<AppCompatButton>(R.id.btn_delete)
+            val btnCancel =
+                mDialogView.findViewById<AppCompatButton>(R.id.btn_cancel)
+            val btnClose =
+                mDialogView.findViewById<AppCompatButton>(R.id.btn_close)
+            btnDelete.setOnClickListener {
+                recordAdapter.deleteCheckedRecord()
+                mAlertDialog.dismiss()
+            }
+            btnCancel.setOnClickListener {
+                mAlertDialog.dismiss()
+            }
+            btnClose.setOnClickListener {
+                mAlertDialog.dismiss()
+            }
 
         }
 
         binding.btnAddList.setOnClickListener {
-            var intent=Intent(this,WriteRecordActivity::class.java)
+            lateinit var intent:Intent
+            if(categoryList.contains(categoryName)) {
+                intent = Intent(this, WriteRecordActivity::class.java)
+            }
+            else {
+                intent = Intent(this, WriteOtherRecordActivity::class.java)
+            }
             intent.putExtra("activityId",activityId)
+            intent.putExtra("categoryName",categoryName)
             startActivity(intent)
         }
 
         binding.linearWriteActivity.setOnClickListener {
-            var intent=Intent(this,WriteRecordActivity::class.java)
+            lateinit var intent:Intent
+            if(categoryList.contains(categoryName)) {
+                intent = Intent(this, WriteRecordActivity::class.java)
+            }
+            else {
+                intent = Intent(this, WriteOtherRecordActivity::class.java)
+            }
             intent.putExtra("activityId",activityId)
+            intent.putExtra("categoryName",categoryName)
             startActivity(intent)
         }
     }
@@ -136,7 +177,7 @@ class ReadActivityActivity : AppCompatActivity() {
                         layoutManager.stackFromEnd = true
                         binding.rvCardRecord.layoutManager = layoutManager
                         recordAdapter =
-                            RecordListRecyclerViewAdapter(this@ReadActivityActivity, dataList!!)
+                            RecordListRecyclerViewAdapter(this@ReadActivityActivity, dataList!!, activityName, categoryName)
                         binding.rvCardRecord.adapter = recordAdapter
 
                     }
@@ -154,6 +195,34 @@ class ReadActivityActivity : AppCompatActivity() {
                 Log.e("TAG", "실패원인: {$t}")
             }
             })
+    }
+
+    private fun deleteActivity(){
+        ActivityService.retrofitDeleteActivity(activityId).enqueue(object:Callback<SimpleResponse>{
+            override fun onResponse(
+                call: Call<SimpleResponse>,
+                response: Response<SimpleResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.e("log", response.toString())
+                    Log.e("log", response.body().toString())
+
+                    Toast.makeText(this@ReadActivityActivity,"활동이 삭제되었습니다.",Toast.LENGTH_LONG).show()
+                    finish()
+                }else {
+                    try {
+                        val body = response.errorBody()!!.string()
+
+                        Log.e(ContentValues.TAG, "body : $body")
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
+                Log.e("TAG", "실패원인: {$t}")
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -180,7 +249,8 @@ class ReadActivityActivity : AppCompatActivity() {
                 val btnClose =
                     mDialogView.findViewById<AppCompatButton>(R.id.btn_close)
                 btnDelete.setOnClickListener {
-
+                    deleteActivity()
+                    mAlertDialog.dismiss()
                 }
                 btnCancel.setOnClickListener {
                     mAlertDialog.dismiss()

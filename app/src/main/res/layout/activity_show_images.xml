@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".record.ShowImagesActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_show_images"
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        android:background="@drawable/border_divider"
+        app:theme="@style/ToolbarTitleColor">
+
+        <ImageView
+            android:id="@+id/btn_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_close_nor"
+            android:layout_gravity="right"
+            android:layout_marginRight="12dp"/>
+
+        <TextView
+            android:id="@+id/tv_current_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1/1"
+            android:textSize="17sp"
+            android:layout_gravity="center"
+            android:textColor="#000000" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewpager_show_images"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+</LinearLayout>

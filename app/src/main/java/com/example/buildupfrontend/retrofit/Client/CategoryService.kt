@@ -1,10 +1,9 @@
 package com.example.buildupfrontend.retrofit.Client
 
-import com.example.buildupfrontend.GlobalApplication
 import com.example.buildupfrontend.retrofit.Request.CategoryRequest
 import com.example.buildupfrontend.retrofit.Request.EditCategoryRequest
-import com.example.buildupfrontend.retrofit.Response.AddCategoryResponse
 import com.example.buildupfrontend.retrofit.Response.GetCategoryResponse
+import com.example.buildupfrontend.retrofit.Response.SimpleResponse
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -13,7 +12,7 @@ interface CategoryService {
     @POST("/categories")
     fun post(
         @Body jsonParams: CategoryRequest
-    ): Call<AddCategoryResponse>
+    ): Call<SimpleResponse>
 
     @GET("/categories")
     fun get(
@@ -22,15 +21,15 @@ interface CategoryService {
     @PUT("/categories")
     fun put(
         @Body jsonParams: EditCategoryRequest
-    ):Call<AddCategoryResponse>
+    ):Call<SimpleResponse>
 
-    @DELETE("/categories")
+    @DELETE("/categories/{categoryId}")
     fun delete(
         @Path("categoryId") categoryId: Long
-    ):Call<AddCategoryResponse>
+    ):Call<SimpleResponse>
 
     companion object{
-        fun retrofitPostCategory(jsonParams: CategoryRequest):Call<AddCategoryResponse>{
+        fun retrofitPostCategory(jsonParams: CategoryRequest):Call<SimpleResponse>{
             return ApiClient.create(CategoryService::class.java).post(jsonParams)
         }
 
@@ -38,11 +37,11 @@ interface CategoryService {
             return ApiClient.create(CategoryService::class.java).get()
         }
 
-        fun retrofitPutCategory(jsonParams: EditCategoryRequest):Call<AddCategoryResponse>{
+        fun retrofitPutCategory(jsonParams: EditCategoryRequest):Call<SimpleResponse>{
             return ApiClient.create(CategoryService::class.java).put(jsonParams)
         }
 
-        fun retrofitDeleteCategory(categoryId: Long):Call<AddCategoryResponse>{
+        fun retrofitDeleteCategory(categoryId: Long):Call<SimpleResponse>{
             return ApiClient.create(CategoryService::class.java).delete(categoryId)
         }
     }

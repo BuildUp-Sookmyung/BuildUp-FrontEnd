@@ -11,6 +11,7 @@ data class ActivityMeResponse(
 data class ActivityMeCheck(
     @SerializedName("activityId") val activityId: Long,
     @SerializedName("activityName") val activityName: String,
+    @SerializedName("categoryName") val categoryName: String,
     @SerializedName("startDate") val startDate: String,
     @SerializedName("endDate") val endDate: String,
     @SerializedName("percentage") val percentage: Int,
