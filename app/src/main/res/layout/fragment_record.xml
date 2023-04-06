@@ -164,10 +164,11 @@
 
     </LinearLayout>
 
-<!--    <ProgressBar-->
-<!--        android:id="@+id/progress_fragment_record"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center"-->
-<!--        />-->
+    <ProgressBar
+        android:id="@+id/progress_fragment_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        />
 </FrameLayout>
