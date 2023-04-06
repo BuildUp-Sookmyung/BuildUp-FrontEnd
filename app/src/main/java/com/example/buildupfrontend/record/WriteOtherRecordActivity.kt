@@ -2,13 +2,13 @@ package com.example.buildupfrontend.record
 
 import android.Manifest
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
@@ -18,11 +18,11 @@ import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.buildupfrontend.databinding.ActivityWriteRecordBinding
+import com.example.buildupfrontend.R
+import com.example.buildupfrontend.databinding.ActivityWriteOtherRecordBinding
 import com.example.buildupfrontend.retrofit.Client.RecordService
 import com.example.buildupfrontend.retrofit.Response.SimpleResponse
 import okhttp3.MediaType.Companion.toMediaType
@@ -34,13 +34,13 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.*
-import java.nio.file.Paths
+import java.io.File
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class WriteRecordActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityWriteRecordBinding
+class WriteOtherRecordActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityWriteOtherRecordBinding
     private var activityId:Long=0
     private lateinit var categoryName:String
     private lateinit var dialog: CalendarDialog
@@ -58,7 +58,7 @@ class WriteRecordActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding=ActivityWriteRecordBinding.inflate(layoutInflater)
+        binding = ActivityWriteOtherRecordBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbarAddRecord)
@@ -69,14 +69,14 @@ class WriteRecordActivity : AppCompatActivity() {
             finish()
         }
 
-        activityId=intent.getLongExtra("activityId",0)
+        activityId = intent.getLongExtra("activityId", 0)
 
         datePick()
         watchData()
 
         binding.linearAddImage.setOnClickListener {
-            if(imgFile.size==3)
-                Toast.makeText(this,"사진 삭제 후 추가해주세요.",Toast.LENGTH_LONG).show()
+            if (imgFile.size == 3)
+                Toast.makeText(this, "사진 삭제 후 추가해주세요.", Toast.LENGTH_LONG).show()
             else {
                 Toast.makeText(this, "사진은 3개까지만 선택가능합니다.", Toast.LENGTH_LONG).show()
                 selectGallery()
@@ -88,33 +88,37 @@ class WriteRecordActivity : AppCompatActivity() {
         }
     }
 
-    fun updateImageList(pos:Int){
+    fun updateImageList(pos: Int) {
         imgFile.removeAt(pos)
         binding.recyclerviewWriteRecord.adapter?.notifyDataSetChanged()
-        var count=binding.recyclerviewWriteRecord.adapter?.itemCount
-        binding.tvImageCount.text="(${count}/3)"
+        var count = binding.recyclerviewWriteRecord.adapter?.itemCount
+        binding.tvImageCount.text = "(${count}/3)"
         Log.e("updateImageList", "${count}")
     }
 
-    private fun writeRecord(){
-        if(check){
-            var content=binding.etExtra.text.toString()
-            var urlName=binding.etUrl.text.toString()
+    private fun writeRecord() {
+        if (check) {
+            var experience=binding.etExperienceRecord.text.toString()
+            var solution=binding.etSolutionRecord.text.toString()
+            var content = binding.etExtra.text.toString()
+            var urlName = binding.etUrl.text.toString()
 
-            if(imgFile.size==0){
+            if (imgFile.size == 0) {
                 val emptyRequestBody = "".toRequestBody("multipart/form-data".toMediaTypeOrNull())
-                var image=MultipartBody.Part.createFormData("multipartFiles", "", emptyRequestBody)
+                var image =
+                    MultipartBody.Part.createFormData("multipartFiles", "", emptyRequestBody)
                 imgFile.add(image)
                 Log.e("Image", "empty")
             }
 
-            val jsonObject= JSONObject("{\"activityId\":\"${activityId}\", \"recordTitle\":\"${title}\",\"date\":\"${dateValue}\",\"experienceName\":\"${experience}\", \"conceptName\":\"${solution}\", \"resultName\":\"${result}\", \"content\":\"${content}\", \"urlName\":\"${urlName}\"}")
+            val jsonObject =
+                JSONObject("{\"activityId\":\"${activityId}\", \"recordTitle\":\"${title}\",\"date\":\"${dateValue}\",\"experienceName\":\"${experience}\", \"conceptName\":\"${solution}\", \"resultName\":\"${result}\", \"content\":\"${content}\", \"urlName\":\"${urlName}\"}")
             val mediaType = "application/json".toMediaType()
-            val jsonBody=jsonObject.toString().toRequestBody(mediaType)
+            val jsonBody = jsonObject.toString().toRequestBody(mediaType)
             Log.e("activity_data", "$jsonBody $imgFile")
 
-            RecordService.retrofitPostRecord(jsonBody, imgFile).enqueue(object:
-                Callback<SimpleResponse>{
+            RecordService.retrofitPostRecord(jsonBody, imgFile).enqueue(object :
+                Callback<SimpleResponse> {
                 override fun onResponse(
                     call: Call<SimpleResponse>,
                     response: Response<SimpleResponse>
@@ -123,13 +127,16 @@ class WriteRecordActivity : AppCompatActivity() {
                         Log.e("log", response.toString())
                         Log.e("log", response.body().toString())
 
-                        Toast.makeText(this@WriteRecordActivity, "작성이 완료되었습니다.",Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@WriteOtherRecordActivity, "기록이 완료되었습니다.", Toast.LENGTH_LONG)
+                            .show()
                         finish()
-                    }else {
+                    } else {
                         try {
                             val body = response.errorBody()!!.string()
 
                             Log.e(ContentValues.TAG, "body : $body")
+                            Toast.makeText(this@WriteOtherRecordActivity, "기록에 실패했습니다.", Toast.LENGTH_LONG)
+
                         } catch (e: IOException) {
                             e.printStackTrace()
                         }
@@ -139,26 +146,26 @@ class WriteRecordActivity : AppCompatActivity() {
                 override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
                     Log.e("TAG", "실패원인: {$t}")
                 }
-                })
+            })
         }
     }
 
-    private fun datePick(){
+    private fun datePick() {
         binding.linearCalendarStart.setOnClickListener {
-            dialog= CalendarDialog(this,"")
+            dialog = CalendarDialog(this, "")
             dialog.show()
-            dialog.setOnClickListener(object: CalendarDialog.OnDialogClickListener{
+            dialog.setOnClickListener(object : CalendarDialog.OnDialogClickListener {
                 override fun onClicked(date: String) {
-                    dateValue=date
-                    binding.tvDateRecord.text=date
+                    dateValue = date
+                    binding.tvDateRecord.text = date
                     binding.tvDateRecord.setTextColor(Color.parseColor("#262626"))
                 }
             })
         }
     }
 
-    private fun watchData(){
-        binding.etTitleRecord.addTextChangedListener(object: TextWatcher {
+    private fun watchData() {
+        binding.etTitleRecord.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 title = s.toString()
                 checkValuesAndChangeButtonColor()
@@ -168,27 +175,7 @@ class WriteRecordActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        binding.etExperienceRecord.addTextChangedListener(object: TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                experience = s.toString()
-                checkValuesAndChangeButtonColor()
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-
-        binding.etSolutionRecord.addTextChangedListener(object: TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                solution = s.toString()
-                checkValuesAndChangeButtonColor()
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-
-        binding.etResultRecord.addTextChangedListener(object: TextWatcher {
+        binding.etResultRecord.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 result = s.toString()
                 checkValuesAndChangeButtonColor()
@@ -200,27 +187,26 @@ class WriteRecordActivity : AppCompatActivity() {
     }
 
     private fun checkValuesAndChangeButtonColor() {
-        if (title.isNotEmpty() && dateValue!="yyyy-mm-dd" && experience.isNotEmpty() && solution.isNotEmpty() && result.isNotEmpty()) {
+        if (title.isNotEmpty() && result.isNotEmpty()) {
             binding.btnWriteRecord.setBackgroundColor(Color.parseColor("#845EF1"))
-            check=true
+            check = true
         } else {
             binding.btnWriteRecord.setBackgroundColor(Color.parseColor("#4D845EF1"))
-            check=false
+            check = false
         }
     }
 
-    val imageResult=registerForActivityResult(
+    val imageResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
-    ){
-            result->
-        if(result.resultCode==RESULT_OK ){
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
             Log.e("result", "$result")
             val imageUris = arrayListOf<Uri>()
-            var data=result.data
+            var data = result.data
             if (data?.clipData != null) {
                 // 다중 이미지 선택한 경우
                 val clipData = data.clipData
-                val count = minOf(clipData?.itemCount!!, 3-imageUri.size) // 최대 3개까지만 선택
+                val count = minOf(clipData?.itemCount!!, 3 - imageUri.size) // 최대 3개까지만 선택
                 for (i in 0 until count) {
                     imageUris.add(clipData.getItemAt(i).uri)
                 }
@@ -232,57 +218,76 @@ class WriteRecordActivity : AppCompatActivity() {
             }
             Log.e("uriList", "$imageUris")
 
-            for(i in 0 until imageUris.size){
-                var curUri=imageUris[i]
+            for (i in 0 until imageUris.size) {
+                var curUri = imageUris[i]
                 imageUri.add(curUri)
 
-                imageFile= File(getRealPathFromURI(curUri))
+                imageFile = File(getRealPathFromURI(curUri))
                 Log.d("imageFile", "${imageFile}")
 
                 val now = Date()
                 val time: String = SimpleDateFormat("yyyyMMddHHmmss", Locale.ENGLISH).format(now)
 
-                val renameFile= File(imageFile.parent,"${time}_$i.jpg")
-                val requestBody = imageFile?.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-                var image=MultipartBody.Part.createFormData("multipartFiles", renameFile.name, requestBody)
+                val renameFile = File(imageFile.parent, "${time}_$i.jpg")
+                val requestBody =
+                    imageFile?.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                var image =
+                    MultipartBody.Part.createFormData(
+                        "multipartFiles",
+                        renameFile.name,
+                        requestBody
+                    )
                 imgFile.add(image)
-                binding.tvImageCount.text="(${imgFile.size}/3)"
+                binding.tvImageCount.text = "(${imgFile.size}/3)"
 
                 Log.e("file name", "${renameFile.name}")
 
-                binding.recyclerviewWriteRecord.apply{
-                    layoutManager= LinearLayoutManager(this@WriteRecordActivity, LinearLayoutManager.HORIZONTAL,false)
-                    adapter=RecordImageRecyclerViewAdapter(this@WriteRecordActivity, imageUri)
+                binding.recyclerviewWriteRecord.apply {
+                    layoutManager = LinearLayoutManager(
+                        this@WriteOtherRecordActivity,
+                        LinearLayoutManager.HORIZONTAL,
+                        false
+                    )
+                    adapter = RecordOtherImageRecyclerViewAdapter(this@WriteOtherRecordActivity, imageUri)
                 }
             }
         }
     }
 
-    fun getRealPathFromURI(uri: Uri): String?{
-        val buildName= Build.MANUFACTURER
-        if(buildName.equals("Xiaomi")){
+    fun getRealPathFromURI(uri: Uri): String? {
+        val buildName = Build.MANUFACTURER
+        if (buildName.equals("Xiaomi")) {
             return uri.path!!
         }
-        var columnIndex=0
-        val proj=arrayOf(MediaStore.Images.Media.DATA)
-        val cursor=contentResolver.query(uri, proj, null, null, null)
-        if(cursor!!.moveToFirst()){
-            columnIndex=cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        var columnIndex = 0
+        val proj = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor = contentResolver.query(uri, proj, null, null, null)
+        if (cursor!!.moveToFirst()) {
+            columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
         }
-        val result=cursor.getString(columnIndex)
+        val result = cursor.getString(columnIndex)
         cursor.close()
         return result
     }
 
-    private fun selectGallery(){
-        val writePermission= ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        val readPermission= ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+    private fun selectGallery() {
+        val writePermission =
+            ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val readPermission =
+            ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
 
-        if(writePermission== PackageManager.PERMISSION_DENIED || readPermission== PackageManager.PERMISSION_DENIED){
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), REQ_GALLERY)
-        }else{
-            val intent= Intent(Intent.ACTION_PICK)
-            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true)
+        if (writePermission == PackageManager.PERMISSION_DENIED || readPermission == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ),
+                REQ_GALLERY
+            )
+        } else {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             intent.setDataAndType(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 "image/*",

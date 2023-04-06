@@ -12,11 +12,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.buildupfrontend.R
 
-class RecordEditImageRecyclerViewAdapter(
+class OtherRecordEditImageRecyclerViewAdapter(
     val context: Context,
-    private val editRecordActivity: EditRecordActivity,
+    private val editOtherRecordActivity: EditOtherRecordActivity,
     private val dataList: ArrayList<Uri>
-): RecyclerView.Adapter<RecordEditImageRecyclerViewAdapter.ViewHolder>() {
+): RecyclerView.Adapter<OtherRecordEditImageRecyclerViewAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var deleteImg: ImageView=itemView.findViewById(R.id.iv_delete_image)
         var image: ImageView = itemView.findViewById(R.id.iv_write_record)
@@ -34,14 +34,14 @@ class RecordEditImageRecyclerViewAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): RecordEditImageRecyclerViewAdapter.ViewHolder {
+    ): OtherRecordEditImageRecyclerViewAdapter.ViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.item_image_record, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(
-        holder: RecordEditImageRecyclerViewAdapter.ViewHolder,
+        holder: OtherRecordEditImageRecyclerViewAdapter.ViewHolder,
         position: Int
     ) {
         holder.bind(dataList[position])
@@ -51,11 +51,11 @@ class RecordEditImageRecyclerViewAdapter(
             holder.linear.visibility=View.VISIBLE
 
         holder.deleteImg.setOnClickListener {
-            editRecordActivity.checkDeleteImg()
+            editOtherRecordActivity.checkDeleteImg()
             dataList.removeAt(position)
             notifyItemChanged(position)
 
-            editRecordActivity.updateImageList(position)
+            editOtherRecordActivity.updateImageList(position)
         }
     }
 

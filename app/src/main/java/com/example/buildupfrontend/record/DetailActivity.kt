@@ -8,9 +8,8 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.buildupfrontend.R
 import com.example.buildupfrontend.databinding.ActivityDetailBinding
@@ -26,6 +25,7 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
     private var activityId:Long=0
     private lateinit var detailData: ActivityDetail
+    private lateinit var imageString:ArrayList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,11 +38,25 @@ class DetailActivity : AppCompatActivity() {
 
         activityId=intent.getLongExtra("activityId",0)
 
-        loadDetail()
         binding.btnBack.setOnClickListener {
             finish()
         }
 
+        binding.ivDetail.setOnClickListener {
+            var intent= Intent(this, ShowImagesActivity::class.java)
+            intent.putStringArrayListExtra("imageList",imageString)
+            intent.putExtra("page",0)
+            startActivity(intent)
+        }
+
+//        Glide.get(this).clearDiskCache();
+//        Glide.get(this).clearMemory();
+    }
+
+    override fun onResume() {
+        super.onResume()
+        imageString= arrayListOf()
+        loadDetail()
     }
 
     private fun loadDetail(){
@@ -81,10 +95,13 @@ class DetailActivity : AppCompatActivity() {
                     if(data?.activityimg==null)
                         binding.ivDetail.visibility=View.GONE
                     else {
+                        imageString.add(data?.activityimg)
+                        Log.e("imageString","${data?.activityimg}")
+
                         Glide.with(this@DetailActivity)
                             .load(data?.activityimg)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .fitCenter()
-                            .placeholder(R.drawable.ic_add_image) // 이미지 로딩 시작하기 전 표시할 이미지
                             .error(R.drawable.ic_add_image) // 로딩 에러 발생 시 표시할 이미지
                             .apply(RequestOptions().override(500, 500))
                             .into(binding.ivDetail)

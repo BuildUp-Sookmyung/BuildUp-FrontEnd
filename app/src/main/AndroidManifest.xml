@@ -14,10 +14,18 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity
-            android:name=".CategoryEditDialog"
+            android:name=".record.EditOtherRecordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".record.WriteOtherRecordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".record.ShowImagesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".record.CategoryEditDialog"
             android:exported="false"
-            android:label="@string/title_activity_category_edit_dialog"
-            android:theme="@style/Theme.BuildUpFrontEnd.NoActionBar" />
+            android:label="@string/title_activity_category_edit_dialog" />
         <activity
             android:name=".record.EditRecordActivity"
             android:exported="false" />
@@ -53,7 +61,7 @@
             android:theme="@style/LoginTheme" />
         <activity
             android:name=".MainActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".SignupActivity.SignupActivity"
             android:theme="@style/LoginTheme" />
@@ -85,9 +93,9 @@
             </intent-filter>
         </activity>
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-permission android:name="android.permission.INTERNET" />
 

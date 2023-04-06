@@ -7,26 +7,27 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.buildupfrontend.GlobalApplication
 import com.example.buildupfrontend.databinding.FragmentRecordBinding
 import com.example.buildupfrontend.retrofit.Client.ActivityService
 import com.example.buildupfrontend.retrofit.Client.CategoryService
-import com.example.buildupfrontend.retrofit.Response.ActivityCategoryResponse
-import com.example.buildupfrontend.retrofit.Response.ActivityMeResponse
-import com.example.buildupfrontend.retrofit.Response.CategoryInfo
-import com.example.buildupfrontend.retrofit.Response.GetCategoryResponse
+import com.example.buildupfrontend.retrofit.Response.*
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
+import java.lang.Exception
 
 class RecordFragment : Fragment() {
     private lateinit var binding:FragmentRecordBinding
-    private lateinit var categoryRecyclerViewDataList:ArrayList<CategoryRecyclerViewData>
-    private lateinit var activityRecyclerViewDataList: ArrayList<ActivityListRecyclerViewData>
+    private var categoryRecyclerViewDataList= arrayListOf<CategoryRecyclerViewData>()
+    private var activityRecyclerViewDataList= arrayListOf<ActivityMeCheck>()
     private var categoryList= arrayListOf<String>()
     private var categoryIdList= arrayListOf<Int>()
     private var iconIdList= arrayListOf<Int>()
@@ -42,10 +43,17 @@ class RecordFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        loadCategory()
-
-        activityRecyclerViewDataList= arrayListOf()
-        loadActivity()
+//        showLoading(true)
+//        lifecycleScope.launch{
+//            withContext(Dispatchers.IO) {
+                loadCategory()
+                loadActivity()
+//            }
+//            withContext(Dispatchers.Main){
+//                updateUI()
+//                showLoading(false)
+//            }
+//        }
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -74,8 +82,12 @@ class RecordFragment : Fragment() {
 
     }
 
+    private fun updateUI(){
+
+
+    }
+
     private fun loadCategory() {
-//        val data = withContext(Dispatchers.IO) {
             CategoryService.retrofitGetCategory().enqueue(object : Callback<GetCategoryResponse> {
                 override fun onResponse(
                     call: Call<GetCategoryResponse>,
@@ -105,15 +117,12 @@ class RecordFragment : Fragment() {
                         GlobalApplication.prefs.setStringList("categoryList", categoryList)
 //                    Log.e("shared preference categoryList", "${GlobalApplication.prefs.getStringList("categoryList",0)}")
 
-
-
                         Log.e("categoryList","${categoryRecyclerViewDataList}")
                         binding.recyclerviewRecord.apply {
-                            layoutManager = GridLayoutManager(context, categoryRecyclerViewDataList.size,
+                            layoutManager = GridLayoutManager(context, if(categoryRecyclerViewDataList.size==0) 1 else categoryRecyclerViewDataList.size,
                                 GridLayoutManager.VERTICAL, false)
                             adapter = CategoryRecyclerViewAdapter(requireContext(),this@RecordFragment, categoryRecyclerViewDataList)
                         }
-
                     } else {
                         try {
                             val body = response.errorBody()!!.string()
@@ -156,10 +165,10 @@ class RecordFragment : Fragment() {
                         binding.scrollviewActivity.visibility=View.VISIBLE
                         binding.linearActivityNone.visibility=View.GONE
 
-                        val dataList=response.body()?.response
+                        activityRecyclerViewDataList=response.body()?.response!!
                         binding.recyclerviewReadActivity.apply{
                             layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
-                            adapter=ActivityListRecyclerViewAdapter(requireContext(), dataList!!)
+                            adapter=ActivityListRecyclerViewAdapter(requireContext(), activityRecyclerViewDataList)
                         }
                     }
                 }else {
@@ -221,5 +230,14 @@ class RecordFragment : Fragment() {
                 Log.e("TAG", "실패원인: {$t}")
             }
         })
+    }
+
+    private fun showLoading(isShow: Boolean){
+        if(isShow==true) {
+            binding.progressFragmentRecord.visibility = View.VISIBLE
+        }
+        else {
+            binding.progressFragmentRecord.visibility = View.GONE
+        }
     }
 }

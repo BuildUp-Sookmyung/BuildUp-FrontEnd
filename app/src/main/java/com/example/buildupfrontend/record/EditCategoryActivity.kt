@@ -1,6 +1,7 @@
 package com.example.buildupfrontend.record
 
 import android.content.ContentValues
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -108,7 +109,7 @@ class EditCategoryActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.add_category -> {
-                val dialog=CategoryDialog(this, this)
+                val dialog=CategoryDialog(this, this@EditCategoryActivity)
                 dialog.show()
             }
         }

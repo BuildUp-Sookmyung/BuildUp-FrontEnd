@@ -92,6 +92,12 @@
                 android:lineHeight="30dp"
                 android:layout_marginBottom="20dp"/>
 
+            <LinearLayout
+                android:id="@+id/linear_experience"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="20dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -111,8 +117,15 @@
                 android:textColor="@color/text_primary"
                 android:textFontWeight="400"
                 android:lineHeight="22dp"
-                android:layout_marginBottom="20dp"/>
+                />
+            </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/linear_solution"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="20dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -131,8 +144,8 @@
             android:textSize="15sp"
             android:textColor="@color/text_primary"
             android:textFontWeight="400"
-            android:lineHeight="22dp"
-            android:layout_marginBottom="20dp"/>
+            android:lineHeight="22dp" />
+            </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"

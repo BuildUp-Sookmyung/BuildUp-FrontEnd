@@ -4,9 +4,15 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.ContentValues
 import android.content.Context
+import android.graphics.Rect
 import android.util.Log
+import android.view.MotionEvent
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.buildupfrontend.R
@@ -131,9 +137,19 @@ class CategoryDialog(
         }
     }
 
-//    private fun EditCategory(){
-//        CategoryService.retrofitPutCategory(EditCategoryRequest(,binding.etCategoryName.text.toString(),selectedIcon))
-//    }
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        val view = currentFocus
+        if (view != null && (ev.action == MotionEvent.ACTION_UP || ev.action == MotionEvent.ACTION_MOVE) && view is EditText && !view.javaClass.name.startsWith("android.webkit.")) {
+            val rect = Rect()
+            view.getGlobalVisibleRect(rect)
+            if (!rect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                view.clearFocus()
+                val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
+            }
+        }
+        return super.dispatchTouchEvent(ev)
+    }
 
     private fun AddCategory(){
         CategoryService.retrofitPostCategory(CategoryRequest(binding.etCategoryName.text.toString(),8*selectedPage+selectedIcon+1)).enqueue(object:
@@ -193,4 +209,5 @@ class CategoryDialog(
 //        Log.e("currentPage","${viewPager2.currentItem}")
         return viewPager2.currentItem
     }
+
 }

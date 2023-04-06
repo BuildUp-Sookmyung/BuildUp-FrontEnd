@@ -11,6 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.view.get
@@ -19,8 +20,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.buildupfrontend.R
 import com.example.buildupfrontend.databinding.ActivityReadActivityBinding
 import com.example.buildupfrontend.iconList
+import com.example.buildupfrontend.retrofit.Client.ActivityService
 import com.example.buildupfrontend.retrofit.Client.RecordService
 import com.example.buildupfrontend.retrofit.Response.ActivityRecordResponse
+import com.example.buildupfrontend.retrofit.Response.SimpleResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,6 +36,8 @@ class ReadActivityActivity : AppCompatActivity() {
     private var recordIdList= arrayListOf<Long>()
     private var activityName:String=""
     private var categoryName:String=""
+    private lateinit var checkedList: ArrayList<Boolean>
+    private var categoryList= arrayListOf("대외활동","공모전","자격증","교내활동","동아리","프로젝트")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +85,7 @@ class ReadActivityActivity : AppCompatActivity() {
                 binding.tvDeleteCheck.text = "선택 삭제"
                 binding.tvCompleteDelete.visibility=View.GONE
 
+                recordAdapter.uncheckAll()
                 recordAdapter.hideItem=true
                 recordAdapter.notifyDataSetChanged()
             }
@@ -99,7 +105,8 @@ class ReadActivityActivity : AppCompatActivity() {
             val btnClose =
                 mDialogView.findViewById<AppCompatButton>(R.id.btn_close)
             btnDelete.setOnClickListener {
-
+                recordAdapter.deleteCheckedRecord()
+                mAlertDialog.dismiss()
             }
             btnCancel.setOnClickListener {
                 mAlertDialog.dismiss()
@@ -111,14 +118,28 @@ class ReadActivityActivity : AppCompatActivity() {
         }
 
         binding.btnAddList.setOnClickListener {
-            var intent=Intent(this,WriteRecordActivity::class.java)
+            lateinit var intent:Intent
+            if(categoryList.contains(categoryName)) {
+                intent = Intent(this, WriteRecordActivity::class.java)
+            }
+            else {
+                intent = Intent(this, WriteOtherRecordActivity::class.java)
+            }
             intent.putExtra("activityId",activityId)
+            intent.putExtra("categoryName",categoryName)
             startActivity(intent)
         }
 
         binding.linearWriteActivity.setOnClickListener {
-            var intent=Intent(this,WriteRecordActivity::class.java)
+            lateinit var intent:Intent
+            if(categoryList.contains(categoryName)) {
+                intent = Intent(this, WriteRecordActivity::class.java)
+            }
+            else {
+                intent = Intent(this, WriteOtherRecordActivity::class.java)
+            }
             intent.putExtra("activityId",activityId)
+            intent.putExtra("categoryName",categoryName)
             startActivity(intent)
         }
     }
@@ -128,11 +149,6 @@ class ReadActivityActivity : AppCompatActivity() {
         loadRecordList()
 
     }
-
-    fun deleteRecord(){
-
-    }
-
 
     private fun loadRecordList(){
         RecordService.retrofitActivityRecord(activityId).enqueue(object:
@@ -181,6 +197,34 @@ class ReadActivityActivity : AppCompatActivity() {
             })
     }
 
+    private fun deleteActivity(){
+        ActivityService.retrofitDeleteActivity(activityId).enqueue(object:Callback<SimpleResponse>{
+            override fun onResponse(
+                call: Call<SimpleResponse>,
+                response: Response<SimpleResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.e("log", response.toString())
+                    Log.e("log", response.body().toString())
+
+                    Toast.makeText(this@ReadActivityActivity,"활동이 삭제되었습니다.",Toast.LENGTH_LONG).show()
+                    finish()
+                }else {
+                    try {
+                        val body = response.errorBody()!!.string()
+
+                        Log.e(ContentValues.TAG, "body : $body")
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
+                Log.e("TAG", "실패원인: {$t}")
+            }
+        })
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(
             R.menu.read_activity_menu,
@@ -205,7 +249,8 @@ class ReadActivityActivity : AppCompatActivity() {
                 val btnClose =
                     mDialogView.findViewById<AppCompatButton>(R.id.btn_close)
                 btnDelete.setOnClickListener {
-
+                    deleteActivity()
+                    mAlertDialog.dismiss()
                 }
                 btnCancel.setOnClickListener {
                     mAlertDialog.dismiss()

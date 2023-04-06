@@ -8,7 +8,10 @@ import com.example.buildupfrontend.databinding.CalendarDialogBinding
 import java.util.*
 
 
-class CalendarDialog(context: Context): Dialog(context) {
+class CalendarDialog(
+    context: Context,
+    date: String
+): Dialog(context) {
     private lateinit var binding: CalendarDialogBinding
     private lateinit var onClickListener: CalendarDialog.OnDialogClickListener
 
@@ -31,15 +34,25 @@ class CalendarDialog(context: Context): Dialog(context) {
             dismiss()
         }
 
-        datePick()
+        datePick(date)
     }
 
-    private fun datePick(){
-        var today=Calendar.getInstance()
-        var year=today.get(Calendar.YEAR)
-        var month= today.get(Calendar.MONTH)+1
-        var day=today.get(Calendar.DAY_OF_MONTH)
-
+    private fun datePick(string: String){
+        var year=0
+        var month=0
+        var day=0
+        if(string=="") {
+            var today = Calendar.getInstance()
+            year = today.get(Calendar.YEAR)
+            month = today.get(Calendar.MONTH) + 1
+            day = today.get(Calendar.DAY_OF_MONTH)
+        }
+        else{
+            val arr=string.split("-")
+            year=arr[0].toInt()
+            month=arr[1].toInt()
+            day=arr[2].toInt()
+        }
         var mon: Int=month
         var yea: Int=year
         var da: Int=day

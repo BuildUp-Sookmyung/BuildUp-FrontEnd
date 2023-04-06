@@ -13,23 +13,19 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.View
-import android.widget.DatePicker
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil.setContentView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.buildupfrontend.R
-import com.example.buildupfrontend.databinding.ActivityEditRecordBinding
+import com.example.buildupfrontend.databinding.ActivityEditOtherRecordBinding
 import com.example.buildupfrontend.retrofit.Client.RecordService
 import com.example.buildupfrontend.retrofit.Request.RecordRequest
 import com.example.buildupfrontend.retrofit.Response.SimpleResponse
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
@@ -37,7 +33,6 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.internal.cache2.Relay.Companion.edit
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -47,12 +42,11 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.net.URL
 import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.*
 import kotlin.collections.ArrayList
 
-class EditRecordActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityEditRecordBinding
+class EditOtherRecordActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityEditOtherRecordBinding
     private lateinit var dialog: CalendarDialog
     private var recordId:Long =0
     private var dateValue="yyyy-mm-dd"
@@ -72,7 +66,7 @@ class EditRecordActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding=ActivityEditRecordBinding.inflate(layoutInflater)
+        binding= ActivityEditOtherRecordBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbarEditRecord)
@@ -90,7 +84,7 @@ class EditRecordActivity : AppCompatActivity() {
 
         binding.linearAddImage.setOnClickListener {
             if(imgFile.size==3)
-                Toast.makeText(this,"사진 삭제 후 추가해주세요.",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"사진 삭제 후 추가해주세요.", Toast.LENGTH_SHORT).show()
             else {
                 Toast.makeText(this, "사진은 3개까지만 선택가능합니다.", Toast.LENGTH_LONG).show()
                 selectGallery()
@@ -170,13 +164,13 @@ class EditRecordActivity : AppCompatActivity() {
 
                 binding.recyclerviewEditRecord.apply {
                     layoutManager = LinearLayoutManager(
-                        this@EditRecordActivity,
+                        this@EditOtherRecordActivity,
                         LinearLayoutManager.HORIZONTAL,
                         false
                     )
-                    adapter = RecordEditImageRecyclerViewAdapter(
-                        this@EditRecordActivity,
-                        this@EditRecordActivity,
+                    adapter = OtherRecordEditImageRecyclerViewAdapter(
+                        this@EditOtherRecordActivity,
+                        this@EditOtherRecordActivity,
                         imageUri
                     )
                 }
@@ -199,7 +193,8 @@ class EditRecordActivity : AppCompatActivity() {
             contentValue=binding.etContent.text.toString()
             urlValue=binding.etUrl.text.toString()
 
-            RecordService.retrofitEditRecord(RecordRequest(recordId,titleValue,dateValue,experienceValue,conceptValue,resultValue,contentValue,urlValue)).enqueue(object:Callback<SimpleResponse>{
+            RecordService.retrofitEditRecord(RecordRequest(recordId,titleValue,dateValue,experienceValue,conceptValue,resultValue,contentValue,urlValue)).enqueue(object:
+                Callback<SimpleResponse> {
                 override fun onResponse(
                     call: Call<SimpleResponse>,
                     response: Response<SimpleResponse>
@@ -209,7 +204,7 @@ class EditRecordActivity : AppCompatActivity() {
                         Log.e("log", response.body().toString())
 
                         if(!changeImg) {
-                            Toast.makeText(this@EditRecordActivity, "기록이 수정되었습니다.", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@EditOtherRecordActivity, "기록이 수정되었습니다.", Toast.LENGTH_LONG).show()
                             finish()
                         }
                     }else {
@@ -233,11 +228,12 @@ class EditRecordActivity : AppCompatActivity() {
     }
 
     private fun editImg(){
-        val jsonObject= JSONObject("{\"recordid\":\"${recordId}\"}")
+        val jsonObject= JSONObject("{\"recordId\":\"${recordId}\"}")
         val mediaType = "application/json".toMediaType()
         val jsonBody=jsonObject.toString().toRequestBody(mediaType)
 
-        RecordService.retrofitEditRecordImg(jsonBody,imgFile).enqueue(object: Callback<SimpleResponse>{
+        RecordService.retrofitEditRecordImg(jsonBody,imgFile).enqueue(object:
+            Callback<SimpleResponse> {
             override fun onResponse(
                 call: Call<SimpleResponse>,
                 response: Response<SimpleResponse>
@@ -246,7 +242,7 @@ class EditRecordActivity : AppCompatActivity() {
                     Log.e("log", response.toString())
                     Log.e("log", response.body().toString())
 
-                    Toast.makeText(this@EditRecordActivity, "기록이 수정되었습니다.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@EditOtherRecordActivity, "기록이 수정되었습니다.", Toast.LENGTH_LONG).show()
                     finish()
                 }else {
                     try {
@@ -368,15 +364,16 @@ class EditRecordActivity : AppCompatActivity() {
 
                 val renameFile= File(imageFile.parent,"${time}_$i.jpg")
                 val requestBody = imageFile?.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-                var image=MultipartBody.Part.createFormData("multipartFiles", renameFile.name, requestBody)
+                var image=
+                    MultipartBody.Part.createFormData("multipartFiles", renameFile.name, requestBody)
                 imgFile.add(image)
                 binding.tvImageCount.text="(${imgFile.size}/3)"
 
                 Log.e("file name", "${renameFile.name}")
 
                 binding.recyclerviewEditRecord.apply{
-                    layoutManager= LinearLayoutManager(this@EditRecordActivity, LinearLayoutManager.HORIZONTAL,false)
-                    adapter=RecordEditImageRecyclerViewAdapter(this@EditRecordActivity,this@EditRecordActivity, imageUri)
+                    layoutManager= LinearLayoutManager(this@EditOtherRecordActivity, LinearLayoutManager.HORIZONTAL,false)
+                    adapter=OtherRecordEditImageRecyclerViewAdapter(this@EditOtherRecordActivity,this@EditOtherRecordActivity, imageUri)
                 }
             }
         }
