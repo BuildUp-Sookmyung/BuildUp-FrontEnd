@@ -191,6 +191,7 @@ class EditActivityActivity : AppCompatActivity() {
 
         binding.linearAddImage.setOnClickListener {
             changeImg=true
+            Toast.makeText(this, "사진은 1개까지만 선택가능합니다.", Toast.LENGTH_LONG).show()
             selectGallery()
         }
         datePick()

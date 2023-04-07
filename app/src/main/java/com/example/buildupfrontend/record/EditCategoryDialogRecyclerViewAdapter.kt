@@ -12,16 +12,15 @@ import com.example.buildupfrontend.R
 class EditCategoryDialogRecyclerViewAdapter(
     private val dialog: CategoryEditDialog,
     private var dataList: ArrayList<AddCategoryRecyclerViewData>,
-    private var selectedIcon: Int
+    private var selectedPos: Int
 ): RecyclerView.Adapter<EditCategoryDialogRecyclerViewAdapter.ViewHolder>() {
-    private var selectPos=-1
+    private var selectPos=selectedPos
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         var image: ImageView =itemView.findViewById(R.id.iv_add_category)
 
         fun bind(data: AddCategoryRecyclerViewData){
             image.setImageResource(data.image)
-            image.setColorFilter(Color.parseColor(data.color))
         }
     }
 
@@ -33,35 +32,28 @@ class EditCategoryDialogRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(dataList[position])
 
-        if(selectedIcon!=-1){
-            dialog.savePage(dialog.getCurrentPage())
-            dialog.savePosition(selectedIcon)
-            selectPos=selectedIcon
-            selectedIcon=-1
-//            holder.image.setColorFilter(if(selectPos==position) Color.parseColor("#845EF1") else Color.parseColor("#575757"))
-        }
-
         holder.image.setOnClickListener{
             selectPos=holder.adapterPosition
             notifyDataSetChanged()
+            var iconId=dataList[position].iconId
 
             dialog.savePage(dialog.getCurrentPage())
-            dialog.savePosition(position)
+            dialog.saveIconId(iconId)
 
             Log.e("Clicked Category Id","${dataList[position].iconId}")
+            Log.e("iconId","$iconId")
         }
         holder.image.setColorFilter(if(selectPos==position) Color.parseColor("#845EF1") else Color.parseColor("#575757"))
-//        dataList[position].color=if(selectPos==position) "#845EF1" else "#575757"
     }
 
     override fun getItemCount(): Int {
         return dataList.size
     }
 
-    fun changeIconColor(pos: Int){
-        dataList[pos].color="#845EF1"
-        notifyItemChanged(pos)
-        Log.e("changeIconColor","${dataList[pos].color}")
+    fun updateData(newData: ArrayList<AddCategoryRecyclerViewData>, pos:Int) {
+        dataList=newData
+        selectPos=pos
+        Log.e("selectedPos","$selectedPos")
+        notifyDataSetChanged()
     }
-
 }

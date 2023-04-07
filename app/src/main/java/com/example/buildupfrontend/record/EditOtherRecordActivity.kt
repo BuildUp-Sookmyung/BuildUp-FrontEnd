@@ -13,6 +13,7 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -133,6 +134,7 @@ class EditOtherRecordActivity : AppCompatActivity() {
                 stringList.add(imageString[i])
         }
 
+        showLoading(true)
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
                 // url을 file로 변환하는 코드 작성
@@ -175,6 +177,7 @@ class EditOtherRecordActivity : AppCompatActivity() {
                     )
                 }
             }
+            showLoading(false)
         }
         checkValuesAndChangeButtonColor()
     }
@@ -410,6 +413,15 @@ class EditOtherRecordActivity : AppCompatActivity() {
             )
 //            startActivityForResult(intent, REQ_GALLERY)
             imageResult.launch(intent)
+        }
+    }
+
+    private fun showLoading(isShow: Boolean){
+        if(isShow==true) {
+            binding.progressEditOtherRecord.visibility = View.VISIBLE
+        }
+        else {
+            binding.progressEditOtherRecord.visibility = View.GONE
         }
     }
 }

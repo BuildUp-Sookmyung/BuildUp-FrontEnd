@@ -9,18 +9,10 @@ import com.example.buildupfrontend.R
 
 class EditCategoryViewpagerAdapter(
     private val context: Context,
-    private val dialog: CategoryEditDialog,
-    private var dataList: ArrayList<AddCategoryRecyclerViewData>,
-    private var selectedIcon: Int
 ): RecyclerView.Adapter<EditCategoryViewpagerAdapter.PagerViewHolder>() {
 
     inner class PagerViewHolder(itemView: ViewGroup): RecyclerView.ViewHolder(itemView){
-        val recyclerView=itemView.findViewById<RecyclerView>(R.id.recyclerview_add_category)
-
         fun bind(data: AddCategoryRecyclerViewData){
-            recyclerView.layoutManager=
-                GridLayoutManager(context, 4, GridLayoutManager.VERTICAL, false)
-            recyclerView.adapter=EditCategoryDialogRecyclerViewAdapter(dialog, dataList, selectedIcon)
         }
     }
 
@@ -30,7 +22,7 @@ class EditCategoryViewpagerAdapter(
     }
 
     override fun onBindViewHolder(holder: PagerViewHolder, position: Int) {
-        holder.bind(dataList[position])
+
     }
 
     override fun getItemCount(): Int = 3

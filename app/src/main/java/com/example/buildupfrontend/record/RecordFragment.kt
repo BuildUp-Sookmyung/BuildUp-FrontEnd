@@ -7,9 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.buildupfrontend.GlobalApplication
@@ -17,12 +15,10 @@ import com.example.buildupfrontend.databinding.FragmentRecordBinding
 import com.example.buildupfrontend.retrofit.Client.ActivityService
 import com.example.buildupfrontend.retrofit.Client.CategoryService
 import com.example.buildupfrontend.retrofit.Response.*
-import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
-import java.lang.Exception
 
 class RecordFragment : Fragment() {
     private lateinit var binding:FragmentRecordBinding

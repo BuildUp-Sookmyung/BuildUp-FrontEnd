@@ -34,19 +34,7 @@ class EditCategoryActivity : AppCompatActivity() {
         binding.btnBack.setOnClickListener {
             finish()
         }
-//        val categoryIdList= intent.getIntegerArrayListExtra("categoryId") as ArrayList<Int>
-//        val categoryList:ArrayList<String> = intent.getStringArrayListExtra("categoryName") as ArrayList<String>
-//        val iconIdList:ArrayList<Int> = intent.getIntegerArrayListExtra("iconId") as ArrayList<Int>
-//
-//        val size=categoryList.size-1
-//        for (i: Int in 0..size!!){
-//            editCategoryRecyclerViewDataList.add(ReadCategoryRecyclerViewData(iconList[iconIdList[i]], categoryList[i], iconIdList[i], categoryIdList[i]))
-//        }
 
-//        binding.recyclerviewEditCategory.apply{
-//            layoutManager= GridLayoutManager(context, editCategoryRecyclerViewDataList.size,GridLayoutManager.HORIZONTAL, false)
-//            adapter=EditCategoryRecyclerViewAdapter(context,editCategoryRecyclerViewDataList)
-//        }
     }
 
     override public fun onResume() {

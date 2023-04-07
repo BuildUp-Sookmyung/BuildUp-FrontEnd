@@ -13,6 +13,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.buildupfrontend.R
@@ -32,61 +33,66 @@ class CategoryDialog(
 ): Dialog(context) {
     private lateinit var binding: CategoryDialogBinding
     private lateinit var addCategoryRecyclerViewDataList:ArrayList<AddCategoryRecyclerViewData>
-    private lateinit var onClickListener: CalendarDialog.OnDialogClickListener
-    private lateinit var recyclerview: RecyclerView
-    private var iconId=0
     private var selectedPage=-1
     private var selectedIcon=-1
+    private var pos=-1
 
     private var page1DataList=arrayListOf(
-        AddCategoryRecyclerViewData(R.drawable.ic_category_puzzle_nor,1,"#575757"),
-        AddCategoryRecyclerViewData(R.drawable.ic_category_trophy_nor,2,"#575757"),
-        AddCategoryRecyclerViewData(R.drawable.ic_category_badge_nor,3,"#575757"),
-        AddCategoryRecyclerViewData(R.drawable.ic_category_school_nor,4,"#575757"),
-        AddCategoryRecyclerViewData(R.drawable.ic_category_group_nor,5,"#575757"),
-        AddCategoryRecyclerViewData(R.drawable.ic_category_bulb_nor,6,"#575757"),
-        AddCategoryRecyclerViewData(R.drawable.ic_category_language_nor,7,"#575757"),
-        AddCategoryRecyclerViewData(R.drawable.ic_category_music_nor,8,"#575757")
+        AddCategoryRecyclerViewData(R.drawable.ic_category_puzzle_nor,1),
+        AddCategoryRecyclerViewData(R.drawable.ic_category_trophy_nor,2,),
+        AddCategoryRecyclerViewData(R.drawable.ic_category_badge_nor,3),
+        AddCategoryRecyclerViewData(R.drawable.ic_category_school_nor,4),
+        AddCategoryRecyclerViewData(R.drawable.ic_category_group_nor,5),
+        AddCategoryRecyclerViewData(R.drawable.ic_category_bulb_nor,6),
+        AddCategoryRecyclerViewData(R.drawable.ic_category_language_nor,7),
+        AddCategoryRecyclerViewData(R.drawable.ic_category_music_nor,8)
     )
     private var page2DataList=arrayListOf(
-        AddCategoryRecyclerViewData(R.drawable.ic_category_workout_nor,9,"#575757"),
-        AddCategoryRecyclerViewData(R.drawable.ic_category_movie_nor,10,"#575757"),
-        AddCategoryRecyclerViewData(R.drawable.ic_category_reading_nor,11,"#575757"),
-        AddCategoryRecyclerViewData(R.drawable.ic_category_suitcase_nor,12,"#575757"),
-        AddCategoryRecyclerViewData(R.drawable.ic_category_major_nor,13,"#575757"),
-        AddCategoryRecyclerViewData(R.drawable.ic_category_internship_nor,14,"#575757"),
-        AddCategoryRecyclerViewData(R.drawable.ic_category_language_nor,15,"#575757"),
-        AddCategoryRecyclerViewData(R.drawable.ic_category_music_nor,16,"#575757")
+        AddCategoryRecyclerViewData(R.drawable.ic_category_workout_nor,9),
+        AddCategoryRecyclerViewData(R.drawable.ic_category_movie_nor,10),
+        AddCategoryRecyclerViewData(R.drawable.ic_category_reading_nor,11),
+        AddCategoryRecyclerViewData(R.drawable.ic_category_suitcase_nor,12),
+        AddCategoryRecyclerViewData(R.drawable.ic_category_major_nor,13),
+        AddCategoryRecyclerViewData(R.drawable.ic_category_internship_nor,14),
+        AddCategoryRecyclerViewData(R.drawable.ic_category_document_nor,15),
+        AddCategoryRecyclerViewData(R.drawable.ic_category_interview_nor,16)
     )
     private var page3DataList=arrayListOf(
-        AddCategoryRecyclerViewData(R.drawable.ic_category_academy_nor,17,"#575757"),
-        AddCategoryRecyclerViewData(R.drawable.ic_category_contest_nor,18,"#575757"),
-        AddCategoryRecyclerViewData(R.drawable.ic_category_medal_nor,19,"#575757"),
-        AddCategoryRecyclerViewData(R.drawable.ic_category_oversea_nor,20,"#575757"),
-        AddCategoryRecyclerViewData(R.drawable.ic_category_clock_nor,21,"#575757"),
-        AddCategoryRecyclerViewData(R.drawable.ic_category_presentation_nor,22,"#575757"),
-        AddCategoryRecyclerViewData(R.drawable.ic_category_meal_nor,23,"#575757"),
-        AddCategoryRecyclerViewData(R.drawable.ic_category_briefcase_nor,24,"#575757")
+        AddCategoryRecyclerViewData(R.drawable.ic_category_academy_nor,17),
+        AddCategoryRecyclerViewData(R.drawable.ic_category_contest_nor,18),
+        AddCategoryRecyclerViewData(R.drawable.ic_category_medal_nor,19),
+        AddCategoryRecyclerViewData(R.drawable.ic_category_oversea_nor,20),
+        AddCategoryRecyclerViewData(R.drawable.ic_category_clock_nor,21),
+        AddCategoryRecyclerViewData(R.drawable.ic_category_presentation_nor,22),
+        AddCategoryRecyclerViewData(R.drawable.ic_category_meal_nor,23),
+        AddCategoryRecyclerViewData(R.drawable.ic_category_briefcase_nor,24)
     )
-    private var page=0
 
     init{
         binding=CategoryDialogBinding.inflate(layoutInflater)
         setContentView(binding.root)
         window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-//        addCategoryRecyclerViewDataList= page1DataList
+
+        addCategoryRecyclerViewDataList=page1DataList
 
         val viewPager2=binding.viewpagerAddCategory
-        val viewpagerAdapter=AddCategoryViewpagerAdapter(context,this@CategoryDialog, page1DataList)
+        val viewpagerAdapter=AddCategoryViewpagerAdapter(context)
         viewPager2.adapter= viewpagerAdapter
         viewPager2.orientation= ViewPager2.ORIENTATION_HORIZONTAL
         viewPager2.isUserInputEnabled=false
 
+        val recyclerview=binding.recyclerviewAddCategory
+        val recyclerviewAdapter=AddCategoryRecyclerViewAdapter(this,addCategoryRecyclerViewDataList,pos)
+        recyclerview.layoutManager=
+            GridLayoutManager(context, 4, GridLayoutManager.VERTICAL, false)
+        recyclerview.adapter=recyclerviewAdapter
+
         viewPager2.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback(){
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                page=position
-                Log.e("page: ", "$page")
+
+                Log.e("page", "$position")
+                Log.e("selectedIcon","$selectedIcon")
             }
         })
 
@@ -96,31 +102,42 @@ class CategoryDialog(
 
         binding.ivArrowPrevious.setOnClickListener {
             var cur=viewPager2.currentItem
-            selectedIcon=0
             if(cur==1){
                 binding.ivArrowPrevious.setImageResource(R.drawable.btn_circle_arrow_previous_dis)
-                viewPager2.adapter=AddCategoryViewpagerAdapter(context,this@CategoryDialog, page1DataList)
-                viewPager2.setCurrentItem(0)
+                pos=-1
+                if(selectedIcon in 1..8)
+                    pos=selectedIcon-1
+                recyclerviewAdapter.updateData(page1DataList,pos)
+                viewPager2.currentItem = 0
             }
             else if(cur==2){
                 binding.ivArrowNext.setImageResource(R.drawable.btn_circle_arrow_next_nor)
-                viewPager2.adapter=AddCategoryViewpagerAdapter(context,this@CategoryDialog, page2DataList)
-                viewPager2.setCurrentItem(1)
+                pos=-1
+                if(selectedIcon in 9..16)
+                    pos=selectedIcon%8-1
+                recyclerviewAdapter.updateData(page2DataList,pos)
+                viewPager2.currentItem = 1
             }
         }
 
         binding.ivArrowNext.setOnClickListener {
             var cur=viewPager2.currentItem
-            selectedIcon=0
             if(cur==0){
                 binding.ivArrowPrevious.setImageResource(R.drawable.btn_circle_arrow_previous_nor)
-                viewPager2.adapter=AddCategoryViewpagerAdapter(context,this@CategoryDialog, page2DataList)
-                viewPager2.setCurrentItem(1)
+                pos=-1
+                if(selectedIcon in 9..16)
+                    pos=selectedIcon%8-1
+                recyclerviewAdapter.updateData(page2DataList,pos)
+                viewPager2.currentItem = 1
             }
             else if(cur==1){
                 binding.ivArrowNext.setImageResource(R.drawable.btn_circle_arrow_next_dis)
-                viewPager2.adapter=AddCategoryViewpagerAdapter(context,this@CategoryDialog, page3DataList)
-                viewPager2.setCurrentItem(2)
+                pos=-1
+                if(selectedIcon in 17..24)
+                    pos=selectedIcon%8-1
+                Log.e("pos","$pos")
+                recyclerviewAdapter.updateData(page3DataList,pos)
+                viewPager2.currentItem = 2
             }
         }
 
@@ -152,7 +169,7 @@ class CategoryDialog(
     }
 
     private fun AddCategory(){
-        CategoryService.retrofitPostCategory(CategoryRequest(binding.etCategoryName.text.toString(),8*selectedPage+selectedIcon+1)).enqueue(object:
+        CategoryService.retrofitPostCategory(CategoryRequest(binding.etCategoryName.text.toString(),selectedIcon)).enqueue(object:
             Callback<SimpleResponse>{
             override fun onResponse(
                 call: Call<SimpleResponse>,
@@ -187,26 +204,13 @@ class CategoryDialog(
         Log.e("savePage","$selectedPage")
     }
 
-    fun selectPage(): Int {
-        return selectedPage
-    }
-
-    fun savePosition(pos: Int){
-        selectedIcon=pos
+    fun saveIconId(id: Int){
+        selectedIcon=id
         Log.e("savePosition","$selectedIcon")
-    }
-
-    fun selectPosition():Int{
-        return selectedIcon
-    }
-
-    fun getCategoryId(id: Int){
-        iconId=id
     }
 
     fun getCurrentPage():Int{
         val viewPager2=binding.viewpagerAddCategory
-//        Log.e("currentPage","${viewPager2.currentItem}")
         return viewPager2.currentItem
     }
 

@@ -74,6 +74,11 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpager_edit_category"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_edit_category"
+        android:layout_width="match_parent"
         android:layout_height="148dp" />
 
     <LinearLayout

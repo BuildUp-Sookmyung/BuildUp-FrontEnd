@@ -139,8 +139,10 @@ class EditRecordActivity : AppCompatActivity() {
                 stringList.add(imageString[i])
         }
 
+        binding.btnEditRecord.setBackgroundColor(Color.parseColor("#4D845EF1"))
+        showLoading(true)
         lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
+            withContext(Dispatchers.Default) {
                 // url을 file로 변환하는 코드 작성
                 for (i in 0 until stringList.size) {
                     val now = Date()
@@ -180,9 +182,11 @@ class EditRecordActivity : AppCompatActivity() {
                         imageUri
                     )
                 }
+
+                showLoading(false)
+                checkValuesAndChangeButtonColor()
             }
         }
-        checkValuesAndChangeButtonColor()
     }
 
     fun updateImageList(pos:Int){
@@ -413,6 +417,15 @@ class EditRecordActivity : AppCompatActivity() {
             )
 //            startActivityForResult(intent, REQ_GALLERY)
             imageResult.launch(intent)
+        }
+    }
+
+    private fun showLoading(isShow: Boolean){
+        if(isShow==true) {
+            binding.progressEditRecord.visibility = View.VISIBLE
+        }
+        else {
+            binding.progressEditRecord.visibility = View.GONE
         }
     }
 }

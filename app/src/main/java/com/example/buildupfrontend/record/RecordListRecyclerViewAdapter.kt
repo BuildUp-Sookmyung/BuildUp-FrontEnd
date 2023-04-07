@@ -24,6 +24,7 @@ import kotlin.collections.ArrayList
 
 class RecordListRecyclerViewAdapter(
     private var context: Context,
+    private val readActivityActivity: ReadActivityActivity,
     private val dataList: ArrayList<RecordList>,
     private var activityName: String,
     private var categoryName: String
@@ -126,6 +127,8 @@ class RecordListRecyclerViewAdapter(
                     Log.e("log", response.body().toString())
 
                     notifyDataSetChanged()
+                    if(dataList.size==0)
+                        readActivityActivity.checkRecord(false)
                     Toast.makeText(context,"선택한 기록이 삭제되었습니다.",Toast.LENGTH_LONG).show()
                 }else {
                     try {
