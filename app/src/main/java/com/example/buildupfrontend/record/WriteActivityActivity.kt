@@ -154,7 +154,8 @@ class WriteActivityActivity : AppCompatActivity() {
 //        Manifest.permission()
 
         binding.linearAddImage.setOnClickListener {
-            selectGallery()
+                Toast.makeText(this, "사진은 1개까지만 선택가능합니다.", Toast.LENGTH_LONG).show()
+                selectGallery()
         }
 
         binding.btnWriteActivity.setOnClickListener {

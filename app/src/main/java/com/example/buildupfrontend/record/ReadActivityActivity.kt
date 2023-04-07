@@ -37,7 +37,7 @@ class ReadActivityActivity : AppCompatActivity() {
     private var activityName:String=""
     private var categoryName:String=""
     private lateinit var checkedList: ArrayList<Boolean>
-    private var categoryList= arrayListOf("대외활동","공모전","자격증","교내활동","동아리","프로젝트")
+    private var categoryList= arrayListOf("대외활동","공모전","교내활동","동아리","프로젝트")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -164,12 +164,10 @@ class ReadActivityActivity : AppCompatActivity() {
                     val size = response.body()?.response?.size?.minus(1)
 
                     if(size==-1){
-                        binding.linearRecordExist.visibility=View.GONE
-                        binding.linearRecordNone.visibility=View.VISIBLE
+                        checkRecord(false)
                     }
                     else {
-                        binding.linearRecordExist.visibility = View.VISIBLE
-                        binding.linearRecordNone.visibility = View.GONE
+                        checkRecord(true)
 
                         val dataList = response.body()?.response
                         val layoutManager = LinearLayoutManager(this@ReadActivityActivity)
@@ -177,7 +175,7 @@ class ReadActivityActivity : AppCompatActivity() {
                         layoutManager.stackFromEnd = true
                         binding.rvCardRecord.layoutManager = layoutManager
                         recordAdapter =
-                            RecordListRecyclerViewAdapter(this@ReadActivityActivity, dataList!!, activityName, categoryName)
+                            RecordListRecyclerViewAdapter(this@ReadActivityActivity,this@ReadActivityActivity, dataList!!, activityName, categoryName)
                         binding.rvCardRecord.adapter = recordAdapter
 
                     }
@@ -223,6 +221,16 @@ class ReadActivityActivity : AppCompatActivity() {
                 Log.e("TAG", "실패원인: {$t}")
             }
         })
+    }
+
+    fun checkRecord(check:Boolean){
+        if(check) {
+            binding.linearRecordExist.visibility = View.VISIBLE
+            binding.linearRecordNone.visibility = View.GONE
+        }else{
+            binding.linearRecordExist.visibility = View.GONE
+            binding.linearRecordNone.visibility = View.VISIBLE
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

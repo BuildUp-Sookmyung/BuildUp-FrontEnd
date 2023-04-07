@@ -144,6 +144,12 @@
                 android:lineHeight="22dp"/>
         </LinearLayout>
 
+        <ProgressBar
+            android:id="@+id/progress_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
         <ImageView
             android:id="@+id/iv_detail"
             android:layout_width="match_parent"

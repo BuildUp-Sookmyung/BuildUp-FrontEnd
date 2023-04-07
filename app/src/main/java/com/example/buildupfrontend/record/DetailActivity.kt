@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -16,6 +17,9 @@ import com.example.buildupfrontend.databinding.ActivityDetailBinding
 import com.example.buildupfrontend.retrofit.Client.ActivityService
 import com.example.buildupfrontend.retrofit.Response.ActivityDetail
 import com.example.buildupfrontend.retrofit.Response.ActivityDetailResponse
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -56,6 +60,8 @@ class DetailActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         imageString= arrayListOf()
+
+        showLoading(true)
         loadDetail()
     }
 
@@ -96,15 +102,16 @@ class DetailActivity : AppCompatActivity() {
                         binding.ivDetail.visibility=View.GONE
                     else {
                         imageString.add(data?.activityimg)
-                        Log.e("imageString","${data?.activityimg}")
 
                         Glide.with(this@DetailActivity)
-                            .load(data?.activityimg)
+                            .load(imageString[0])
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .fitCenter()
                             .error(R.drawable.ic_add_image) // 로딩 에러 발생 시 표시할 이미지
                             .apply(RequestOptions().override(500, 500))
                             .into(binding.ivDetail)
+                        
+                        showLoading(false)
                     }
 
                 }else {
@@ -122,6 +129,15 @@ class DetailActivity : AppCompatActivity() {
                 Log.e("TAG", "실패원인: {$t}")
             }
         })
+    }
+
+    private fun showLoading(isShow: Boolean){
+        if(isShow==true) {
+            binding.progressDetail.visibility = View.VISIBLE
+        }
+        else {
+            binding.progressDetail.visibility = View.GONE
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
