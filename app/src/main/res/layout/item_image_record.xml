@@ -51,7 +51,8 @@
                 android:textFontWeight="500"
                 android:textSize="13sp"
                 android:lineHeight="19dp"
-                android:textColor="@color/text_white"/>
+                android:textColor="@color/text_white"
+                android:fontFamily="@font/pretendard_m"/>
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

@@ -59,7 +59,9 @@ class RecordListRecyclerViewAdapter(
 
 //        if(position==0){
 //            Log.e("label","${holder.itemlabel.text}")
-//            holder.dash.layoutParams.height=46
+//            val layoutParams=holder.dash.layoutParams
+//            layoutParams.height=46
+//            holder.dash.layoutParams=layoutParams
 //        }
 
         if(position<9){

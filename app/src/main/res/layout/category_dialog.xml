@@ -26,6 +26,7 @@
             android:textColor="@color/text_primary"
             android:textFontWeight="700"
             android:lineHeight="25dp"
+            android:fontFamily="@font/pretendard_bold"
             />
         <ImageView
             android:id="@+id/img_category_close"
@@ -41,7 +42,8 @@
         android:textSize="15dp"
         android:lineHeight="22dp"
         android:textColor="@color/text_primary"
-        android:layout_marginVertical="12dp"/>
+        android:layout_marginVertical="12dp"
+        android:fontFamily="@font/pretendard_m"/>
 
     <EditText
         android:id="@+id/et_category_name"
@@ -51,6 +53,7 @@
         android:background="@drawable/border_normal_round"
         android:hint="카테고리명을 입력해주세요."
         android:textColorHint="@color/text_unavailable"
+        android:fontFamily="@font/pretendard"
         android:textSize="15sp"
         android:textFontWeight="400"
         android:lineHeight="22dp"
@@ -69,6 +72,7 @@
         android:textSize="15dp"
         android:lineHeight="22dp"
         android:textColor="@color/text_primary"
+        android:fontFamily="@font/pretendard_m"
         />
 
     <androidx.viewpager2.widget.ViewPager2
@@ -114,7 +118,8 @@
             android:textSize="15sp"
             android:textFontWeight="700"
             android:lineHeight="22dp"
-            android:textColor="@color/text_white" />
+            android:textColor="@color/text_white"
+            android:fontFamily="@font/pretendard_bold"/>
 
     </LinearLayout>
 </LinearLayout>

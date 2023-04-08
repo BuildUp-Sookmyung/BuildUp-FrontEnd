@@ -85,18 +85,24 @@ class DetailActivity : AppCompatActivity() {
 
                     if(data?.hostName=="")
                         binding.linearHost.visibility=View.GONE
-                    else
-                        binding.tvHost.text=data?.hostName
+                    else {
+                        binding.linearHost.visibility=View.VISIBLE
+                        binding.tvHost.text = data?.hostName
+                    }
 
                     if(data?.roleName=="")
                         binding.linearRole.visibility=View.GONE
-                    else
-                        binding.tvRole.text=data?.roleName
+                    else {
+                        binding.linearRole.visibility=View.VISIBLE
+                        binding.tvRole.text = data?.roleName
+                    }
 
                     if(data?.urlName=="")
                         binding.linearUrl.visibility=View.GONE
-                    else
-                        binding.tvUrl.text=data?.urlName
+                    else {
+                        binding.linearUrl.visibility=View.VISIBLE
+                        binding.tvUrl.text = data?.urlName
+                    }
 
                     if(data?.activityimg==null)
                         binding.ivDetail.visibility=View.GONE

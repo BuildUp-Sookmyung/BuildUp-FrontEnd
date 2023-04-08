@@ -25,7 +25,8 @@
             android:text="활동 상세"
             android:textSize="17sp"
             android:layout_gravity="center"
-            android:textColor="#000000" />
+            android:textColor="#000000"
+            android:fontFamily="@font/pretendard_bold"/>
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
@@ -51,7 +52,8 @@
             android:textSize="20sp"
             android:textFontWeight="700"
             android:lineHeight="30dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:fontFamily="@font/pretendard_bold"/>
         <TextView
             android:id="@+id/tv_category_detail"
             android:layout_width="wrap_content"
@@ -60,7 +62,8 @@
             android:textSize="15sp"
             android:textColor="@color/text_secondary"
             android:textFontWeight="500"
-            android:lineHeight="22dp"/>
+            android:lineHeight="22dp"
+            android:fontFamily="@font/pretendard_m"/>
     </LinearLayout>
 
 
@@ -75,7 +78,8 @@
             android:id="@+id/linear_host"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="12dp"
+            android:visibility="gone">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -84,7 +88,8 @@
                 android:textSize="15sp"
                 android:textFontWeight="400"
                 android:lineHeight="22dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:fontFamily="@font/pretendard"/>
             <TextView
                 android:id="@+id/tv_host"
                 android:layout_width="wrap_content"
@@ -93,14 +98,16 @@
                 android:textSize="15sp"
                 android:textColor="@color/text_primary"
                 android:textFontWeight="500"
-                android:lineHeight="22dp"/>
+                android:lineHeight="22dp"
+                android:fontFamily="@font/pretendard_m"/>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linear_role"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="12dp"
+            android:visibility="gone">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -109,7 +116,8 @@
                 android:textSize="15sp"
                 android:textFontWeight="400"
                 android:lineHeight="22dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:fontFamily="@font/pretendard"/>
             <TextView
                 android:id="@+id/tv_role"
                 android:layout_width="wrap_content"
@@ -118,12 +126,14 @@
                 android:textSize="15sp"
                 android:textColor="@color/text_primary"
                 android:textFontWeight="500"
-                android:lineHeight="22dp"/>
+                android:lineHeight="22dp"
+                android:fontFamily="@font/pretendard_m"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="20dp"
+            android:visibility="gone">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -132,7 +142,8 @@
                 android:textSize="15sp"
                 android:textFontWeight="400"
                 android:lineHeight="22dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:fontFamily="@font/pretendard"/>
             <TextView
                 android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
@@ -141,7 +152,8 @@
                 android:textSize="15sp"
                 android:textColor="@color/text_primary"
                 android:textFontWeight="500"
-                android:lineHeight="22dp"/>
+                android:lineHeight="22dp"
+                android:fontFamily="@font/pretendard_m"/>
         </LinearLayout>
 
         <ProgressBar
@@ -175,7 +187,8 @@
                 android:textColor="@color/text_primary"
                 android:textSize="13sp"
                 android:lineHeight="19dp"
-                android:textFontWeight="400"/>
+                android:textFontWeight="400"
+                android:fontFamily="@font/pretendard"/>
         </LinearLayout>
 
             </LinearLayout>
