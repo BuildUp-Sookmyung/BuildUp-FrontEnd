@@ -39,7 +39,7 @@ class RecordFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-//        showLoading(true)
+        showLoading(true)
 //        lifecycleScope.launch{
 //            withContext(Dispatchers.IO) {
                 loadCategory()
@@ -167,6 +167,8 @@ class RecordFragment : Fragment() {
                             adapter=ActivityListRecyclerViewAdapter(requireContext(), activityRecyclerViewDataList)
                         }
                     }
+
+                    showLoading(false)
                 }else {
                     try {
                         val body = response.errorBody()!!.string()
@@ -229,7 +231,7 @@ class RecordFragment : Fragment() {
     }
 
     private fun showLoading(isShow: Boolean){
-        if(isShow==true) {
+        if(isShow) {
             binding.progressFragmentRecord.visibility = View.VISIBLE
         }
         else {

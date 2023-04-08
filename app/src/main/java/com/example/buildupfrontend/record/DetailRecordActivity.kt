@@ -80,24 +80,37 @@ class DetailRecordActivity : AppCompatActivity() {
 
                     binding.tvDateDetailrecord.text=date
                     binding.tvTitleDetailrecord.text=title
-                    binding.tvResultDetailrecord.text=result
 
                     if(experience=="")
                         binding.linearExperience.visibility=View.GONE
-                    else
-                        binding.tvExperienceDetailrecord.text=experience
+                    else {
+                        binding.linearExperience.visibility=View.VISIBLE
+                        binding.tvExperienceDetailrecord.text = experience
+                    }
                     if(concept=="")
                         binding.linearSolution.visibility=View.GONE
-                    else
-                        binding.tvConceptDetailrecord.text=concept
+                    else {
+                        binding.linearSolution.visibility=View.VISIBLE
+                        binding.tvConceptDetailrecord.text = concept
+                    }
+                    if(result=="")
+                        binding.linearResult.visibility=View.GONE
+                    else{
+                        binding.linearResult.visibility=View.VISIBLE
+                        binding.tvResultDetailrecord.text=result
+                    }
                     if(content=="")
                         binding.linearContent.visibility= View.GONE
-                    else
-                        binding.tvContentDetailrecord.text=content
+                    else {
+                        binding.linearContent.visibility= View.VISIBLE
+                        binding.tvContentDetailrecord.text = content
+                    }
                     if(url=="")
                         binding.linearUrlRecord.visibility=View.GONE
-                    else
-                        binding.tvUrlDetailrecord.text= url
+                    else {
+                        binding.linearUrlRecord.visibility=View.VISIBLE
+                        binding.tvUrlDetailrecord.text = url
+                    }
 
                     var uriList= arrayListOf<String>()
                     for(i in 0 until imgUrls.size){

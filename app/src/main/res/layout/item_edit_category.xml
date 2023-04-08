@@ -27,6 +27,7 @@
             android:textSize="15sp"
             android:textColor="@color/text_primary"
             android:layout_weight="1"
+            android:fontFamily="@font/pretendard_m"
             />
         <ImageView
             android:id="@+id/img_more"

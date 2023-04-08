@@ -25,7 +25,8 @@
             android:text="기록 수정"
             android:textSize="17sp"
             android:layout_gravity="center"
-            android:textColor="#000000" />
+            android:textColor="#000000"
+            android:fontFamily="@font/pretendard_bold"/>
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
@@ -57,13 +58,15 @@
                             android:layout_height="wrap_content"
                             android:text="제목 "
                             android:textSize="15sp"
-                            android:textColor="@color/text_primary"/>
+                            android:textColor="@color/text_primary"
+                            android:fontFamily="@font/pretendard_m"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="*"
                             android:textSize="15sp"
-                            android:textColor="@color/text_accent"/>
+                            android:textColor="@color/text_accent"
+                            android:fontFamily="@font/pretendard_m"/>
                     </LinearLayout>
 
                     <EditText
@@ -77,7 +80,8 @@
                         android:paddingHorizontal="16dp"
                         android:paddingVertical="12dp"
                         android:hint="제목을 입력해주세요."
-                        android:text=""/>
+                        android:text=""
+                        android:fontFamily="@font/pretendard"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -96,7 +100,15 @@
                             android:layout_height="wrap_content"
                             android:text="활동일 "
                             android:textSize="15sp"
-                            android:textColor="@color/text_primary"/>
+                            android:textColor="@color/text_primary"
+                            android:fontFamily="@font/pretendard_m"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="*"
+                            android:textSize="15sp"
+                            android:textColor="@color/text_accent"
+                            android:fontFamily="@font/pretendard_m"/>
 
                     </LinearLayout>
 
@@ -122,11 +134,12 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="yyyy-mm-dd"
-                                android:textColor="@color/text_primary"
+                                android:textColor="@color/text_unavailable"
                                 android:textSize="15dp"
                                 android:textFontWeight="400"
                                 android:layout_marginRight="8dp"
                                 android:layout_weight="1"
+                                android:fontFamily="@font/pretendard"
                                 />
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -153,7 +166,8 @@
                             android:layout_height="wrap_content"
                             android:text="경험/상황 "
                             android:textSize="15sp"
-                            android:textColor="@color/text_primary"/>
+                            android:textColor="@color/text_primary"
+                            android:fontFamily="@font/pretendard_m"/>
 
                     </LinearLayout>
                     <EditText
@@ -167,7 +181,8 @@
                         android:paddingHorizontal="16dp"
                         android:paddingVertical="12dp"
                         android:hint="경험 및 상황을 입력해주세요."
-                        android:text=""/>
+                        android:text=""
+                        android:fontFamily="@font/pretendard"/>
 
                 </LinearLayout>
                 <LinearLayout
@@ -185,7 +200,8 @@
                             android:layout_height="wrap_content"
                             android:text="사용한 개념/해결책 "
                             android:textSize="15sp"
-                            android:textColor="@color/text_primary"/>
+                            android:textColor="@color/text_primary"
+                            android:fontFamily="@font/pretendard_m"/>
 
                     </LinearLayout>
                     <EditText
@@ -199,7 +215,8 @@
                         android:paddingHorizontal="16dp"
                         android:paddingVertical="12dp"
                         android:hint="사용한 개념 및 해결책을 입력해주세요."
-                        android:text=""/>
+                        android:text=""
+                        android:fontFamily="@font/pretendard"/>
 
                 </LinearLayout>
 
@@ -218,13 +235,15 @@
                             android:layout_height="wrap_content"
                             android:text="결과/느낀점 "
                             android:textSize="15sp"
-                            android:textColor="@color/text_primary"/>
+                            android:textColor="@color/text_primary"
+                            android:fontFamily="@font/pretendard_m"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="*"
                             android:textSize="15sp"
-                            android:textColor="@color/text_accent"/>
+                            android:textColor="@color/text_accent"
+                            android:fontFamily="@font/pretendard_m"/>
                     </LinearLayout>
                     <EditText
                         android:id="@+id/et_result_record"
@@ -237,7 +256,8 @@
                         android:paddingHorizontal="16dp"
                         android:paddingVertical="12dp"
                         android:hint="결과 및 느낀점을 입력해주세요."
-                        android:text=""/>
+                        android:text=""
+                        android:fontFamily="@font/pretendard"/>
 
                 </LinearLayout>
 
@@ -253,7 +273,8 @@
                         android:text="사진"
                         android:textSize="15sp"
                         android:textColor="#000000"
-                        android:layout_marginBottom="12dp"/>
+                        android:layout_marginBottom="12dp"
+                        android:fontFamily="@font/pretendard_m"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -293,7 +314,8 @@
                                         android:text="(0/3)"
                                         android:textColor="@color/text_unavailable"
                                         android:textFontWeight="400"
-                                        android:textSize="13sp" />
+                                        android:textSize="13sp"
+                                        android:fontFamily="@font/pretendard"/>
                                 </LinearLayout>
 
                             </LinearLayout>
@@ -328,7 +350,8 @@
                         android:text="기타"
                         android:layout_marginRight="15dp"
                         android:textSize="15sp"
-                        android:textColor="@color/text_primary"/>
+                        android:textColor="@color/text_primary"
+                        android:fontFamily="@font/pretendard_m"/>
                     <EditText
                         android:id="@+id/et_content"
                         android:layout_width="match_parent"
@@ -340,7 +363,8 @@
                         android:paddingHorizontal="16dp"
                         android:paddingVertical="12dp"
                         android:hint="기타 내용을 입력해주세요."
-                        android:text=""/>
+                        android:text=""
+                        android:fontFamily="@font/pretendard"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -355,7 +379,8 @@
                         android:text="URL"
                         android:layout_marginRight="15dp"
                         android:textSize="15sp"
-                        android:textColor="#000000"/>
+                        android:textColor="#000000"
+                        android:fontFamily="@font/pretendard_m"/>
 
                     <EditText
                         android:id="@+id/et_url"
@@ -368,7 +393,8 @@
                         android:paddingVertical="12dp"
                         android:hint="ex) https://www.buildup.kr"
                         android:background="@drawable/border_normal_round"
-                        android:text=""/>
+                        android:text=""
+                        android:fontFamily="@font/pretendard"/>
 
                 </LinearLayout>
                 <LinearLayout
@@ -385,7 +411,8 @@
                         android:layout_height="wrap_content"
                         android:text="완료"
                         android:textSize="16sp"
-                        android:textColor="@color/background"/>
+                        android:textColor="@color/background"
+                        android:fontFamily="@font/pretendard_bold"/>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
