@@ -57,12 +57,10 @@ class RecordListRecyclerViewAdapter(
         holder.itemtitle.text = dataList[position].title
         holder.itemdate.text = dataList[position].date
 
-//        if(position==0){
-//            Log.e("label","${holder.itemlabel.text}")
-//            val layoutParams=holder.dash.layoutParams
-//            layoutParams.height=46
-//            holder.dash.layoutParams=layoutParams
-//        }
+        if(position==0){
+            Log.e("label","${holder.itemlabel.text}")
+            holder.dash.setImageResource(R.drawable.ic_dash_line_short)
+        }
 
         if(position<9){
             holder.itemblock.setImageResource(R.drawable.img_number_block_01_red)

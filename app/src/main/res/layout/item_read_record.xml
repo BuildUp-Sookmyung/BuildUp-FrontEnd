@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="93dp"
+    android:layout_height="92dp"
     android:background="@color/background"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -36,7 +36,7 @@
         <ImageView
             android:id="@+id/iv_dash"
             android:layout_width="2dp"
-            android:layout_height="93dp"
+            android:layout_height="wrap_content"
             android:scaleType="centerCrop"
             android:src="@drawable/dash_line"
             android:layout_marginStart="12dp" />
@@ -45,9 +45,9 @@
                 android:id="@+id/iv_block"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
-                android:src="@drawable/img_number_block_01_red"
+                android:layout_alignParentTop="true"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentTop="true"/>
+                android:src="@drawable/img_number_block_01_red" />
 
             <TextView
                 android:id="@+id/tv_label"
