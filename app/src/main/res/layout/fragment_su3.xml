@@ -26,6 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_top">
 
@@ -116,10 +117,10 @@
                     style="@style/MyTextInputEditText"
                     android:layout_width="327dp"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
                     android:enabled="false"
-
                     android:hint="이메일을 입력해주세요."
+
+                    android:inputType="none"
                     android:maxLines="1"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="12dp"
@@ -266,10 +267,10 @@
                     android:id="@+id/dd_grade"
                     android:layout_width="327dp"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="12dp"
-                    android:paddingHorizontal="16dp"
-                    android:inputType="none"
                     android:hint="학년을 입력해주세요"
+                    android:inputType="none"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="12dp"
                     android:textColorHint="@color/text_unavailable"
                     android:textSize="15sp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -301,15 +302,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                app:layout_constraintTop_toBottomOf="@id/tv_area"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_area">
 
                 <TextView
                     android:id="@+id/tv_select4"
                     style="@style/AreaButtonTheme"
-                    android:background="@drawable/ui_square_b"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
+                    android:background="@drawable/ui_square_b"
                     android:minWidth="0dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -317,58 +318,58 @@
                 <TextView
                     android:id="@+id/tv_select5"
                     style="@style/AreaButtonTheme"
-                    android:background="@drawable/ui_square_b"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:minWidth="0dp"
                     android:layout_marginStart="8dp"
+                    android:background="@drawable/ui_square_b"
+                    android:minWidth="0dp"
                     app:layout_constraintStart_toEndOf="@id/tv_select4"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_select1"
                     style="@style/AreaButtonTheme"
-                    android:background="@drawable/ui_square_b"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:minWidth="0dp"
                     android:layout_marginTop="10dp"
+                    android:background="@drawable/ui_square_b"
+                    android:minWidth="0dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_select4" />
 
                 <TextView
                     android:id="@+id/tv_select2"
                     style="@style/AreaButtonTheme"
-                    android:background="@drawable/ui_square_b"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:minWidth="0dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="10dp"
+                    android:background="@drawable/ui_square_b"
+                    android:minWidth="0dp"
                     app:layout_constraintStart_toEndOf="@id/tv_select1"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_select5"/>
+                    app:layout_constraintTop_toBottomOf="@+id/tv_select5" />
 
                 <TextView
                     android:id="@+id/tv_select3"
                     style="@style/AreaButtonTheme"
-                    android:background="@drawable/ui_square_b"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:minWidth="0dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="10dp"
+                    android:background="@drawable/ui_square_b"
+                    android:minWidth="0dp"
                     app:layout_constraintStart_toEndOf="@id/tv_select2"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_select5"/>
+                    app:layout_constraintTop_toBottomOf="@+id/tv_select5" />
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/btn_area"
                     android:layout_width="56dp"
                     android:layout_height="30dp"
-                    android:background="@color/background"
-                    android:src="@drawable/btn_square"
-                    android:scaleType="fitCenter"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="10dp"
+                    android:background="@color/background"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/btn_square"
                     app:layout_constraintStart_toEndOf="@id/tv_select3"
                     app:layout_constraintTop_toBottomOf="@+id/tv_select5" />
 
