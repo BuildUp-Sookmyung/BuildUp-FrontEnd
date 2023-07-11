@@ -97,6 +97,10 @@ class DetailActivity : AppCompatActivity() {
                         binding.tvRole.text = data?.roleName
                     }
 
+                    if(data?.startDate!="") {
+                        binding.linearDate.visibility=View.VISIBLE
+                    }
+
                     if(data?.urlName=="")
                         binding.linearUrl.visibility=View.GONE
                     else {

@@ -29,7 +29,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.buildupfrontend.databinding.ActivityWriteActivityBinding
 import com.example.buildupfrontend.retrofit.Client.ActivityService
 import com.example.buildupfrontend.retrofit.Response.SimpleResponse
-import com.kakao.auth.StringSet.file
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
