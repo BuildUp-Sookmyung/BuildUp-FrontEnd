@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".record.CourseRecommendDialog"
+    android:orientation="vertical"
+    android:paddingHorizontal="24dp"
+    android:paddingVertical="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="15.5dp">
+        <TextView
+            android:id="@+id/tv_category_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="당신은 이런 사람이에요!"
+            android:textSize="17sp"
+            android:layout_weight="1"
+            android:textColor="@color/text_primary"
+            android:textFontWeight="700"
+            android:lineHeight="25dp"
+            android:fontFamily="@font/pretendard_bold"
+            />
+        <ImageView
+            android:id="@+id/img_course_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_close_nor"/>
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="성향"
+        android:textSize="15dp"
+        android:textColor="@color/text_primary"
+        android:textFontWeight="700"
+        android:lineHeight="25dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:layout_marginVertical="12dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="문제 해결에 적극적이고 창의적인 사고를 가지고 있으며, 사용자 경험을 개선하는 데에 관심을 가지고 계시네요!"
+        android:textFontWeight="500"
+        android:textSize="15dp"
+        android:lineHeight="22dp"
+        android:textColor="@color/text_primary"
+        android:layout_marginVertical="12dp"
+        android:fontFamily="@font/pretendard_m"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="추천 진로"
+        android:textSize="15dp"
+        android:textColor="@color/text_primary"
+        android:textFontWeight="700"
+        android:lineHeight="25dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:layout_marginVertical="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="#프로그래머 #UX/UI 디자이너 #소프트웨어 엔지니어 #창업"
+        android:textFontWeight="500"
+        android:textSize="15dp"
+        android:lineHeight="22dp"
+        android:textColor="@color/text_accent"
+        android:layout_marginVertical="12dp"
+        android:fontFamily="@font/pretendard_m"/>
+
+    <LinearLayout
+        android:id="@+id/category_dialog_complete"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:gravity="center"
+        android:background="@drawable/write_btn_purple"
+        android:backgroundTint="@color/solid_accent_normal"
+        android:layout_marginTop="30dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="확인"
+            android:textSize="15sp"
+            android:textFontWeight="700"
+            android:lineHeight="22dp"
+            android:textColor="@color/text_white"
+            android:fontFamily="@font/pretendard_bold"/>
+
+    </LinearLayout>
+
+</LinearLayout>

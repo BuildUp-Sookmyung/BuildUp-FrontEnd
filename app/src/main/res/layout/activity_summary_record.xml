@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".record.SummaryRecordActivity"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_summary_record"
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        android:background="@drawable/border_divider"
+        app:theme="@style/ToolbarTitleColor">
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back_nor"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="기록 요약"
+            android:textSize="17sp"
+            android:layout_gravity="center"
+            android:textColor="#000000"
+            android:fontFamily="@font/pretendard_bold"/>
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="24dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="30dp"
+            android:paddingBottom="24dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/border_divider"
+            android:gravity="center_vertical">
+            <TextView
+                android:id="@+id/tv_activity_detailrecord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="KB 라스쿨"
+                android:textColor="@color/text_primary"
+                android:textSize="17sp"
+                android:textFontWeight="500"
+                android:lineHeight="25dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/pretendard_m"/>
+            <TextView
+                android:id="@+id/tv_category_detailrecord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="대외활동"
+                android:textSize="15sp"
+                android:textColor="@color/text_secondary"
+                android:textFontWeight="500"
+                android:lineHeight="22dp"
+                android:fontFamily="@font/pretendard_m"/>
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_date_detailrecord"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2023-01-09 ~ 2023-06-09"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp"
+                    android:textFontWeight="400"
+                    android:lineHeight="19dp"
+                    android:layout_marginBottom="20dp"
+                    android:fontFamily="@font/pretendard"/>
+
+                <LinearLayout
+                    android:id="@+id/linear_result"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:id="@+id/tv_result_detailrecord"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="처음에는 어떻게 해야할지 잘 몰라서 어려웠지만, 배우는 활동인 만큼 듣기만 하지 않고 적극적으로 참여하려고 노력했다. 나 혼자서가 아닌 동료들과 함께함을 잊지 않고 어려움이 있다면 같이 해결하려고 했으며, 낙오자가 나오지 않도록 함께 노력했다. 짧지 않은 시간 동안 지식과 더불어 다양한 경험과 협업도 배울 수 있었고 앞으로 나의 진로를 정함에 있어서 많은 도움을 받을 수 있었다."
+                        android:textSize="15sp"
+                        android:textColor="@color/text_primary"
+                        android:textFontWeight="400"
+                        android:lineHeight="22dp"
+                        android:fontFamily="@font/pretendard"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_url_record"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_url"/>
+                    <TextView
+                        android:id="@+id/tv_url_detailrecord"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="https://www.jobda.im/profile"
+                        android:textColor="@color/text_primary"
+                        android:textSize="13sp"
+                        android:lineHeight="19dp"
+                        android:textFontWeight="400"
+                        android:fontFamily="@font/pretendard"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>
