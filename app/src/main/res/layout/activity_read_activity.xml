@@ -168,7 +168,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:layout_weight="1">
             <LinearLayout
                 android:id="@+id/cl_record"
                 android:layout_width="match_parent"
@@ -193,8 +194,18 @@
                         android:layout_height="wrap_content" />
 
             </LinearLayout>
+
         </ScrollView>
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_read_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/solid_accent_normal"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="24dp"
+            android:src="@drawable/ic_record_summary"
+            app:tint="@color/white"/>
     </LinearLayout>
 
     <LinearLayout
